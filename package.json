@@ -1,0 +1,23 @@
+{
+  "name": "tanda-pay",
+  "version": "1.0.0",
+  "description": "TandaPay is a supplemental insurance product based off of the concept of shared community finance. TandaPay serves as a means by which communities can cover the cost of an insurance deductible.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LuisOsta/TandaPay.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LuisOsta/TandaPay/issues"
+  },
+  "homepage": "https://github.com/LuisOsta/TandaPay#readme",
+  "dependencies": {
+    "express": "^4.17.0"
+  }
+}
