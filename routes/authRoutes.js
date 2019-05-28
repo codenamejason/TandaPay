@@ -22,12 +22,12 @@ let router = express.Router();
  * It'll return an error if an user already exists or the input is malformed.
  * @param email
  * @param password
- * @todo prevent an user from creating an account with an email that already exists
  * @todo Allow user to sign up as a secretary or regular user
  */
 router.post("/signup", async (req, res) => {
-  const { email, password } = req.body;
-  const body = { email, password };
+  const { name, email, password } = req.body;
+  const body = { name, email, password };
+
   //checks for existing user
   const existingUser = await User.findOne({
     email
@@ -40,7 +40,7 @@ router.post("/signup", async (req, res) => {
   const user = new User(body);
   try {
     const token = await user.generateAuthToken("user");
-    user.save();
+    await user.save();
     res.header("x-auth", token).send(user);
   } catch (e) {
     res.status(400).send(e);
@@ -62,7 +62,8 @@ router.post("/login", async (req, res) => {
     const token = await user.generateAuthToken();
     res.header("x-auth", token).send(user);
   } catch (e) {
-    res.status(400).send();
+    console.log(e);
+    res.status(400).send(e);
   }
 });
 
@@ -85,10 +86,10 @@ router.post("/logout", authenticated, async (req, res) => {
   const user = req.user;
   const token = req.token;
   try {
-    await user.removeByToken(token);
-    res.redirect("/");
+    await user.removeToken(token);
+    res.status(200).send();
   } catch (e) {
-    res.status(400).send();
+    res.status(400).send(e);
   }
 });
 

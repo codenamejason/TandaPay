@@ -9,12 +9,13 @@ const keys = require("../config/keys");
 const userSchema = new Schema({
   name: {
     type: String,
-    require: true,
-    trim: true
+    required: true,
+    trim: true,
+    minlength: 1
   },
   email: {
     type: String,
-    require: true,
+    required: true,
     trim: true,
     validate: [
       {
@@ -25,7 +26,7 @@ const userSchema = new Schema({
   },
   phone: {
     type: String,
-    require: false,
+    required: false,
     trim: true,
     validate: [
       {
@@ -36,7 +37,7 @@ const userSchema = new Schema({
   },
   password: {
     type: String,
-    require: () => {
+    required: () => {
       return this.googleId !== "" || this.twitterId !== "";
     },
     trim: true,
@@ -48,11 +49,11 @@ const userSchema = new Schema({
     {
       access: {
         type: String,
-        require: true
+        required: true
       },
       token: {
         type: String,
-        require: true
+        required: true
       }
     }
   ]
@@ -72,7 +73,6 @@ userSchema.methods.generateAuthToken = async function(accessLevel) {
     { sub: user._id.toHexString(), access, accessLevel },
     keys.jwtSecret
   );
-
   user.tokens = user.tokens.concat([{ access, token }]);
   await user.save();
   return token;
@@ -129,7 +129,6 @@ userSchema.statics.findByCredentials = async function(email, password) {
  */
 userSchema.methods.removeToken = function(token) {
   var user = this;
-
   return user.update({
     $pull: {
       tokens: {
