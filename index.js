@@ -2,7 +2,7 @@ const express = require("express");
 const passport = require("passport");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-
+const morgan = require("morgan");
 const PORT = process.env.PORT || 5000;
 const keys = require("./config/keys");
 require("./models/User");
@@ -10,6 +10,7 @@ require("./models/User");
 const authRoutes = require("./routes/authRoutes");
 const app = express();
 
+app.use(morgan("combined"));
 app.use(bodyParser.json());
 // app.use(passport.initialize());
 mongoose.connect(keys.mongoURI, {
