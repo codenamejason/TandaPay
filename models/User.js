@@ -68,9 +68,8 @@ const userSchema = new Schema({
 userSchema.methods.generateAuthToken = async function(accessLevel) {
   const user = this;
   const access = "auth";
-  console.log(user);
   let token = jwt.sign(
-    { _id: user._id.toHexString(), access, accessLevel },
+    { sub: user._id.toHexString(), access, accessLevel },
     keys.jwtSecret
   );
 
@@ -81,7 +80,7 @@ userSchema.methods.generateAuthToken = async function(accessLevel) {
 
 /**
  * @summary
- * @param token -
+ * @param token - the auth token that a user is provided when they log in
  * @this User - refers to the User Schema itself, not any given instance. This function will be called statically
  */
 userSchema.statics.findByToken = function(token) {
@@ -95,7 +94,7 @@ userSchema.statics.findByToken = function(token) {
   }
 
   return User.findOne({
-    _id: decoded._id,
+    _id: decoded.sub,
     "tokens.token": token,
     "tokens.access": "auth"
   });
@@ -105,6 +104,7 @@ userSchema.statics.findByToken = function(token) {
  * @summary
  * @param email
  * @param password
+ * @this User - refers to the User Schema itself, not any given instance. This function will be called statically
  * @returns
  */
 userSchema.statics.findByCredentials = async function(email, password) {
@@ -121,6 +121,21 @@ userSchema.statics.findByCredentials = async function(email, password) {
         reject();
       }
     });
+  });
+};
+
+/**
+ *
+ */
+userSchema.methods.removeToken = function(token) {
+  var user = this;
+
+  return user.update({
+    $pull: {
+      tokens: {
+        token: token
+      }
+    }
   });
 };
 

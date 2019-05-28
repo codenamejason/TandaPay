@@ -17,23 +17,6 @@ let router = express.Router();
 //   res.redirect("/admin");
 // });
 
-// /**
-//  * @summary The login route for email/password. If a valid user,
-//  * it will return the user in the vody, and the token in the header
-//  */
-// router.post("/login", async (req, res) => {
-//   const {email, password} = req.body
-//   try {
-//     const user = await User.findByCredentials(email, password)
-//     const token = await user.generateAuthToken()
-//     res.header('x-auth', token).send(user)
-//   } catch (e) {
-//     res.status(400).send()
-//   }
-
-//   res.send({});
-// });
-
 /**
  * @summary Allows a user to create an account through email/password. It allows both users and secretaries to sign up.
  * It'll return an error if an user already exists or the input is malformed.
@@ -45,7 +28,15 @@ let router = express.Router();
 router.post("/signup", async (req, res) => {
   const { email, password } = req.body;
   const body = { email, password };
-
+  //checks for existing user
+  const existingUser = await User.findOne({
+    email
+  });
+  if (existingUser) {
+    return res.status(422).send({
+      error: "Email already in use"
+    });
+  }
   const user = new User(body);
   try {
     const token = await user.generateAuthToken("user");
@@ -63,22 +54,42 @@ router.post("/signup", async (req, res) => {
  * @todo Check if a user exist
  * @todo Login user if it matches the specification
  */
-router.get("/login", async (req, res) => {
+router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  const body = { email, password };
+
+  try {
+    const user = await User.findByCredentials(email, password);
+    const token = await user.generateAuthToken();
+    res.header("x-auth", token).send(user);
+  } catch (e) {
+    res.status(400).send();
+  }
 });
 
 /**
- * @summary
+ * @summary retrieves the full information about the user and sends it back as a response
+ * @param token identifier to determine which user to retrieve
  */
 router.get("/user", authenticated, (req, res) => {
   //check for user
   res.send(req.user);
 });
 
-router.get("/logout", authenticated, (req, res) => {
+/**
+ * @summary
+ * @param token
+ * @todo delete the token in the database to fully signout the user
+ */
+router.post("/logout", authenticated, async (req, res) => {
   //logout
-  res.redirect("/");
+  const user = req.user;
+  const token = req.token;
+  try {
+    await user.removeByToken(token);
+    res.redirect("/");
+  } catch (e) {
+    res.status(400).send();
+  }
 });
 
 module.exports = router;
