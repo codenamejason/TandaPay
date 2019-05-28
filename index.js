@@ -3,12 +3,13 @@ const passport = require("passport");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
+const app = express();
+
 const PORT = process.env.PORT || 5000;
 const keys = require("./config/keys");
 require("./models/User");
 // require("./services/passport");
 const authRoutes = require("./routes/authRoutes");
-const app = express();
 
 app.use(morgan("combined"));
 app.use(bodyParser.json());
