@@ -27,7 +27,9 @@ let userDoesNotExist = async (req, res, next) => {
   });
   if (existingUser) {
     return res.status(403).send({
-      error: "Email already in use"
+      errors: {
+        email: "Email already in use."
+      }
     });
   }
 

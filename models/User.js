@@ -19,8 +19,10 @@ const userSchema = new Schema({
     trim: true,
     validate: [
       {
-        validator: value => validator.isEmail(value),
-        message: "{VALUE} is not a valid email"
+        validator: value => {
+          return validator.isEmail(value);
+        },
+        message: "{VALUE} is not a valid email."
       }
     ]
   },
@@ -30,8 +32,10 @@ const userSchema = new Schema({
     trim: true,
     validate: [
       {
-        validator: value => validator.isMobilePhone(value),
-        message: "{VALUE} is not a valid phone number"
+        validator: value => {
+          return validator.isMobilePhone(value);
+        },
+        message: "{VALUE} is not a valid phone number."
       }
     ]
   },
@@ -155,4 +159,4 @@ userSchema.pre("save", function(next) {
   }
 });
 
-mongoose.model("users", userSchema);
+module.exports = mongoose.model("users", userSchema);

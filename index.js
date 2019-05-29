@@ -11,7 +11,6 @@ require("./models/User");
 // require("./services/passport");
 const authRoutes = require("./routes/authRoutes");
 
-app.use(morgan("combined"));
 app.use(bodyParser.json());
 // app.use(passport.initialize());
 mongoose.connect(keys.mongoURI, {
@@ -21,6 +20,7 @@ mongoose.connect(keys.mongoURI, {
 app.use("/auth", authRoutes);
 
 if (process.env.NODE_ENV === "production") {
+  app.use(morgan("combined"));
   const path = require("path");
   app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
