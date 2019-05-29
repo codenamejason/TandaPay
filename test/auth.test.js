@@ -24,6 +24,7 @@ suite("POST /signup", () => {
 
     const users = await User.find();
     expect(users.length).toEqual(0);
+    expect(response.header["x-auth"]).toBeUndefined();
   });
   test("Should not allow the user to signup without proper password", async () => {
     const response = await request(app)
@@ -42,6 +43,7 @@ suite("POST /signup", () => {
     expect(errors.password.message).toEqual(
       "Path `password` (`12345`) is shorter than the minimum allowed length (8)."
     );
+    expect(response.header["x-auth"]).toBeUndefined();
   });
 
   test("Should not allow the user to signup without a name", async () => {
@@ -58,6 +60,7 @@ suite("POST /signup", () => {
 
     expect(Object.keys(errors).length).toEqual(1); // only the name should be wrong
     expect(errors.name.message).toEqual("Path `name` is required.");
+    expect(response.header["x-auth"]).toBeUndefined();
   });
 
   test("Should not allow the user to sign up without a proper email", async () => {
@@ -75,6 +78,7 @@ suite("POST /signup", () => {
 
     expect(Object.keys(errors).length).toEqual(1); // only the password should be wrong
     expect(errors.email.message).toEqual("@gmail.com is not a valid email.");
+    expect(response.header["x-auth"]).toBeUndefined();
   });
 
   test("Should not allow the user to signup with pre-existing credentials", async () => {
@@ -98,10 +102,11 @@ suite("POST /signup", () => {
         password: "fasfasefw"
       });
 
-    expect(response.status).toEqual(403);
+    expect(response.status).toEqual(409); // 409 Conflict
     const errors = response.body.errors;
     expect(Object.keys(errors).length).toEqual(1);
     expect(errors.email).toEqual("Email already in use.");
+    expect(response.header["x-auth"]).toBeUndefined();
   });
   test("Should allow the user to signup and should return the auth token", async () => {
     const password = "12345lhoasfy943";
@@ -132,12 +137,54 @@ suite("POST /signup", () => {
     expect(user).toBeDefined();
     expect(user.password).toEqual(body.password);
     expect(user.tokens[0].token).toEqual(token.token);
+    expect(response.header["x-auth"]).toBeDefined();
   });
 });
 
 suite("POST /login", async () => {
-  test("Should not allow the user to login to a non-existing account", async () => {});
+  setup(async () => {
+    const password = "12345lhoasfy943";
+    const name = "Jane Doe";
+    const email = "jane@gmail.com";
+    await request(app)
+      .post("/auth/signup")
+      .send({
+        name,
+        email,
+        password
+      });
+  });
+  test("Should not allow the user to login to a non-existing account", async () => {
+    const password = "fasfrrw4r3fa";
+    const email = "joy@gmail.com";
+    const response = await request(app)
+      .post("/auth/login")
+      .send({
+        email,
+        password
+      });
+    expect(response.status).toEqual(400);
+    const error = response.body.error;
+    expect(error).toEqual("User with given credentials not found");
+    expect(response.header["x-auth"]).toBeUndefined();
+  });
+  test("Should not allow the user to login with a incorrect password", async () => {
+    const email = "jane@gmail.com";
+    const password = "389ha9sfha9s8rfh3";
+    const response = await request(app)
+      .post("/auth/login")
+      .send({
+        email,
+        password
+      });
+    expect(response.status).toEqual(400);
+    expect(response.body.error).toEqual(
+      "User with given credentials not found"
+    );
+    expect(response.header["x-auth"]).toBeUndefined();
+  });
 });
+
 teardown("Tearing down tests", async () => {
   await User.deleteMany({});
 });

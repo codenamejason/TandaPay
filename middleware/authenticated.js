@@ -2,6 +2,13 @@ const mongoose = require("mongoose");
 
 const User = mongoose.model("users");
 
+/**
+ *
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ * @todo add WWWW-Authenticate Header as specified by the RFC
+ */
 let authenticated = (req, res, next) => {
   const token = req.header("x-auth");
   User.findByToken(token)
@@ -26,7 +33,7 @@ let userDoesNotExist = async (req, res, next) => {
     email
   });
   if (existingUser) {
-    return res.status(403).send({
+    return res.status(409).send({
       errors: {
         email: "Email already in use."
       }
