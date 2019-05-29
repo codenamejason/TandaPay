@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const User = mongoose.model("users");
 
-let authenticate = (req, res, next) => {
+let authenticated = (req, res, next) => {
   const token = req.header("x-auth");
   User.findByToken(token)
     .then(user => {
@@ -18,4 +18,23 @@ let authenticate = (req, res, next) => {
     });
 };
 
-module.exports = authenticate;
+let userDoesNotExist = async (req, res, next) => {
+  const { email } = req.body;
+
+  //checks for existing user
+  const existingUser = await User.findOne({
+    email
+  });
+  if (existingUser) {
+    return res.status(403).send({
+      error: "Email already in use"
+    });
+  }
+
+  next();
+};
+
+module.exports = {
+  authenticated,
+  userDoesNotExist
+};

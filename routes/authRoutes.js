@@ -3,7 +3,10 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const User = mongoose.model("users");
 
-const authenticated = require("../middleware/authenticated");
+const {
+  authenticated,
+  userDoesNotExist
+} = require("../middleware/authenticated");
 let router = express.Router();
 
 // router.get(
@@ -24,19 +27,10 @@ let router = express.Router();
  * @param password
  * @todo Allow user to sign up as a secretary or regular user
  */
-router.post("/signup", async (req, res) => {
+router.post("/signup", userDoesNotExist, async (req, res) => {
   const { name, email, password } = req.body;
   const body = { name, email, password };
 
-  //checks for existing user
-  const existingUser = await User.findOne({
-    email
-  });
-  if (existingUser) {
-    return res.status(422).send({
-      error: "Email already in use"
-    });
-  }
   const user = new User(body);
   try {
     const token = await user.generateAuthToken("user");
@@ -51,14 +45,18 @@ router.post("/signup", async (req, res) => {
  * @summary
  * @param email
  * @param password
- * @todo Check if a user exist
- * @todo Login user if it matches the specification
  */
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
     const user = await User.findByCredentials(email, password);
+
+    if (!user) {
+      return res
+        .status(400)
+        .send({ error: "User with given credentials not found" });
+    }
     const token = await user.generateAuthToken();
     res.header("x-auth", token).send(user);
   } catch (e) {
@@ -87,7 +85,7 @@ router.post("/logout", authenticated, async (req, res) => {
   const token = req.token;
   try {
     await user.removeToken(token);
-    res.status(200).send();
+    res.status(200).send({ success: "You have been logged out successfully" });
   } catch (e) {
     res.status(400).send(e);
   }

@@ -4,7 +4,7 @@
   "description": "TandaPay is a supplemental insurance product based off of the concept of shared community finance. TandaPay serves as a means by which communities can cover the cost of an insurance deductible.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha -ui tdd test/**/*.test.js --exit",
     "start": "node index.js",
     "server": "nodemon index.js",
     "client": "npm run start --prefix client",
@@ -32,6 +32,9 @@
   },
   "devDependencies": {
     "concurrently": "^4.1.0",
-    "nodemon": "^1.19.1"
+    "expect": "^24.8.0",
+    "mocha": "^6.1.4",
+    "nodemon": "^1.19.1",
+    "supertest": "^4.0.2"
   }
 }

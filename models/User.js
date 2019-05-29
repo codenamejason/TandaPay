@@ -111,17 +111,16 @@ userSchema.statics.findByCredentials = async function(email, password) {
   var User = this;
 
   const user = await User.findOne({ email });
-
-  return new Promise((resolve, reject) => {
-    // user input password, previous hashed password
-    bcrypt.compare(password, user.password, (err, res) => {
-      if (res) {
-        return resolve(user);
-      } else {
-        reject();
-      }
-    });
-  });
+  if (!user) {
+    return null;
+  }
+  const res = await bcrypt.compare(password, user.password);
+  //if passwords match
+  if (res) {
+    return user;
+  } else {
+    return null;
+  }
 };
 
 /**
