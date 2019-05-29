@@ -142,7 +142,7 @@ suite("POST /signup", () => {
   });
 });
 
-suite("POST /login", async () => {
+suite("POST /login", () => {
   setup(async () => {
     const password = "12345lhoasfy943";
     const name = "Jane Doe";
