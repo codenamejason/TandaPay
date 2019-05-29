@@ -7,7 +7,9 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "fmt": "prettier --write index.js \"lib/**/*.js\"",
-    "test": "ava"
+    "test": "ava",
+    "test:watch": "ava --watch",
+    "test:debug": "node inspect node_modules/ava/profile.js"
   },
   "husky": {
     "hooks": {
