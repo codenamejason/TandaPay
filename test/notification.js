@@ -46,6 +46,47 @@ test.serial("`ClaimCreatedNotification`s work", async t => {
 
     t.is(fake_sendEmail.callCount, 1);
     t.is(fake_sendEmail.getCall(0).args[0], "alice@example.org");
+    t.regex(fake_sendEmail.getCall(0).args[1], /claim created/i);
+});
+
+test.serial("`ClaimUpdatedNotification`s work", async t => {
+    let notif = new ClaimUpdatedNotification(0, 1);
+
+    await notif.deliver();
+
+    t.is(fake_sendSMS.callCount, 0);
+
+    t.is(fake_sendEmail.callCount, 1);
+    t.is(fake_sendEmail.getCall(0).args[0], "alice@example.org");
+    t.regex(fake_sendEmail.getCall(0).args[1], /claim updated/i);
+});
+
+test.serial("`ClaimApprovedNotification`s work", async t => {
+    let notif = new ClaimApprovedNotification(0, 0, 1);
+
+    await notif.deliver();
+
+    t.is(fake_sendSMS.callCount, 2);
+    t.is(fake_sendSMS.getCall(0).args[0], "15551231234");
+    t.is(fake_sendSMS.getCall(1).args[0], "15553214321");
+    t.regex(fake_sendSMS.getCall(0).args[1], /claim approved/i);
+    t.regex(fake_sendSMS.getCall(1).args[1], /claim approved/i);
+
+    t.is(fake_sendEmail.callCount, 1);
+    t.is(fake_sendEmail.getCall(0).args[0], "bob@example.org");
+    t.regex(fake_sendEmail.getCall(0).args[1], /claim approved/i);
+});
+
+test.serial("`PremiumPaidNotification`s work", async t => {
+    let notif = new PremiumPaidNotification(0, 1);
+
+    await notif.deliver();
+
+    t.is(fake_sendSMS.callCount, 1);
+    t.is(fake_sendSMS.getCall(0).args[0], "15551231234");
+    t.regex(fake_sendSMS.getCall(0).args[1], /premium/i);
+
+    t.is(fake_sendEmail.callCount, 0);
 });
 
 function sinonSetup() {
