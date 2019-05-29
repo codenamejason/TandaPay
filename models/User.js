@@ -137,7 +137,7 @@ userSchema.statics.findByCredentials = async function(email, password) {
 };
 
 /**
- *
+ * @todo Transition away from update if possible(deprecated)
  */
 userSchema.methods.removeToken = function(token) {
   var user = this;

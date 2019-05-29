@@ -274,6 +274,48 @@ suite("GET /user", () => {
     expect(response.body.tokens[0].access).toEqual("auth");
   });
 });
+
+suite("POST /logout", () => {
+  let token;
+  setup(async () => {
+    const password = "12345lhoasfy943";
+    const name = "Jane Doe";
+    const email = "jane@gmail.com";
+    const response = await request(app)
+      .post("/auth/signup")
+      .send({
+        name,
+        email,
+        password
+      });
+
+    token = response.body.tokens[0].token;
+  });
+  test("Should not log out a user with no token", async () => {
+    const response = await request(app).post("/auth/logout");
+    expect(response.status).toEqual(401);
+    expect(response.body.error).toEqual("User must be logged in");
+  });
+  test("Should not log out a user with a invalid token", async () => {
+    const response = await request(app)
+      .post("/auth/logout")
+      .set("x-auth", "98934yrt389has9fyha902h03r2rghasgf9a008");
+    expect(response.status).toEqual(401);
+    expect(response.body.error).toEqual(
+      "Invalid credentials provided. Acquire new credentials."
+    );
+  });
+  test("Should log out the user when provided a valid token", async () => {
+    const response = await request(app)
+      .post("/auth/logout")
+      .set("x-auth", token);
+
+    expect(response.status).toEqual(200);
+    expect(response.body.success).toEqual(
+      "You have been logged out successfully"
+    );
+  });
+});
 teardown("Tearing down tests", async () => {
   await User.deleteMany({});
 });
