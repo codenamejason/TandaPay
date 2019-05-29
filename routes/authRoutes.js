@@ -35,7 +35,8 @@ router.post("/signup", userDoesNotExist, async (req, res) => {
   try {
     const token = await user.generateAuthToken("user");
     await user.save();
-    res.header("x-auth", token).send(user);
+    const { email, name } = user;
+    res.header("x-auth", token).send({ token, email, name });
   } catch (e) {
     res.status(400).send(e);
   }
@@ -63,7 +64,8 @@ router.post("/login", async (req, res) => {
         .send({ error: "User with given credentials not found" });
     }
     const token = await user.generateAuthToken();
-    res.header("x-auth", token).send(user);
+    const { email, name } = user;
+    res.header("x-auth", token).send({ token, email, name });
   } catch (e) {
     console.log(e);
     res.status(400).send(e);
