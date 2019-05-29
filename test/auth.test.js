@@ -242,6 +242,38 @@ suite("POST /login", () => {
   });
 });
 
+suite("GET /user", () => {
+  let token;
+  setup(async () => {
+    const password = "12345lhoasfy943";
+    const name = "Jane Doe";
+    const email = "jane@gmail.com";
+    const response = await request(app)
+      .post("/auth/signup")
+      .send({
+        name,
+        email,
+        password
+      });
+
+    token = response.body.tokens[0].token;
+  });
+
+  test("Should not allow a user without authentication to get their user profile", async () => {
+    const response = await request(app).get("/auth/user");
+    expect(response.status).toEqual(401);
+    expect(response.body.error).toEqual("User must be logged in");
+  });
+  test("Should return the user's profile when properly authenticated", async () => {
+    const response = await request(app)
+      .get("/auth/user")
+      .set("x-auth", token);
+
+    expect(response.status).toEqual(200);
+    expect(response.body.tokens[0].token).toEqual(token);
+    expect(response.body.tokens[0].access).toEqual("auth");
+  });
+});
 teardown("Tearing down tests", async () => {
   await User.deleteMany({});
 });

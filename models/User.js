@@ -69,6 +69,7 @@ const userSchema = new Schema({
  * @param accessLevel - the access level of the user: user, secretary, admin
  * @this user refers to the instance of the user schema that called the specific method
  * @returns the auth token generated for the user
+ * @todo invalidate old tokens
  */
 userSchema.methods.generateAuthToken = async function(accessLevel) {
   const user = this;
@@ -77,6 +78,14 @@ userSchema.methods.generateAuthToken = async function(accessLevel) {
     { sub: user._id.toHexString(), access, accessLevel },
     keys.jwtSecret
   );
+  // const res = await user.update({
+  //   $pull: {
+  //     tokens: {
+  //       access: access
+  //     }
+  //   }
+  // });
+  // console.log(res);
   user.tokens = user.tokens.concat([{ access, token }]);
   await user.save();
   return token;

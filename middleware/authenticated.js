@@ -11,6 +11,12 @@ const User = mongoose.model("users");
  */
 let authenticated = (req, res, next) => {
   const token = req.header("x-auth");
+
+  if (!token) {
+    return res.status(401).send({
+      error: "User must be logged in"
+    });
+  }
   User.findByToken(token)
     .then(user => {
       if (!user) {
@@ -21,7 +27,9 @@ let authenticated = (req, res, next) => {
       next();
     })
     .catch(e => {
-      res.status(401).send();
+      return res.status(401).send({
+        error: "Invalid credentials provided. Acquire new credentials."
+      });
     });
 };
 
