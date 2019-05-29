@@ -138,6 +138,7 @@ suite("POST /signup", () => {
     expect(user.password).toEqual(body.password);
     expect(user.tokens[0].token).toEqual(token.token);
     expect(response.header["x-auth"]).toBeDefined();
+    expect(token.token).toEqual(response.header["x-auth"]);
   });
 });
 
@@ -153,6 +154,41 @@ suite("POST /login", async () => {
         email,
         password
       });
+  });
+  test("Should not allow the user to login when the body is empty", async () => {
+    const response = await request(app).post("/auth/login");
+
+    expect(response.status).toBe(400);
+    expect(response.header["x-auth"]).toBeUndefined();
+    expect(response.body.error).toBe(
+      "User did not provide all appropriate credentials"
+    );
+  });
+  test("Should not allow the user to login when the password is not provided", async () => {
+    const email = "jane@gmail.com";
+    const response = await request(app)
+      .post("/auth/login")
+      .send({
+        email
+      });
+    expect(response.status).toBe(400);
+    expect(response.header["x-auth"]).toBeUndefined();
+    expect(response.body.error).toBe(
+      "User did not provide all appropriate credentials"
+    );
+  });
+  test("Should not allow the user to login when the email is not provided", async () => {
+    const password = "12345lhoasfy943";
+    const response = await request(app)
+      .post("/auth/login")
+      .send({
+        password
+      });
+    expect(response.status).toBe(400);
+    expect(response.header["x-auth"]).toBeUndefined();
+    expect(response.body.error).toBe(
+      "User did not provide all appropriate credentials"
+    );
   });
   test("Should not allow the user to login to a non-existing account", async () => {
     const password = "fasfrrw4r3fa";
@@ -182,6 +218,27 @@ suite("POST /login", async () => {
       "User with given credentials not found"
     );
     expect(response.header["x-auth"]).toBeUndefined();
+  });
+  test("Should allow the user to login when the correct credentials are provided", async () => {
+    const password = "12345lhoasfy943";
+    const email = "jane@gmail.com";
+    const response = await request(app)
+      .post("/auth/login")
+      .send({
+        email,
+        password
+      });
+
+    expect(response.status).toBe(200);
+    expect(response.header["x-auth"]).toBeDefined();
+
+    expect(response.body.email).toEqual(email);
+    expect(response.body.name).toEqual("Jane Doe");
+
+    const token = response.body.tokens[1];
+    expect(token.access).toEqual("auth");
+    expect(token.token).toBeDefined();
+    expect(token.token).toEqual(response.header["x-auth"]);
   });
 });
 

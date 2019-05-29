@@ -48,6 +48,11 @@ router.post("/signup", userDoesNotExist, async (req, res) => {
  */
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).send({
+      error: "User did not provide all appropriate credentials"
+    });
+  }
 
   try {
     const user = await User.findByCredentials(email, password);
