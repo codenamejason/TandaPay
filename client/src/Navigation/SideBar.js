@@ -19,7 +19,7 @@ class SideBar extends React.Component {
   };
 
   renderMenu = () => {
-    const menuItems = ["Inbox", "Starred", "Send Email", "Drafts"];
+    const menuItems = ["Home", "Tanda Group", "User Wallet", "Group Claims"];
     return (
       <List>
         {menuItems.map((text, index) => (
@@ -35,7 +35,7 @@ class SideBar extends React.Component {
   };
 
   renderSecondaryMenu = () => {
-    const menuItems = ["All Mail", "Trash", "Spam"];
+    const menuItems = ["Help", "Trash", "Spam"];
     return (
       <List>
         {menuItems.map((text, index) => (

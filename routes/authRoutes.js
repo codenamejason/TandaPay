@@ -48,7 +48,7 @@ router.post("/signup", userDoesNotExist, async (req, res) => {
  * @param password
  */
 router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+  let { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).send({
       error: "User did not provide all appropriate credentials"
@@ -63,8 +63,8 @@ router.post("/login", async (req, res) => {
         .status(400)
         .send({ error: "User with given credentials not found" });
     }
-    const token = await user.generateAuthToken();
-    const { email, name } = user;
+    const token = await user.generateAuthToken("user");
+    const { name } = user;
     res.header("x-auth", token).send({ token, email, name });
   } catch (e) {
     console.log(e);

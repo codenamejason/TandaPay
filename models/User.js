@@ -122,7 +122,6 @@ userSchema.statics.findByToken = function(token) {
  */
 userSchema.statics.findByCredentials = async function(email, password) {
   var User = this;
-
   const user = await User.findOne({ email });
   if (!user) {
     return null;

@@ -1,6 +1,6 @@
 const expect = require("expect");
 const request = require("supertest");
-
+const jwt = require("jsonwebtoken");
 const { app } = require("../index");
 const User = require("../models/User");
 
@@ -91,7 +91,7 @@ suite("POST /signup", () => {
       });
 
     expect(firstResponse.status).toEqual(200);
-    expect(firstResponse.body.tokens.length).toEqual(1); //user has been authenticated
+    expect(firstResponse.body.token).toBeDefined(); //user has been authenticated
 
     //Invalid request
     const response = await request(app)
@@ -125,20 +125,17 @@ suite("POST /signup", () => {
     //expect the right response body
     expect(body.name).toEqual(name);
     expect(body.email).toEqual(email);
-    expect(body.password).not.toEqual();
-    expect(body.tokens.length).toEqual(1); //user has been authenticated
+    expect(body.token).toBeDefined(); //user has been authenticated
 
-    const token = body.tokens[0];
-    expect(token.access).toEqual("auth");
-    expect(token._id).toBeDefined();
-    expect(token.token).toBeDefined();
+    const decoded = jwt.decode(body.token);
+    expect(decoded.access).toEqual("auth");
+    expect(decoded.sub).toBeDefined();
+    expect(decoded.accessLevel).toEqual("user");
 
     const user = await User.findOne({ email });
     expect(user).toBeDefined();
-    expect(user.password).toEqual(body.password);
-    expect(user.tokens[0].token).toEqual(token.token);
     expect(response.header["x-auth"]).toBeDefined();
-    expect(token.token).toEqual(response.header["x-auth"]);
+    expect(body.token).toEqual(response.header["x-auth"]);
   });
 });
 
@@ -235,10 +232,13 @@ suite("POST /login", () => {
     expect(response.body.email).toEqual(email);
     expect(response.body.name).toEqual("Jane Doe");
 
-    const token = response.body.tokens[1];
-    expect(token.access).toEqual("auth");
-    expect(token.token).toBeDefined();
-    expect(token.token).toEqual(response.header["x-auth"]);
+    const token = response.body.token;
+    expect(token).toBeDefined();
+
+    const decoded = jwt.decode(token);
+    expect(decoded.access).toEqual("auth");
+    expect(decoded.sub).toBeDefined();
+    expect(decoded.accessLevel).toEqual("user");
   });
 });
 
@@ -256,7 +256,7 @@ suite("GET /user", () => {
         password
       });
 
-    token = response.body.tokens[0].token;
+    token = response.body.token;
   });
 
   test("Should not allow a user without authentication to get their user profile", async () => {
@@ -289,7 +289,7 @@ suite("POST /logout", () => {
         password
       });
 
-    token = response.body.tokens[0].token;
+    token = response.body.token;
   });
   test("Should not log out a user with no token", async () => {
     const response = await request(app).post("/auth/logout");
