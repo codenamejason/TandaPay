@@ -7,15 +7,15 @@ import {
   Toolbar,
   Typography,
   IconButton,
-  Button,
+  Tooltip,
   withStyles
 } from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
+import { Menu, Person, ExitToApp } from "@material-ui/icons";
 
 import * as actions from "../actions";
 import SideBar from "./SideBar";
 import styles from "./sidebar.style";
-class MiniDrawer extends React.Component {
+class Navigation extends React.Component {
   state = {
     open: false
   };
@@ -43,23 +43,10 @@ class MiniDrawer extends React.Component {
           })}
         >
           <Toolbar disableGutters={!this.state.open}>
-            <IconButton
-              color="inherit"
-              aria-label="Open drawer"
-              onClick={this.handleDrawerOpen}
-              className={clsx(classes.menuButton, {
-                [classes.hide]: this.state.open
-              })}
-            >
-              <MenuIcon />
-            </IconButton>
-
-            <Typography variant="h6" color="inherit" noWrap>
-              Tanda Pay Dashboard
-            </Typography>
-            <Button color="inherit" onClick={this.handleLogOut}>
-              Log Out
-            </Button>
+            {this.renderMenuIcon()}
+            {this.renderTitle()}
+            {this.renderProfile()}
+            {this.renderLogout()}
           </Toolbar>
         </AppBar>
         <SideBar
@@ -69,9 +56,58 @@ class MiniDrawer extends React.Component {
       </div>
     );
   }
+
+  renderLogout = () => {
+    const { classes } = this.props;
+    return (
+      <Tooltip title="Logout">
+        <IconButton
+          className={classes.logOut}
+          color="inherit"
+          onClick={this.handleLogOut}
+          aria-label="Logout"
+        >
+          <ExitToApp />
+        </IconButton>
+      </Tooltip>
+    );
+  };
+
+  renderMenuIcon = () => {
+    const { classes } = this.props;
+    return (
+      <IconButton
+        color="inherit"
+        aria-label="Open drawer"
+        onClick={this.handleDrawerOpen}
+        className={clsx(classes.menuButton, {
+          [classes.hide]: this.state.open
+        })}
+      >
+        <Menu />
+      </IconButton>
+    );
+  };
+  renderTitle = () => {
+    const { classes } = this.props;
+    return (
+      <Typography variant="h6" color="inherit" noWrap className={classes.title}>
+        Tanda Pay Dashboard
+      </Typography>
+    );
+  };
+  renderProfile = () => {
+    return (
+      <Tooltip title="My Profile">
+        <IconButton color="inherit">
+          <Person />
+        </IconButton>
+      </Tooltip>
+    );
+  };
 }
 
-MiniDrawer.propTypes = {
+Navigation.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired
 };
@@ -79,4 +115,4 @@ MiniDrawer.propTypes = {
 export default connect(
   null,
   actions
-)(withStyles(styles, { withTheme: true })(MiniDrawer));
+)(withStyles(styles, { withTheme: true })(Navigation));

@@ -31,6 +31,9 @@ const styles = theme => ({
     flexShrink: 0,
     whiteSpace: "nowrap"
   },
+  drawerPaper: {
+    background: "white"
+  },
   drawerOpen: {
     width: drawerWidth,
     transition: theme.transitions.create("width", {
@@ -56,9 +59,15 @@ const styles = theme => ({
     padding: "0 8px",
     ...theme.mixins.toolbar
   },
+  title: {
+    flexGrow: 1
+  },
   content: {
     flexGrow: 1,
     padding: theme.spacing(3)
+  },
+  logOut: {
+    margin: theme.spacing(1)
   }
 });
 

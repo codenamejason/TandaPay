@@ -1,17 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { withStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import List from "@material-ui/core/List";
-import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
+import {
+  Drawer,
+  List,
+  Divider,
+  IconButton,
+  ListItem,
+  withStyles,
+  ListItemIcon,
+  ListItemText
+} from "@material-ui/core";
+import {
+  ChevronLeft as ChevronLeftIcon,
+  MoveToInbox as InboxIcon,
+  Mail as MailIcon,
+  Home as HomeIcon,
+  Group as GroupIcon
+} from "@material-ui/icons";
 import styles from "./sidebar.style";
 class SideBar extends React.Component {
   handleClose = () => {
@@ -25,7 +31,7 @@ class SideBar extends React.Component {
         {menuItems.map((text, index) => (
           <ListItem button key={text}>
             <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              {index % 2 === 0 ? <HomeIcon /> : <GroupIcon />}
             </ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
@@ -59,10 +65,13 @@ class SideBar extends React.Component {
           [classes.drawerClose]: !open
         })}
         classes={{
-          paper: clsx({
-            [classes.drawerOpen]: open,
-            [classes.drawerClose]: !open
-          })
+          paper: clsx(
+            {
+              [classes.drawerOpen]: open,
+              [classes.drawerClose]: !open
+            },
+            classes.drawerPaper
+          )
         }}
         open={open}
       >

@@ -31,7 +31,7 @@ class Login extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
     const { email, password } = this.state;
-    this.props.login({ email, password });
+    this.props.logIn({ email, password });
     //make request to sign in
   };
 
