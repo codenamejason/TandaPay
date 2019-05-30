@@ -26,6 +26,19 @@ const userSchema = new Schema({
       }
     ]
   },
+  picture: {
+    type: String,
+    required: false,
+    minlength: 1,
+    validate: [
+      {
+        validator: value => {
+          return validator.isURL(value);
+        },
+        message: "{VALUE} is not a valid image url"
+      }
+    ]
+  },
   phone: {
     type: String,
     required: false,
@@ -42,13 +55,13 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: () => {
-      return this.googleId !== "" || this.twitterId !== "";
+      return this.googleID !== "" || this.twitterID !== "";
     },
     trim: true,
     minlength: 8
   },
-  googleId: String,
-  twitterId: String,
+  googleID: String,
+  twitterID: String,
   tokens: [
     {
       access: {

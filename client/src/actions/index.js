@@ -4,12 +4,17 @@ import { FETCH_USER } from "./types";
 export const fetchUser = () => async dispatch => {
   //pull token from header
   const token = localStorage.getItem("x-auth");
-  const response = await axios.get("/auth/user", {
-    headers: {
-      "x-auth": token
-    }
-  });
-  dispatch({ type: FETCH_USER, payload: response });
+  try {
+    const response = await axios.get("/auth/user", {
+      headers: {
+        "x-auth": token
+      }
+    });
+    dispatch({ type: FETCH_USER, payload: response });
+  } catch (error) {
+    console.log(error);
+    console.log(error.response.data);
+  }
 };
 
 export const signUp = body => async dispatch => {

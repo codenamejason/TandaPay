@@ -56,7 +56,7 @@ class SignUp extends React.Component {
           to="/admin"
           onClick={this.handleSubmit}
         >
-          Sign In
+          SIGN UP
         </Button>
         {this.renderExtra()}
       </form>

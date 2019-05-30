@@ -23,11 +23,13 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
     "express": "^4.17.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.5.11",
     "morgan": "^1.9.1",
     "passport": "^0.4.0",
+    "passport-google-oauth20": "^2.0.0",
     "validator": "^11.0.0"
   },
   "devDependencies": {
@@ -35,6 +37,7 @@
     "expect": "^24.8.0",
     "mocha": "^6.1.4",
     "nodemon": "^1.19.1",
+    "set-cookie-parser": "^2.3.5",
     "supertest": "^4.0.2"
   }
 }

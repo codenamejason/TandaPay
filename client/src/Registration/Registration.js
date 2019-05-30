@@ -10,6 +10,12 @@ import {
   Tab
 } from "@material-ui/core";
 import { LockOutlined, LockOpenOutlined } from "@material-ui/icons";
+import {
+  GoogleLoginButton,
+  TwitterLoginButton
+} from "react-social-login-buttons";
+import { connect } from "react-redux";
+import * as actions from "../actions";
 import SignUp from "./Form/SignUp";
 import Login from "./Form/Login";
 import styles from "./registration.style";
@@ -27,6 +33,9 @@ class Registration extends React.Component {
       tab: newValue
     });
   };
+  handleGoogleLogin = event => {
+    this.props.googleSignin();
+  };
   render() {
     const { classes } = this.props;
     return (
@@ -42,13 +51,20 @@ class Registration extends React.Component {
   renderFormArea = () => {
     const { classes } = this.props;
     return (
-      <div className={classes.paper}>
+      <div className={classes.area}>
         <Tabs value={this.state.tab} onChange={this.onTabChange}>
           <Tab label="Sign Up" />
           <Tab label="Log In" />
         </Tabs>
         {this.state.tab === 0 && this.renderSignUpForm()}
         {this.state.tab === 1 && this.renderLoginForm()}
+        <Grid container className={classes.social}>
+          <GoogleLoginButton>
+            <a href="/auth/google">Sign In With Google</a>
+          </GoogleLoginButton>
+
+          <TwitterLoginButton />
+        </Grid>
       </div>
     );
   };
@@ -63,6 +79,7 @@ class Registration extends React.Component {
         <Typography component="h1" variant="h5">
           Sign Up
         </Typography>
+
         <SignUp />
       </div>
     );
@@ -83,4 +100,7 @@ class Registration extends React.Component {
   };
 }
 
-export default withStyles(styles, { withTheme: true })(Registration);
+export default connect(
+  null,
+  actions
+)(withStyles(styles, { withTheme: true })(Registration));
