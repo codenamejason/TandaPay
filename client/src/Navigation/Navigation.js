@@ -1,10 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { withStyles } from "@material-ui/core/styles";
-import { AppBar, Toolbar, Typography, IconButton } from "@material-ui/core";
+import { connect } from "react-redux";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  Button,
+  withStyles
+} from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 
+import * as actions from "../actions";
 import SideBar from "./SideBar";
 import styles from "./sidebar.style";
 class MiniDrawer extends React.Component {
@@ -20,11 +28,14 @@ class MiniDrawer extends React.Component {
     this.setState({ open: false });
   };
 
+  handleLogOut = () => {
+    this.props.logOut();
+  };
   render() {
     const { classes } = this.props;
 
     return (
-      <div>
+      <div className={classes.root}>
         <AppBar
           position="fixed"
           className={clsx(classes.appBar, {
@@ -42,9 +53,13 @@ class MiniDrawer extends React.Component {
             >
               <MenuIcon />
             </IconButton>
+
             <Typography variant="h6" color="inherit" noWrap>
               Tanda Pay Dashboard
             </Typography>
+            <Button color="inherit" onClick={this.handleLogOut}>
+              Log Out
+            </Button>
           </Toolbar>
         </AppBar>
         <SideBar
@@ -61,4 +76,7 @@ MiniDrawer.propTypes = {
   theme: PropTypes.object.isRequired
 };
 
-export default withStyles(styles, { withTheme: true })(MiniDrawer);
+export default connect(
+  null,
+  actions
+)(withStyles(styles, { withTheme: true })(MiniDrawer));

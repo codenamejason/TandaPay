@@ -3,14 +3,12 @@ import { Link } from "react-router-dom";
 import { isEmail, isEmpty, isLength } from "validator";
 //redux
 import { connect } from "react-redux";
-import * as actions from "../../actions/";
+import * as actions from "../../actions";
 import {
   Button,
   Grid,
-  Box,
   FormControlLabel,
   Checkbox,
-  Typography,
   TextField,
   withStyles
 } from "@material-ui/core";
@@ -19,7 +17,7 @@ const RegLink = React.forwardRef((props, ref) => (
   <Link innerRef={ref} {...props} />
 ));
 
-class Registration extends React.Component {
+class SignUp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,6 +28,41 @@ class Registration extends React.Component {
       passwordError: ""
     };
   }
+
+  handleSubmit = event => {
+    event.preventDefault();
+    const { name, email, password } = this.state;
+    this.props.signUp({ name, email, password });
+  };
+
+  render() {
+    const { classes } = this.props;
+    return (
+      <form className={classes.form} noValidate>
+        {this.renderNameField()}
+        {this.renderEmailField()}
+        {this.renderPasswordField()}
+        <FormControlLabel
+          control={<Checkbox value="remember" color="primary" />}
+          label="Remember me"
+        />
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+          className={classes.submit}
+          component={RegLink}
+          to="/admin"
+          onClick={this.handleSubmit}
+        >
+          Sign In
+        </Button>
+        {this.renderExtra()}
+      </form>
+    );
+  }
+
   handleEmailChange = event => {
     //add validation to check for error
     let email = event.target.value;
@@ -75,41 +108,6 @@ class Registration extends React.Component {
       });
     }
   };
-
-  handleSubmit = event => {
-    event.preventDefault();
-    const { name, email, password } = this.state;
-    this.props.signUp({ name, email, password });
-    //make request to sign in
-  };
-
-  render() {
-    const { classes } = this.props;
-    return (
-      <form className={classes.form} noValidate>
-        {this.renderNameField()}
-        {this.renderEmailField()}
-        {this.renderPasswordField()}
-        <FormControlLabel
-          control={<Checkbox value="remember" color="primary" />}
-          label="Remember me"
-        />
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          className={classes.submit}
-          component={RegLink}
-          to="/admin"
-          onClick={this.handleSubmit}
-        >
-          Sign In
-        </Button>
-        {this.renderExtra()}
-      </form>
-    );
-  }
   renderNameField = () => {
     return (
       <TextField
@@ -142,7 +140,6 @@ class Registration extends React.Component {
           label="Email Address"
           name="email"
           autoComplete="email"
-          autoFocus
           onChange={this.handleEmailChange}
           value={this.state.email}
         />
@@ -158,7 +155,6 @@ class Registration extends React.Component {
           label="Email Address"
           name="email"
           autoComplete="email"
-          autoFocus
           onChange={this.handleEmailChange}
           value={this.state.email}
         />
@@ -224,4 +220,4 @@ class Registration extends React.Component {
 export default connect(
   null,
   actions
-)(withStyles(styles)(Registration));
+)(withStyles(styles, { withTheme: true })(SignUp));
