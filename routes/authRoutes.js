@@ -9,16 +9,42 @@ const {
 } = require("../middleware/authenticated");
 let router = express.Router();
 
-// router.get(
-//   "/google",
-//   passport.authenticate("google", {
-//     scope: ["profile", "email"]
-//   })
-// );
+/**
+ *
+ */
+router.get(
+  "/google",
+  passport.authenticate("google", {
+    session: false,
+    scope: ["profile", "email"]
+  })
+);
 
-// router.get("/google/callback", passport.authenticate("google"), (req, res) => {
-//   res.redirect("/admin");
-// });
+/**
+ * @todo - From the received user profile(given by google and processed by passport.js).
+ * Attempt to save the user profile and create an auth token
+ */
+router.get(
+  "/google/callback",
+  passport.authenticate("google", { session: false }),
+  async (req, res) => {
+    const { name, email, picture, googleID } = req.user;
+    const body = { name, email, picture, googleID };
+    const user = new User(body);
+    try {
+      const token = await user.generateAuthToken("user");
+      await user.save();
+      res.cookie("x-auth", token, {
+        maxAge: 9000000000,
+        httpOnly: true,
+        secure: true
+      });
+      res.redirect("/");
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  }
+);
 
 /**
  * @summary Allows a user to create an account through email/password. It allows both users and secretaries to sign up.
@@ -36,7 +62,13 @@ router.post("/signup", userDoesNotExist, async (req, res) => {
     const token = await user.generateAuthToken("user");
     await user.save();
     const { email, name } = user;
-    res.header("x-auth", token).send({ token, email, name });
+
+    res.cookie("x-auth", token, {
+      maxAge: 9000000000,
+      httpOnly: true,
+      secure: true
+    });
+    res.send({ token, email, name });
   } catch (e) {
     res.status(400).send(e);
   }
@@ -48,7 +80,7 @@ router.post("/signup", userDoesNotExist, async (req, res) => {
  * @param password
  */
 router.post("/login", async (req, res) => {
-  let { email, password } = req.body;
+  const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).send({
       error: "User did not provide all appropriate credentials"
@@ -65,7 +97,12 @@ router.post("/login", async (req, res) => {
     }
     const token = await user.generateAuthToken("user");
     const { name } = user;
-    res.header("x-auth", token).send({ token, email, name });
+    res.cookie("x-auth", token, {
+      maxAge: 9000000000,
+      httpOnly: true,
+      secure: true
+    });
+    res.send({ token, email, name });
   } catch (e) {
     res.status(400).send(e);
   }
@@ -91,6 +128,7 @@ router.post("/logout", authenticated, async (req, res) => {
   const token = req.token;
   try {
     await user.removeToken(token);
+    res.cookie("x-auth", "", { maxAge: Date.now() });
     res.status(200).send({ success: "You have been logged out successfully" });
   } catch (e) {
     res.status(400).send(e);

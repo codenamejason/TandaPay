@@ -3,6 +3,7 @@ const request = require("supertest");
 const jwt = require("jsonwebtoken");
 const { app } = require("../index");
 const User = require("../models/User");
+const cookieParser = require("set-cookie-parser");
 
 suite("POST /signup", () => {
   test("should pass every time", () => {
@@ -14,9 +15,9 @@ suite("POST /signup", () => {
     ///check status
     expect(response.status).toEqual(400);
     const errors = response.body.errors;
-
     //check number of errors
     expect(Object.keys(errors).length).toEqual(3);
+
     //check errors
     expect(errors.name.message).toEqual("Path `name` is required.");
     expect(errors.email.message).toEqual("Path `email` is required.");
@@ -121,12 +122,18 @@ suite("POST /signup", () => {
       });
 
     expect(response.status).toEqual(200);
+    //gets body and auth cookie from the response
     const body = response.body;
+    const parsedCookie = cookieParser.parse(
+      response.headers["set-cookie"][0]
+    )[0];
+
     //expect the right response body
     expect(body.name).toEqual(name);
     expect(body.email).toEqual(email);
-    expect(body.token).toBeDefined(); //user has been authenticated
+    expect(body.token).toEqual(parsedCookie.value); //user has been authenticated
 
+    //makes sure user's token has right values
     const decoded = jwt.decode(body.token);
     expect(decoded.access).toEqual("auth");
     expect(decoded.sub).toBeDefined();
@@ -134,8 +141,7 @@ suite("POST /signup", () => {
 
     const user = await User.findOne({ email });
     expect(user).toBeDefined();
-    expect(response.header["x-auth"]).toBeDefined();
-    expect(body.token).toEqual(response.header["x-auth"]);
+    expect(body.token).toEqual(parsedCookie.value);
   });
 });
 
@@ -226,13 +232,17 @@ suite("POST /login", () => {
         password
       });
 
+    const body = response.body;
+    const parsedCookie = cookieParser.parse(
+      response.headers["set-cookie"][0]
+    )[0];
     expect(response.status).toBe(200);
-    expect(response.header["x-auth"]).toBeDefined();
+    expect(parsedCookie.value).toEqual(body.token);
 
-    expect(response.body.email).toEqual(email);
-    expect(response.body.name).toEqual("Jane Doe");
+    expect(body.email).toEqual(email);
+    expect(body.name).toEqual("Jane Doe");
 
-    const token = response.body.token;
+    const token = body.token;
     expect(token).toBeDefined();
 
     const decoded = jwt.decode(token);
@@ -243,6 +253,7 @@ suite("POST /login", () => {
 });
 
 suite("GET /user", () => {
+  let cookie;
   let token;
   setup(async () => {
     const password = "12345lhoasfy943";
@@ -256,6 +267,7 @@ suite("GET /user", () => {
         password
       });
 
+    cookie = response.headers["set-cookie"][0];
     token = response.body.token;
   });
 
@@ -267,7 +279,7 @@ suite("GET /user", () => {
   test("Should return the user's profile when properly authenticated", async () => {
     const response = await request(app)
       .get("/auth/user")
-      .set("x-auth", token);
+      .set("Cookie", cookie);
 
     expect(response.status).toEqual(200);
     expect(response.body.tokens[0].token).toEqual(token);
@@ -277,6 +289,7 @@ suite("GET /user", () => {
 
 suite("POST /logout", () => {
   let token;
+  let cookie;
   setup(async () => {
     const password = "12345lhoasfy943";
     const name = "Jane Doe";
@@ -290,6 +303,7 @@ suite("POST /logout", () => {
       });
 
     token = response.body.token;
+    cookie = response.headers["set-cookie"][0];
   });
   test("Should not log out a user with no token", async () => {
     const response = await request(app).post("/auth/logout");
@@ -299,7 +313,7 @@ suite("POST /logout", () => {
   test("Should not log out a user with a invalid token", async () => {
     const response = await request(app)
       .post("/auth/logout")
-      .set("x-auth", "98934yrt389has9fyha902h03r2rghasgf9a008");
+      .set("Cookie", "x-auth=ajfohf09324yt83haofjasn89h389fh");
     expect(response.status).toEqual(401);
     expect(response.body.error).toEqual(
       "Invalid credentials provided. Acquire new credentials."
@@ -308,7 +322,7 @@ suite("POST /logout", () => {
   test("Should log out the user when provided a valid token", async () => {
     const response = await request(app)
       .post("/auth/logout")
-      .set("x-auth", token);
+      .set("Cookie", cookie);
 
     expect(response.status).toEqual(200);
     expect(response.body.success).toEqual(

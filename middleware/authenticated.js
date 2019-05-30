@@ -10,7 +10,7 @@ const User = mongoose.model("users");
  * @todo add WWWW-Authenticate Header as specified by the RFC
  */
 let authenticated = (req, res, next) => {
-  const token = req.header("x-auth");
+  const token = req.cookies["x-auth"];
   if (!token) {
     return res.status(401).send({
       error: "User must be logged in"

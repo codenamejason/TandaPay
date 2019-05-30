@@ -3,16 +3,18 @@ const passport = require("passport");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
 const app = express();
 
 const PORT = process.env.PORT || 5000;
 const keys = require("./config/keys");
 require("./models/User");
-// require("./services/passport");
+require("./services/passport");
 const authRoutes = require("./routes/authRoutes");
 
 app.use(bodyParser.json());
-// app.use(passport.initialize());
+app.use(cookieParser());
+app.use(passport.initialize());
 mongoose.connect(keys.mongoURI, {
   useNewUrlParser: true
 });
