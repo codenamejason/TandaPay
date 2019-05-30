@@ -67,7 +67,6 @@ router.post("/login", async (req, res) => {
     const { name } = user;
     res.header("x-auth", token).send({ token, email, name });
   } catch (e) {
-    console.log(e);
     res.status(400).send(e);
   }
 });

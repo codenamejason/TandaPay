@@ -28,7 +28,6 @@ export const logIn = body => async dispatch => {
 
 export const logOut = () => async dispatch => {
   const token = localStorage.getItem("x-auth");
-  console.log(token);
   try {
     const response = await axios.post(
       "/auth/logout",

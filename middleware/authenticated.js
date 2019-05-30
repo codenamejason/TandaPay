@@ -11,7 +11,6 @@ const User = mongoose.model("users");
  */
 let authenticated = (req, res, next) => {
   const token = req.header("x-auth");
-  console.log(token);
   if (!token) {
     return res.status(401).send({
       error: "User must be logged in"
