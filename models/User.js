@@ -56,10 +56,10 @@ const userSchema = new Schema({
     type: String,
     trim: true,
     minlength: 8,
-    required: true
+    required: false
   },
   googleID: String,
-  twitterID: String,
+  facebookID: String,
   eth: String,
   groupID: Schema.Types.ObjectId,
   payments: [Schema.Types.ObjectId], //replace with array of payment schema when appropriate
