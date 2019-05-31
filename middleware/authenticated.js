@@ -50,7 +50,23 @@ let userDoesNotExist = async (req, res, next) => {
   next();
 };
 
+let userDoesExist = async (req, res, next) => {
+  const { email, password } = req.body;
+
+  const existingUser = await User.findByCredentials(email, password);
+
+  if (!existingUser) {
+    return res.status(409).send({
+      error: "User with given credentials not found"
+    });
+  }
+  const { name } = existingUser;
+  req.body = { email, password, name };
+  next();
+};
+
 module.exports = {
   authenticated,
-  userDoesNotExist
+  userDoesNotExist,
+  userDoesExist
 };

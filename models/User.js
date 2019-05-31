@@ -54,14 +54,40 @@ const userSchema = new Schema({
   },
   password: {
     type: String,
-    required: () => {
-      return this.googleID !== "" || this.twitterID !== "";
-    },
     trim: true,
-    minlength: 8
+    minlength: 8,
+    required: true
   },
   googleID: String,
   twitterID: String,
+  eth: String,
+  groupID: Schema.Types.ObjectId,
+  payments: [Schema.Types.ObjectId], //replace with array of payment schema when appropriate
+  settings: [
+    {
+      code: {
+        // the specification that the setting gives(based on standard)
+        type: String,
+        required: true
+      },
+      domain: {
+        // email vs messaging
+        type: String,
+        required: true
+      }
+    }
+  ],
+  walletProvider: {
+    type: String,
+    validate: [
+      {
+        validator: value => {
+          return value === "metamask" || value === "fortmatic";
+        },
+        message: "{VALUE} is not a valid wallet provider"
+      }
+    ]
+  },
   tokens: [
     {
       access: {
