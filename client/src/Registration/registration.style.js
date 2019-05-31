@@ -6,10 +6,21 @@ const styles = theme => ({
     backgroundImage: "url(https://source.unsplash.com/random)",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
-    backgroundPosition: "center"
+    backgroundPosition: "center",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center"
   },
-  paper: {
-    marginTop: theme.spacing(2),
+  title: {
+    color: "white"
+  },
+  subtitle: {
+    color: "white",
+    textAlign: "center"
+  },
+  form: {
+    margin: theme.spacing(5),
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
@@ -18,11 +29,8 @@ const styles = theme => ({
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main
   },
-  submit: {
-    margin: theme.spacing(3, 0, 2)
-  },
   area: {
-    margin: theme.spacing(8, 4),
+    margin: theme.spacing(8, 0),
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
@@ -32,6 +40,16 @@ const styles = theme => ({
     display: "flex",
     flexDirection: "row",
     justifyContent: "center"
+  },
+  link: {
+    textDecoration: "none",
+    "&:hover": {
+      textDecoration: "none"
+    }
+  },
+  divider: {
+    width: "100%",
+    backgroundColor: "lightgrey"
   }
 });
 

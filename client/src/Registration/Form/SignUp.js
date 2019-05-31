@@ -4,15 +4,10 @@ import { isEmail, isEmpty, isLength } from "validator";
 //redux
 import { connect } from "react-redux";
 import * as actions from "../../actions";
-import {
-  Button,
-  Grid,
-  FormControlLabel,
-  Checkbox,
-  TextField,
-  withStyles
-} from "@material-ui/core";
-import styles from "./form.style";
+import { Button, Grid, TextField, withStyles } from "@material-ui/core";
+import styles from "./styles/form.style";
+import { EmailField, PasswordField } from "./components/Fields/";
+
 const RegLink = React.forwardRef((props, ref) => (
   <Link innerRef={ref} {...props} />
 ));
@@ -32,23 +27,28 @@ class SignUp extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
     const { name, email, password } = this.state;
+
     this.props.signUp({ name, email, password });
   };
 
   render() {
     const { classes } = this.props;
+    const { email, emailError, password, passwordError } = this.state;
     return (
       <form className={classes.form} noValidate>
         {this.renderNameField()}
-        {this.renderEmailField()}
-        {this.renderPasswordField()}
-        <FormControlLabel
-          control={<Checkbox value="remember" color="primary" />}
-          label="Remember me"
+        <EmailField
+          handleEmailChange={this.handleEmailChange}
+          emailError={emailError}
+          email={email}
         />
+        <PasswordField
+          handlePasswordChange={this.handlePasswordChange}
+          passwordError={passwordError}
+          password={password}
+        />
+
         <Button
-          type="submit"
-          fullWidth
           variant="contained"
           color="primary"
           className={classes.submit}
@@ -125,80 +125,7 @@ class SignUp extends React.Component {
       />
     );
   };
-  renderEmailField = () => {
-    const { emailError } = this.state;
 
-    if (emailError) {
-      return (
-        <TextField
-          variant="outlined"
-          error
-          margin="normal"
-          required
-          fullWidth
-          id="email"
-          label="Email Address"
-          name="email"
-          autoComplete="email"
-          onChange={this.handleEmailChange}
-          value={this.state.email}
-        />
-      );
-    } else {
-      return (
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          id="email"
-          label="Email Address"
-          name="email"
-          autoComplete="email"
-          onChange={this.handleEmailChange}
-          value={this.state.email}
-        />
-      );
-    }
-  };
-
-  renderPasswordField = () => {
-    const { passwordError } = this.state;
-    if (passwordError) {
-      return (
-        <TextField
-          variant="outlined"
-          margin="normal"
-          error
-          required
-          fullWidth
-          name="password"
-          label="Password"
-          type="password"
-          id="password"
-          autoComplete="current-password"
-          onChange={this.handlePasswordChange}
-          value={this.state.password}
-        />
-      );
-    } else {
-      return (
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          name="password"
-          label="Password"
-          type="password"
-          id="password"
-          autoComplete="current-password"
-          onChange={this.handlePasswordChange}
-          value={this.state.password}
-        />
-      );
-    }
-  };
   renderExtra = () => {
     return (
       <Grid container>

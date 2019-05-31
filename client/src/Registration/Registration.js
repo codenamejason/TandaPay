@@ -7,17 +7,18 @@ import {
   Typography,
   withStyles,
   Tabs,
-  Tab
+  Tab,
+  Link,
+  Divider
 } from "@material-ui/core";
 import { LockOutlined, LockOpenOutlined } from "@material-ui/icons";
 import {
   GoogleLoginButton,
-  TwitterLoginButton
+  FacebookLoginButton
 } from "react-social-login-buttons";
 import { connect } from "react-redux";
 import * as actions from "../actions";
-import SignUp from "./Form/SignUp";
-import Login from "./Form/Login";
+import { SignUp, Login } from "./Form/";
 import styles from "./registration.style";
 
 class Registration extends React.Component {
@@ -41,13 +42,30 @@ class Registration extends React.Component {
     return (
       <Grid container component="main" className={classes.root}>
         <CssBaseline />
-        <Grid item xs={false} sm={4} md={7} className={classes.image} />
+        <Grid item xs={false} sm={4} md={7} className={classes.image}>
+          {/* {this.renderHeroText()} */}
+        </Grid>
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           {this.renderFormArea()}
         </Grid>
       </Grid>
     );
   }
+  renderHeroText = () => {
+    const { classes } = this.props;
+    return (
+      <div>
+        <Typography variant="h1" className={classes.title}>
+          TandaPay
+        </Typography>
+        <Typography variant="h4" className={classes.subtitle}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
+          dolor purus non enim praesent elementum facilisis leo vel.
+        </Typography>
+      </div>
+    );
+  };
   renderFormArea = () => {
     const { classes } = this.props;
     return (
@@ -58,12 +76,28 @@ class Registration extends React.Component {
         </Tabs>
         {this.state.tab === 0 && this.renderSignUpForm()}
         {this.state.tab === 1 && this.renderLoginForm()}
+        <Divider className={classes.divider} />
+
         <Grid container className={classes.social}>
           <GoogleLoginButton>
-            <a href="/auth/google">Sign In With Google</a>
+            <Link
+              href={"/auth/google"}
+              color="inherit"
+              className={classes.link}
+            >
+              Sign In With Google
+            </Link>
           </GoogleLoginButton>
 
-          <TwitterLoginButton />
+          <FacebookLoginButton>
+            <Link
+              href={"/auth/facebook"}
+              color="inherit"
+              className={classes.link}
+            >
+              Sign In With Facebook
+            </Link>
+          </FacebookLoginButton>
         </Grid>
       </div>
     );
@@ -72,7 +106,7 @@ class Registration extends React.Component {
   renderSignUpForm = () => {
     const { classes } = this.props;
     return (
-      <div className={classes.paper}>
+      <div className={classes.form}>
         <Avatar className={classes.avatar}>
           <LockOutlined />
         </Avatar>
@@ -87,7 +121,7 @@ class Registration extends React.Component {
   renderLoginForm = () => {
     const { classes } = this.props;
     return (
-      <div className={classes.paper}>
+      <div className={classes.form}>
         <Avatar className={classes.avatar}>
           <LockOpenOutlined />
         </Avatar>
