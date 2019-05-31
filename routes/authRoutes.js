@@ -8,7 +8,7 @@ const {
 } = require("../middleware/authenticated");
 
 const {
-  googleAuthController,
+  oauthController,
   generateToken,
   sendCookie,
   checkCredentials,
@@ -35,11 +35,41 @@ router.get(
  */
 router.get(
   "/google/callback",
-  passport.authenticate("google", { session: false }),
-  googleAuthController,
+  passport.authenticate("google", { session: false, failureRedirect: "/" }),
+  oauthController,
   async (req, res) => {
     const token = req.token;
     res.cookie("x-auth", token, {
+      maxAge: 9000000000,
+      httpOnly: true,
+      secure: false
+    });
+    res.redirect("/");
+  }
+);
+
+/**
+ * @summary
+ */
+router.get(
+  "/facebook",
+  passport.authenticate("facebook", {
+    session: false,
+    scope: ["email"]
+  })
+);
+
+/**
+ * @summary
+ */
+router.get(
+  "/facebook/callback",
+  passport.authenticate("facebook", {
+    session: false
+  }),
+  oauthController,
+  async (req, res) => {
+    res.cookie("x-auth", req.token, {
       maxAge: 9000000000,
       httpOnly: true,
       secure: false

@@ -7,12 +7,11 @@ const User = mongoose.model("users");
  * @param {*} res
  * @param {*} next
  */
-const googleAuthController = async (req, res, next) => {
-  const existingUser = User.findOne({ email: req.user.email });
-
+const oauthController = async (req, res, next) => {
+  const existingUser = await User.findOne({ email: req.user.email });
   try {
     if (existingUser) {
-      const token = await user.generateAuthToken("user");
+      const token = await existingUser.generateAuthToken("user");
       req.token = token;
       next();
     } else {
@@ -22,8 +21,8 @@ const googleAuthController = async (req, res, next) => {
       req.token = token;
       next();
     }
-  } catch {
-    res.status(400).send(user);
+  } catch (e) {
+    res.status(400).send(e);
   }
 };
 
@@ -110,12 +109,12 @@ const sendCookie = async (req, res) => {
     const { email, name } = req.user;
     return res.send({ token, email, name });
   } else {
-    return res.ssend();
+    return res.send();
   }
 };
 
 module.exports = {
-  googleAuthController,
+  oauthController,
   sendCookie,
   generateToken,
   checkCredentials,

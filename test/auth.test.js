@@ -16,12 +16,11 @@ suite("POST /signup", () => {
     expect(response.status).toEqual(400);
     const errors = response.body.errors;
     //check number of errors
-    expect(Object.keys(errors).length).toEqual(3);
+    expect(Object.keys(errors).length).toEqual(2);
 
     //check errors
     expect(errors.name.message).toEqual("Path `name` is required.");
     expect(errors.email.message).toEqual("Path `email` is required.");
-    expect(errors.password.message).toEqual("Path `password` is required.");
 
     const users = await User.find();
     expect(users.length).toEqual(0);
