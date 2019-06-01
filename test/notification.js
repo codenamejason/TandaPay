@@ -11,6 +11,8 @@ let {
     PremiumPaidNotification,
 } = require("../lib/notification");
 
+let createMiddleware = require("../controllers/notification");
+
 // NOTE: All tests that check the state of fake_'s need to run in .serial mode
 // so call state can be reset between tests
 test.beforeEach(t => {
@@ -18,15 +20,29 @@ test.beforeEach(t => {
 });
 
 test("notifications can be instantiated", t => {
-    t.notThrows(() => new Notification(0));
-    t.notThrows(() => new ClaimCreatedNotification(0, 0));
-    t.notThrows(() => new ClaimUpdatedNotification(0, 0));
-    t.notThrows(() => new ClaimApprovedNotification(0, 0, 1));
-    t.notThrows(() => new PremiumPaidNotification(0, 0));
+    t.notThrows(() => {
+        new Notification({ tandaID: 0 });
+    });
+    t.notThrows(() => {
+        new ClaimCreatedNotification({ tandaID: 0, claimantID: 0 });
+    });
+    t.notThrows(() => {
+        new ClaimUpdatedNotification({ tandaID: 0, claimantID: 0 });
+    });
+    t.notThrows(() => {
+        new ClaimApprovedNotification({
+            tandaID: 0,
+            claimantID: 0,
+            approverID: 1,
+        });
+    });
+    t.notThrows(() => {
+        new PremiumPaidNotification({ tandaID: 0, payerID: 0 });
+    });
 });
 
 test.serial("`Notification`s can be delivered", async t => {
-    let notif = new Notification(0);
+    let notif = new Notification({ tandaID: 0 });
 
     await notif.deliver();
 
@@ -38,7 +54,7 @@ test.serial("`Notification`s can be delivered", async t => {
 });
 
 test.serial("`ClaimCreatedNotification`s work", async t => {
-    let notif = new ClaimCreatedNotification(0, 1);
+    let notif = new ClaimCreatedNotification({ tandaID: 0, claimantID: 0 });
 
     await notif.deliver();
 
@@ -46,11 +62,11 @@ test.serial("`ClaimCreatedNotification`s work", async t => {
 
     t.is(fake_sendEmail.callCount, 1);
     t.is(fake_sendEmail.getCall(0).args[0], "alice@example.org");
-    t.regex(fake_sendEmail.getCall(0).args[1], /claim created/i);
+    t.regex(fake_sendEmail.getCall(0).args[2], /claim created/i);
 });
 
 test.serial("`ClaimUpdatedNotification`s work", async t => {
-    let notif = new ClaimUpdatedNotification(0, 1);
+    let notif = new ClaimUpdatedNotification({ tandaID: 0, claimantID: 0 });
 
     await notif.deliver();
 
@@ -58,11 +74,15 @@ test.serial("`ClaimUpdatedNotification`s work", async t => {
 
     t.is(fake_sendEmail.callCount, 1);
     t.is(fake_sendEmail.getCall(0).args[0], "alice@example.org");
-    t.regex(fake_sendEmail.getCall(0).args[1], /claim updated/i);
+    t.regex(fake_sendEmail.getCall(0).args[2], /claim updated/i);
 });
 
 test.serial("`ClaimApprovedNotification`s work", async t => {
-    let notif = new ClaimApprovedNotification(0, 0, 1);
+    let notif = new ClaimApprovedNotification({
+        tandaID: 0,
+        claimantID: 0,
+        approverID: 1,
+    });
 
     await notif.deliver();
 
@@ -74,11 +94,11 @@ test.serial("`ClaimApprovedNotification`s work", async t => {
 
     t.is(fake_sendEmail.callCount, 1);
     t.is(fake_sendEmail.getCall(0).args[0], "bob@example.org");
-    t.regex(fake_sendEmail.getCall(0).args[1], /claim approved/i);
+    t.regex(fake_sendEmail.getCall(0).args[2], /claim approved/i);
 });
 
 test.serial("`PremiumPaidNotification`s work", async t => {
-    let notif = new PremiumPaidNotification(0, 1);
+    let notif = new PremiumPaidNotification({ tandaID: 0, payerID: 0 });
 
     await notif.deliver();
 
@@ -87,6 +107,32 @@ test.serial("`PremiumPaidNotification`s work", async t => {
     t.regex(fake_sendSMS.getCall(0).args[1], /premium/i);
 
     t.is(fake_sendEmail.callCount, 0);
+});
+
+test.serial("notification middleware delivers notifications", async t => {
+    let claimApprovedMiddleware = createMiddleware("claim_approved");
+    let fake_next = sinon.fake.returns();
+
+    claimApprovedMiddleware(
+        { tandaID: 0, claimantID: 0, approverID: 0 },
+        {},
+        fake_next
+    );
+
+    // terrible horrible no good very bad hack. middleware intentionally doesn't
+    // wait for notifications to be delivered, so from here we have no way of
+    // knowing when delivery is done. so wait 100ms before checking status
+    await new Promise(res => setTimeout(res), 100);
+
+    // middleware should call next()
+    t.is(fake_next.callCount, 1);
+
+    // middleware should call sendSMS and sendEmail
+    t.true(fake_sendSMS.callCount > 0);
+    t.true(fake_sendEmail.callCount > 0);
+
+    // check that the it sends the right kind of notification
+    t.regex(fake_sendSMS.getCall(0).args[1], /claim approved/i);
 });
 
 function sinonSetup() {
@@ -114,9 +160,11 @@ function sinonSetup() {
 
     let fake_sendSMS = sinon.fake.resolves();
     let fake_sendEmail = sinon.fake.resolves();
+    let stub_getTandaByID = id => Promise.resolve(testTanda);
+    let stub_getUserByID = id => Promise.resolve(testUsers[id]);
 
-    sinon.replace(require("../lib/db"), "getTandaByID", id => testTanda);
-    sinon.replace(require("../lib/db"), "getUserByID", id => testUsers[id]);
+    sinon.replace(require("../lib/db"), "getTandaByID", stub_getTandaByID);
+    sinon.replace(require("../lib/db"), "getUserByID", stub_getUserByID);
     sinon.replace(require("../lib/twilio"), "sendSMS", fake_sendSMS);
     sinon.replace(require("../lib/twilio"), "sendEmail", fake_sendEmail);
 
