@@ -16,7 +16,8 @@ const styles = theme => ({
     }
   },
   title: {
-    color: "white"
+    color: "white",
+    textAlign: "center"
   },
   subtitle: {
     color: "white",
