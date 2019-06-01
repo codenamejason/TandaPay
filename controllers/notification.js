@@ -4,7 +4,6 @@ module.exports = createMiddleware;
 function createMiddleware(kind) {
     return function sendNotificationsMiddleware(req, res, next) {
         let { tandaID } = req;
-
         let notification = createNotification(kind, req);
 
         // this promise shouldn't be `await`ed because the request shouldn't
