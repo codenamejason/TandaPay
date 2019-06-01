@@ -142,19 +142,23 @@ function sinonSetup() {
             name: "Alice",
             phone: "15551231234",
             email: "alice@example.org",
-            notificationSettings: {
-                email: ["claim_created", "claim_updated"],
-                sms: ["claim_approved", "premium_paid", "example"],
-            },
+            settings: [
+                { code: "claim_created", domain: "email" },
+                { code: "claim_updated", domain: "email" },
+                { code: "claim_approved", domain: "sms" },
+                { code: "premium_paid", domain: "sms" },
+                { code: "example", domain: "sms" },
+            ],
         },
         {
             name: "Bob",
             phone: "15553214321",
             email: "bob@example.org",
-            notificationSettings: {
-                email: ["claim_approved", "example"],
-                sms: ["claim_approved"],
-            },
+            settings: [
+                { code: "claim_approved", domain: "email" },
+                { code: "claim_approved", domain: "sms" },
+                { code: "example", domain: "email" },
+            ],
         },
     ];
 
