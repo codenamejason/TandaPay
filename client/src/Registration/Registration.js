@@ -43,7 +43,7 @@ class Registration extends React.Component {
       <Grid container component="main" className={classes.root}>
         <CssBaseline />
         <Grid item xs={false} sm={4} md={7} className={classes.image}>
-          {/* {this.renderHeroText()} */}
+          {this.renderHeroText()}
         </Grid>
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           {this.renderFormArea()}
