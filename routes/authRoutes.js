@@ -2,18 +2,18 @@ const express = require("express");
 const passport = require("passport");
 
 const {
-  authenticated,
-  userDoesNotExist,
-  userDoesExist
+	authenticated,
+	userDoesNotExist,
+	userDoesExist
 } = require("../middleware/authenticated");
 
 const {
-  oauthController,
-  generateToken,
-  sendCookie,
-  checkCredentials,
-  createUser,
-  logOut
+	oauthController,
+	generateToken,
+	sendCookie,
+	checkCredentials,
+	createUser,
+	logOut
 } = require("../controller/authController");
 let router = express.Router();
 
@@ -21,11 +21,11 @@ let router = express.Router();
  * @summary
  */
 router.get(
-  "/google",
-  passport.authenticate("google", {
-    session: false,
-    scope: ["profile", "email"]
-  })
+	"/google",
+	passport.authenticate("google", {
+		session: false,
+		scope: ["profile", "email"]
+	})
 );
 
 /**
@@ -34,48 +34,48 @@ router.get(
  * @returns the cookie with the token and redirects the user back to the application
  */
 router.get(
-  "/google/callback",
-  passport.authenticate("google", { session: false, failureRedirect: "/" }),
-  oauthController,
-  async (req, res) => {
-    const token = req.token;
-    res.cookie("x-auth", token, {
-      maxAge: 9000000000,
-      httpOnly: true,
-      secure: false
-    });
-    res.redirect("/");
-  }
+	"/google/callback",
+	passport.authenticate("google", { session: false, failureRedirect: "/" }),
+	oauthController,
+	async (req, res) => {
+		const token = req.token;
+		res.cookie("x-auth", token, {
+			maxAge: 9000000000,
+			httpOnly: true,
+			secure: false
+		});
+		res.redirect("/");
+	}
 );
 
 /**
  * @summary
  */
 router.get(
-  "/facebook",
-  passport.authenticate("facebook", {
-    session: false,
-    scope: ["email"]
-  })
+	"/facebook",
+	passport.authenticate("facebook", {
+		session: false,
+		scope: ["email"]
+	})
 );
 
 /**
  * @summary
  */
 router.get(
-  "/facebook/callback",
-  passport.authenticate("facebook", {
-    session: false
-  }),
-  oauthController,
-  async (req, res) => {
-    res.cookie("x-auth", req.token, {
-      maxAge: 9000000000,
-      httpOnly: true,
-      secure: false
-    });
-    res.redirect("/");
-  }
+	"/facebook/callback",
+	passport.authenticate("facebook", {
+		session: false
+	}),
+	oauthController,
+	async (req, res) => {
+		res.cookie("x-auth", req.token, {
+			maxAge: 9000000000,
+			httpOnly: true,
+			secure: false
+		});
+		res.redirect("/");
+	}
 );
 
 /**
@@ -93,19 +93,19 @@ router.post("/signup", userDoesNotExist, createUser, generateToken, sendCookie);
  * @param password
  */
 router.post(
-  "/login",
-  checkCredentials,
-  userDoesExist,
-  generateToken,
-  sendCookie
+	"/login",
+	checkCredentials,
+	userDoesExist,
+	generateToken,
+	sendCookie
 );
 /**
  * @summary retrieves the full information about the user and sends it back as a response
  * @param token identifier to determine which user to retrieve
  */
 router.get("/user", authenticated, (req, res) => {
-  //check for user
-  res.send(req.user);
+	//check for user
+	res.send(req.user);
 });
 
 /**

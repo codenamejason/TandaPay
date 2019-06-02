@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const User = mongoose.model("users");
 
 /**
- * @summary -
+ * @summary - It will retrieve the auth token cookie from the request.
+ * It will then process the token to check for validity and forward the user to the route controller if it is. Otherwise it will respond with a 401 Error.
  * @param {token} req - It will receive the auth token through a cookie.
  * The token and user object will be defined in the request object if the user is authenticated
  * @param res - Will be unchanged if the user is authenticated, the request will be forwarded to the route controllers.
@@ -35,9 +36,9 @@ let authenticated = (req, res, next) => {
 
 /**
  *
- * @param {*} req
+ * @param {body} req
  * @param {*} res
- * @param {*} next
+ * @param next - Express callback function that will forward the route to the next controller
  * @todo Move the function to the controller folder
  */
 let userDoesNotExist = async (req, res, next) => {
@@ -62,7 +63,7 @@ let userDoesNotExist = async (req, res, next) => {
  *
  * @param {*} req
  * @param {*} res
- * @param {*} next
+ * @param next - Express callback function that will forward the route to the next controller
  * @todo Append the user model to the request model
  * @todo Move the function to the controller folder
  */

@@ -8,7 +8,6 @@ const User = mongoose.model("users");
  * It may optionally provide other relevant user data depending on the Oauth Provider
  * @param res - The res parameter will remain unchanged if the Oauth 2.0 authentication attempt is successful
  * @param next - Express callback function that will forward the route to the next controller
- * @param {Song} song - The {@link Song}
  *
  */
 const oauthController = async (req, res, next) => {
@@ -43,7 +42,6 @@ const createUser = async (req, res, next) => {
 	try {
 		const user = new User({ name, email, password });
 		await user.save();
-
 		next();
 	} catch (error) {
 		res.status(400).send(error);
