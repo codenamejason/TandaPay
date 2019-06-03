@@ -85,6 +85,12 @@ const oauthController = async (req, res, next) => {
  */
 const createUser = async (req, res, next) => {
 	const { name, email, password, role } = req.body;
+
+	if (role === "admin") {
+		return res.status(400).send({
+			error: "Cannot create admin account"
+		});
+	}
 	const status = role === "policyholder" ? "approved" : "pending";
 	try {
 		const user = new User({ name, email, password, role, status });
