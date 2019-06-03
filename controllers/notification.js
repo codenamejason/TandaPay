@@ -1,7 +1,7 @@
 let Notifications = require("../lib/notification.js");
 
-module.exports = createMiddleware;
-function createMiddleware(kind) {
+module.exports = createSendNotificationMiddleware;
+function createSendNotificationMiddleware(kind) {
     return function sendNotificationsMiddleware(req, res, next) {
         let { tandaID } = req;
         let notification = createNotification(kind, req);
