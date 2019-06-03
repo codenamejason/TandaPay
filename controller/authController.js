@@ -2,6 +2,52 @@ const mongoose = require("mongoose");
 const User = mongoose.model("users");
 
 /**
+ *
+ * @param {body} req
+ * @param {*} res
+ * @param next - Express callback function that will forward the route to the next controller
+ * @todo Move the function to the controller folder
+ */
+let userDoesNotExist = async (req, res, next) => {
+	const { email } = req.body;
+
+	//checks for existing user
+	const existingUser = await User.findOne({
+		email
+	});
+	if (existingUser) {
+		return res.status(409).send({
+			errors: {
+				email: "Email already in use."
+			}
+		});
+	}
+
+	next();
+};
+
+/**
+ *
+ * @param {*} req
+ * @param {*} res
+ * @param next - Express callback function that will forward the route to the next controller
+ * @todo Append the user model to the request model
+ * @todo Move the function to the controller folder
+ */
+let userDoesExist = async (req, res, next) => {
+	const { email, password } = req.body;
+
+	const existingUser = await User.findByCredentials(email, password);
+	if (!existingUser) {
+		return res.status(409).send({
+			error: "User with given credentials not found"
+		});
+	}
+	const { name, role } = existingUser;
+	req.body = { email, password, name, role };
+	next();
+};
+/**
  * @summary - It will receive the response from the Oauth Provider Passportjs Strategy, with the user json provided as part of the request.
  * It will then either log the user in or sign them up depending on whether they're a preexisting user or not. If an error occurs it will respond with a 400 error
  * @param {user: {email, name, oauthID, ...}}  req - the req parameter will have the user's name, email and oauthID.
@@ -134,5 +180,7 @@ module.exports = {
 	generateToken,
 	checkCredentials,
 	createUser,
-	logOut
+	logOut,
+	userDoesExist,
+	userDoesNotExist
 };

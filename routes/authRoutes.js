@@ -1,11 +1,7 @@
 const express = require("express");
 const passport = require("passport");
 
-const {
-	authenticated,
-	userDoesNotExist,
-	userDoesExist
-} = require("../middleware/authenticated");
+const { authenticated } = require("../middleware/authenticated");
 
 const {
 	oauthController,
@@ -13,7 +9,9 @@ const {
 	sendCookie,
 	checkCredentials,
 	createUser,
-	logOut
+	logOut,
+	userDoesExist,
+	userDoesNotExist
 } = require("../controller/authController");
 let router = express.Router();
 
