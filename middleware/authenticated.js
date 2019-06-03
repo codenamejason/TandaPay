@@ -71,14 +71,13 @@ let userDoesExist = async (req, res, next) => {
 	const { email, password } = req.body;
 
 	const existingUser = await User.findByCredentials(email, password);
-
 	if (!existingUser) {
 		return res.status(409).send({
 			error: "User with given credentials not found"
 		});
 	}
-	const { name } = existingUser;
-	req.body = { email, password, name };
+	const { name, role } = existingUser;
+	req.body = { email, password, name, role };
 	next();
 };
 

@@ -57,10 +57,10 @@ const createUser = async (req, res, next) => {
  * @param next - Express callback function that will forward the route to the next controller
  */
 const generateToken = async (req, res, next) => {
-	const { email, name } = req.body;
+	const { email, name, role } = req.body;
 	const user = await User.findOne({ email });
 	try {
-		const token = await user.generateAuthToken("user");
+		const token = await user.generateAuthToken(role);
 		req.token = token;
 		req.user = { name, email };
 		next();
