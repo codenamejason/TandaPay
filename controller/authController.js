@@ -167,8 +167,8 @@ const sendCookie = async (req, res) => {
 	});
 
 	if (req.user) {
-		const { email, name } = req.user;
-		return res.send({ token, email, name });
+		const { email, name, status } = req.user;
+		return res.send({ token, email, name, status });
 	} else {
 		return res.send();
 	}
