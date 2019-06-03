@@ -38,9 +38,10 @@ const oauthController = async (req, res, next) => {
  * @todo Add user model to the request parameters
  */
 const createUser = async (req, res, next) => {
-	const { name, email, password } = req.body;
+	const { name, email, password, role } = req.body;
+	const status = role === "policyholder" ? "approved" : "pending";
 	try {
-		const user = new User({ name, email, password });
+		const user = new User({ name, email, password, role, status });
 		await user.save();
 		next();
 	} catch (error) {
@@ -93,7 +94,6 @@ const checkCredentials = async (req, res, next) => {
  * If there is an issue removing the token and/or the cookie.
  */
 const logOut = async (req, res) => {
-	//logout
 	const user = req.user;
 	const token = req.token;
 	try {

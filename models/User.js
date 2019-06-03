@@ -7,99 +7,134 @@ const bcrypt = require("bcryptjs");
 const keys = require("../config/keys");
 
 const userSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
-    trim: true,
-    minlength: 1
-  },
-  email: {
-    type: String,
-    required: true,
-    trim: true,
-    validate: [
-      {
-        validator: value => {
-          return validator.isEmail(value);
-        },
-        message: "{VALUE} is not a valid email."
-      }
-    ]
-  },
-  picture: {
-    type: String,
-    required: false,
-    minlength: 1,
-    validate: [
-      {
-        validator: value => {
-          return validator.isURL(value);
-        },
-        message: "{VALUE} is not a valid image url"
-      }
-    ]
-  },
-  phone: {
-    type: String,
-    required: false,
-    trim: true,
-    validate: [
-      {
-        validator: value => {
-          return validator.isMobilePhone(value);
-        },
-        message: "{VALUE} is not a valid phone number."
-      }
-    ]
-  },
-  password: {
-    type: String,
-    trim: true,
-    minlength: 8,
-    required: false
-  },
-  googleID: String,
-  facebookID: String,
-  eth: String,
-  groupID: Schema.Types.ObjectId,
-  payments: [Schema.Types.ObjectId], //replace with array of payment schema when appropriate
-  settings: [
-    {
-      code: {
-        // the specification that the setting gives(based on standard)
-        type: String,
-        required: true
-      },
-      domain: {
-        // email vs messaging
-        type: String,
-        required: true
-      }
-    }
-  ],
-  walletProvider: {
-    type: String,
-    validate: [
-      {
-        validator: value => {
-          return value === "metamask" || value === "fortmatic";
-        },
-        message: "{VALUE} is not a valid wallet provider"
-      }
-    ]
-  },
-  tokens: [
-    {
-      access: {
-        type: String,
-        required: true
-      },
-      token: {
-        type: String,
-        required: true
-      }
-    }
-  ]
+	name: {
+		type: String,
+		required: true,
+		trim: true,
+		minlength: 1
+	},
+	email: {
+		type: String,
+		required: true,
+		trim: true,
+		validate: [
+			{
+				validator: (value) => {
+					return validator.isEmail(value);
+				},
+				message: "{VALUE} is not a valid email."
+			}
+		]
+	},
+	role: {
+		type: String,
+		required: true,
+		trim: true,
+		validate: [
+			{
+				validator: (value) => {
+					return (
+						value === "policyholder" ||
+						value === "secretary" ||
+						value === "admin"
+					);
+				},
+				message: "{VALUE} is not a valid user role."
+			}
+		]
+	},
+	status: {
+		// only necessary for secretaries and admin's. They must be approved
+		type: String,
+		default: "pending",
+		required: true,
+		validate: [
+			{
+				validator: (status) => {
+					return status === "pending" || status === "approved";
+				},
+				message: "{VALUE} is not a valid user role."
+			}
+		]
+	},
+	picture: {
+		type: String,
+		required: false,
+		minlength: 1,
+		validate: [
+			{
+				validator: (value) => {
+					return validator.isURL(value);
+				},
+				message: "{VALUE} is not a valid image url"
+			}
+		]
+	},
+	phone: {
+		type: String,
+		required: false,
+		trim: true,
+		validate: [
+			{
+				validator: (value) => {
+					return validator.isMobilePhone(value);
+				},
+				message: "{VALUE} is not a valid phone number."
+			}
+		]
+	},
+	password: {
+		type: String,
+		trim: true,
+		minlength: 8,
+		required: false
+	},
+	googleID: String,
+	facebookID: String,
+	eth: String,
+	groupID: Schema.Types.ObjectId,
+	payments: [Schema.Types.ObjectId], //replace with array of payment schema when appropriate
+	settings: [
+		{
+			code: {
+				// the specification that the setting gives(based on standard)
+				type: String,
+				required: true
+			},
+			domain: {
+				// email vs messaging
+				type: String,
+				required: true
+			},
+			value: {
+				type: Boolean,
+				required: true
+			}
+		}
+	],
+	walletProvider: {
+		type: String,
+		validate: [
+			{
+				validator: (value) => {
+					return value === "metamask" || value === "fortmatic";
+				},
+				message: "{VALUE} is not a valid wallet provider"
+			}
+		]
+	},
+	tokens: [
+		{
+			access: {
+				type: String,
+				required: true
+			},
+			token: {
+				type: String,
+				required: true
+			}
+		}
+	]
 });
 
 /**
@@ -111,23 +146,23 @@ const userSchema = new Schema({
  * @todo invalidate old tokens
  */
 userSchema.methods.generateAuthToken = async function(accessLevel) {
-  const user = this;
-  const access = "auth";
-  let token = jwt.sign(
-    { sub: user._id.toHexString(), access, accessLevel },
-    keys.jwtSecret
-  );
-  // const res = await user.update({
-  //   $pull: {
-  //     tokens: {
-  //       access: access
-  //     }
-  //   }
-  // });
-  // console.log(res);
-  user.tokens = user.tokens.concat([{ access, token }]);
-  await user.save();
-  return token;
+	const user = this;
+	const access = "auth";
+	let token = jwt.sign(
+		{ sub: user._id.toHexString(), access, accessLevel },
+		keys.jwtSecret
+	);
+	// const res = await user.update({
+	//   $pull: {
+	//     tokens: {
+	//       access: access
+	//     }
+	//   }
+	// });
+	// console.log(res);
+	user.tokens = user.tokens.concat([{ access, token }]);
+	await user.save();
+	return token;
 };
 
 /**
@@ -136,20 +171,20 @@ userSchema.methods.generateAuthToken = async function(accessLevel) {
  * @this User - refers to the User Schema itself, not any given instance. This function will be called statically
  */
 userSchema.statics.findByToken = function(token) {
-  var User = this;
-  var decoded;
+	var User = this;
+	var decoded;
 
-  try {
-    decoded = jwt.verify(token, keys.jwtSecret);
-  } catch (e) {
-    return Promise.reject();
-  }
+	try {
+		decoded = jwt.verify(token, keys.jwtSecret);
+	} catch (e) {
+		return Promise.reject();
+	}
 
-  return User.findOne({
-    _id: decoded.sub,
-    "tokens.token": token,
-    "tokens.access": "auth"
-  });
+	return User.findOne({
+		_id: decoded.sub,
+		"tokens.token": token,
+		"tokens.access": "auth"
+	});
 };
 
 /**
@@ -160,50 +195,50 @@ userSchema.statics.findByToken = function(token) {
  * @returns
  */
 userSchema.statics.findByCredentials = async function(email, password) {
-  var User = this;
-  const user = await User.findOne({ email });
-  if (!user) {
-    return null;
-  }
-  const res = await bcrypt.compare(password, user.password);
-  //if passwords match
-  if (res) {
-    return user;
-  } else {
-    return null;
-  }
+	var User = this;
+	const user = await User.findOne({ email });
+	if (!user) {
+		return null;
+	}
+	const res = await bcrypt.compare(password, user.password);
+	//if passwords match
+	if (res) {
+		return user;
+	} else {
+		return null;
+	}
 };
 
 /**
  * @todo Transition away from update if possible(deprecated)
  */
 userSchema.methods.removeToken = function(token) {
-  var user = this;
-  return user.update({
-    $pull: {
-      tokens: {
-        token: token
-      }
-    }
-  });
+	var user = this;
+	return user.update({
+		$pull: {
+			tokens: {
+				token: token
+			}
+		}
+	});
 };
 
 /**
  * @summary
  */
 userSchema.pre("save", function(next) {
-  var user = this;
+	var user = this;
 
-  if (user.isModified("password")) {
-    bcrypt.genSalt(10, (err, salt) => {
-      bcrypt.hash(user.password, salt, (err, hash) => {
-        user.password = hash;
-        next();
-      });
-    });
-  } else {
-    next();
-  }
+	if (user.isModified("password")) {
+		bcrypt.genSalt(10, (err, salt) => {
+			bcrypt.hash(user.password, salt, (err, hash) => {
+				user.password = hash;
+				next();
+			});
+		});
+	} else {
+		next();
+	}
 });
 
 module.exports = mongoose.model("users", userSchema);
