@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/LuisOsta/TandaPay#readme",
   "dependencies": {
+    "@google-cloud/storage": "^2.5.0",
     "@sendgrid/mail": "^6.4.0",
     "ava": "^1.4.1",
     "bcryptjs": "^2.4.3",
@@ -37,6 +38,7 @@
     "mongoose": "^5.5.13",
     "supertest": "^4.0.2",
     "twilio": "^3.31.0",
+    "uuid": "^3.3.2",
     "validator": "^11.0.0"
   },
   "devDependencies": {
