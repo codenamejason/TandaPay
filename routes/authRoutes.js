@@ -17,6 +17,7 @@ let router = express.Router();
 
 /**
  * @summary
+ * @todo Allow for user form submissions
  */
 router.get(
 	"/google",
@@ -81,7 +82,9 @@ router.get(
  * It'll return an error if an user already exists or the input is malformed.
  * @param email
  * @param password
- * @todo Allow user to sign up as a secretary or regular user
+ * @param name
+ * @param role
+ * @todo Require a user to provide a group access code
  */
 router.post("/signup", userDoesNotExist, createUser, generateToken, sendCookie);
 
