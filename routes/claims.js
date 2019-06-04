@@ -2,7 +2,7 @@ let express = require("express");
 let router = express.Router();
 
 let unimplemented = require("../controllers/unimplemented");
-let sendNotifications = require("../middleware/notification");
+let sendNotifications = require("../controllers/notification");
 
 router.get("/", unimplemented);
 router.post(
@@ -16,11 +16,9 @@ router.post(
         res.set("Content-Type", "application/json");
         res.send("{}");
 
-        req.notificationKind = "claim_created";
-
         next();
     },
-    sendNotifications
+    sendNotifications("claim_created")
 );
 router.get("/:claimID", unimplemented);
 router.patch("/:claimID", unimplemented);
