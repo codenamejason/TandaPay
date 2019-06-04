@@ -11,7 +11,7 @@ let {
     PremiumPaidNotification,
 } = require("../lib/notification");
 
-let createSendNofificationMiddleware = require("../controllers/notification");
+let createSendNofificationMiddleware = require("../middleware/notification");
 
 // NOTE: All tests that check the state of fake_'s need to run in .serial mode
 // so call state can be reset between tests
@@ -110,7 +110,9 @@ test.serial("`PremiumPaidNotification`s work", async t => {
 });
 
 test.serial("notification middleware delivers notifications", async t => {
-    let claimApprovedMiddleware = createSendNofificationMiddleware("claim_approved");
+    let claimApprovedMiddleware = createSendNofificationMiddleware(
+        "claim_approved"
+    );
     let fake_next = sinon.fake.returns();
 
     claimApprovedMiddleware(

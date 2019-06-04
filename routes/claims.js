@@ -2,7 +2,7 @@ let express = require("express");
 let router = express.Router();
 
 let unimplemented = require("../controllers/unimplemented");
-let sendNotifications = require("../controllers/notification");
+let sendNotifications = require("../middleware/notification");
 
 router.get("/", unimplemented);
 router.post(
