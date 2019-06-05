@@ -4,7 +4,7 @@ let request = require("supertest");
 let MemoryMongo = require("mongo-in-memory");
 
 // set up sinon mocks before local requires
-let { fake_sendSMS, fake_sendEmail } = sinonSetup();
+let { fake_sendSMS, fake_sendEmail, fake_upload } = sinonSetup();
 
 require("../models/register");
 let app = require("../routes");
@@ -69,6 +69,17 @@ test.skip("POST /claims - delivers notifications", async t => {
     t.true(fake_sendEmail.callCount > 0);
 });
 
+test.serial("POST /upload - generates upload urls", async t => {
+    let res = await http().post("/upload");
+
+    t.is(res.statusCode, 200);
+    t.regex(res.header["content-type"], /json/);
+    t.truthy(res.body.id);
+    t.truthy(res.body.url);
+    t.true(res.body.url.startsWith("http"));
+    t.true(fake_upload.callCount > 0);
+});
+
 function sleep(ms) {
     return new Promise(res => setTimeout(res, ms));
 }
@@ -102,11 +113,15 @@ function sinonSetup() {
 
     let fake_sendSMS = sinon.fake.resolves();
     let fake_sendEmail = sinon.fake.resolves();
+    let fake_upload = sinon.fake.resolves(
+        "http://example.org/CB69642E-A2CB-40EE-B5D0-4EF6FF26012B"
+    );
     let stub_getTandaByID = id => Promise.resolve(testTanda);
     let stub_getUserByID = id => Promise.resolve(testUsers[id]);
 
     sinon.replace(require("../lib/twilio"), "sendSMS", fake_sendSMS);
     sinon.replace(require("../lib/twilio"), "sendEmail", fake_sendEmail);
+    sinon.replace(require("../lib/storage"), "createUploadUrl", fake_upload);
 
-    return { fake_sendSMS, fake_sendEmail };
+    return { fake_sendSMS, fake_sendEmail, fake_upload };
 }
