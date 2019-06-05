@@ -69,7 +69,8 @@ test.skip("POST /claims - delivers notifications", async t => {
     t.true(fake_sendEmail.callCount > 0);
 });
 
-test.serial("POST /upload - generates upload urls", async t => {
+// Skip for the same reason as above
+test.skip("POST /upload - generates upload urls", async t => {
     let res = await http().post("/upload");
 
     t.is(res.statusCode, 200);
