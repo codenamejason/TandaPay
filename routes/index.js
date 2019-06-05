@@ -1,5 +1,7 @@
 let app = require("express")();
 
+app.use(require("cookie-parser")());
+
 app.get("/version", (req, res) => {
     res.send(require("../package.json").version);
 });
