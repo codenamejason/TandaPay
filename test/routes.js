@@ -1,13 +1,27 @@
 let test = require("ava");
 let sinon = require("sinon");
 let request = require("supertest");
+let MemoryMongo = require("mongo-in-memory");
 
+// set up sinon mocks before local requires
 let { fake_sendSMS, fake_sendEmail } = sinonSetup();
 
-require('../models/register');
-
+require("../models/register");
 let app = require("../routes");
 let http = () => request(app);
+
+// set up in memory MongoDB before tests run
+test.before(async t => {
+    let mongo = new MemoryMongo();
+
+    // ugh, callbacks
+    await new Promise((res, rej) =>
+        mongo.start(err => (err ? rej(err) : res()))
+    );
+
+    let uri = mongo.getMongouri("test");
+    require("mongoose").connect(uri, { useNewUrlParser: true });
+});
 
 // NOTE: All tests that check the state of fake_'s need to run in .serial mode
 // so call state can be reset between tests
@@ -22,6 +36,25 @@ test("server starts (and reports version)", async t => {
     t.is(res.statusCode, 200);
     t.is(res.text, version);
     t.regex(res.header["content-type"], /text/);
+});
+
+test("in memory MongoDB works", async t => {
+    let User = require("../models/User.js");
+
+    let bob = new User({
+        name: "Bob",
+        email: "bob@example.org",
+        password: "mynamebob",
+        role: "secretary",
+        status: "pending",
+    });
+
+    // save bob
+    await bob.save();
+
+    // retrieve bob
+    let bob2 = await User.findOne({ _id: bob._id });
+    t.truthy(bob2);
 });
 
 // Skip this test until db is mocked out to allow route to check authentication
