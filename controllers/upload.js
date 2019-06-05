@@ -9,6 +9,7 @@ let { createUploadUrl } = require("../lib/storage.js");
  * @returns: void
  */
 async function uploadController(req, res, next) {
+    // TODO: let name = req.user.id + '_'  + uuid();
     let name = uuid();
     let url = await createUploadUrl(name);
     res.status(200).send({ id: name, url });
