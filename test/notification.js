@@ -17,7 +17,7 @@ let {
 
 let createSendNofificationMiddleware = require("../middleware/notification");
 
-let tandaID, aliceID, bobID;
+let groupID, aliceID, bobID;
 
 // set up in memory MongoDB before tests run
 test.before(async t => {
@@ -31,8 +31,7 @@ test.before(async t => {
     let uri = mongo.getMongouri("test");
     mongoose.connect(uri, { useNewUrlParser: true });
 
-    let User = mongoose.model("users");
-    await mongoSetup(User);
+    await mongoSetup();
 });
 
 // NOTE: All tests that check the state of fake_'s need to run in .serial mode
@@ -43,28 +42,28 @@ test.beforeEach(t => {
 
 test("notifications can be instantiated", t => {
     t.notThrows(() => {
-        new Notification({ tandaID });
+        new Notification({ groupID });
     });
     t.notThrows(() => {
-        new ClaimCreatedNotification({ tandaID, claimantID: bobID });
+        new ClaimCreatedNotification({ groupID, claimantID: bobID });
     });
     t.notThrows(() => {
-        new ClaimUpdatedNotification({ tandaID, claimantID: bobID });
+        new ClaimUpdatedNotification({ groupID, claimantID: bobID });
     });
     t.notThrows(() => {
         new ClaimApprovedNotification({
-            tandaID,
+            groupID,
             claimantID: bobID,
             approverID: aliceID,
         });
     });
     t.notThrows(() => {
-        new PremiumPaidNotification({ tandaID, payerID: bobID });
+        new PremiumPaidNotification({ groupID, payerID: bobID });
     });
 });
 
 test.serial("`Notification`s can be delivered", async t => {
-    let notif = new Notification({ tandaID });
+    let notif = new Notification({ groupID });
 
     await notif.deliver();
 
@@ -76,7 +75,7 @@ test.serial("`Notification`s can be delivered", async t => {
 });
 
 test.serial("`ClaimCreatedNotification`s work", async t => {
-    let notif = new ClaimCreatedNotification({ tandaID, claimantID: bobID });
+    let notif = new ClaimCreatedNotification({ groupID, claimantID: bobID });
 
     await notif.deliver();
 
@@ -88,7 +87,7 @@ test.serial("`ClaimCreatedNotification`s work", async t => {
 });
 
 test.serial("`ClaimUpdatedNotification`s work", async t => {
-    let notif = new ClaimUpdatedNotification({ tandaID, claimantID: bobID });
+    let notif = new ClaimUpdatedNotification({ groupID, claimantID: bobID });
 
     await notif.deliver();
 
@@ -101,7 +100,7 @@ test.serial("`ClaimUpdatedNotification`s work", async t => {
 
 test.serial("`ClaimApprovedNotification`s work", async t => {
     let notif = new ClaimApprovedNotification({
-        tandaID,
+        groupID,
         claimantID: bobID,
         approverID: aliceID,
     });
@@ -120,7 +119,7 @@ test.serial("`ClaimApprovedNotification`s work", async t => {
 });
 
 test.serial("`PremiumPaidNotification`s work", async t => {
-    let notif = new PremiumPaidNotification({ tandaID, payerID: bobID });
+    let notif = new PremiumPaidNotification({ groupID, payerID: bobID });
 
     await notif.deliver();
 
@@ -139,7 +138,7 @@ test.serial("notification middleware delivers notifications", async t => {
 
     claimApprovedMiddleware(
         {
-            tandaID,
+            groupID,
             claimantID: bobID,
             approverID: aliceID,
         },
@@ -214,7 +213,13 @@ async function mongoSetup() {
 
     await tanda.save();
 
+    alice.groupID = tanda._id;
+    bob.groupID = tanda._id;
+
+    await alice.save();
+    await bob.save();
+
     aliceID = alice._id;
     bobID = bob._id;
-    tandaID = tanda._id;
+    groupID = tanda._id;
 }

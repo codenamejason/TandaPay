@@ -12,7 +12,8 @@ async function uploadController(req, res, next) {
     let userID = req.user._id.toString();
     let filename = userID + "_" + uuid();
     let url = await createUploadUrl(filename);
-    res.status(200).send({ id: name, url });
+    res.status(200).send({ id: filename, url });
+    next();
 }
 
 module.exports = uploadController;
