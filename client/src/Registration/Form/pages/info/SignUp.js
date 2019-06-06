@@ -13,8 +13,11 @@ import {
 	Radio,
 	FormControlLabel,
 	FormControl,
-	FormLabel
+	FormLabel,
+	Avatar,
+	Typography
 } from "@material-ui/core";
+import { LockOutlined } from "@material-ui/icons";
 import styles from "../../styles/form.style";
 import { EmailField, PasswordField, NameField } from "../../components/Fields";
 
@@ -23,12 +26,7 @@ const RegLink = React.forwardRef((props, ref) => (
 ));
 
 class SignUp extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-
 	onSubmit = (values) => {
-		const { name, email, password } = values;
 		console.log(values);
 		// this.props.signUp({ name, email, password, role });
 	};
@@ -36,31 +34,39 @@ class SignUp extends React.Component {
 	render() {
 		const { classes } = this.props;
 		return (
-			<Form onSubmit={this.onSubmit}>
-				{({ handleSubmit }) => (
-					<form className={classes.form}>
-						<NameField />
-						<EmailField />
-						<PasswordField />
-						{/* {this.renderRoleForm()} */}
-						<Button
-							variant="contained"
-							color="primary"
-							className={classes.submit}
-							component={RegLink}
-							to="/admin"
-							type="submit"
-							onClick={(event) => {
-								event.preventDefault();
-								handleSubmit();
-							}}
-						>
-							SIGN UP
-						</Button>
-						{this.renderExtra()}
-					</form>
-				)}
-			</Form>
+			<div className={classes.form}>
+				<Avatar className={classes.avatar}>
+					<LockOutlined />
+				</Avatar>
+				<Typography component="h1" variant="h5">
+					Sign Up
+				</Typography>
+				<Form onSubmit={this.onSubmit}>
+					{({ handleSubmit }) => (
+						<form className={classes.formFix}>
+							<NameField />
+							<EmailField />
+							<PasswordField />
+							{/* {this.renderRoleForm()} */}
+							<Button
+								variant="contained"
+								color="primary"
+								className={classes.submit}
+								component={RegLink}
+								to="/admin"
+								type="submit"
+								onClick={(event) => {
+									event.preventDefault();
+									handleSubmit();
+								}}
+							>
+								SIGN UP
+							</Button>
+							{this.renderExtra()}
+						</form>
+					)}
+				</Form>
+			</div>
 		);
 	}
 

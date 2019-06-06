@@ -2,7 +2,6 @@ import React from "react";
 import {
 	CssBaseline,
 	Avatar,
-	Paper,
 	Grid,
 	Typography,
 	withStyles,
@@ -11,13 +10,11 @@ import {
 	Link,
 	Divider
 } from "@material-ui/core";
-import { LockOutlined, LockOpenOutlined } from "@material-ui/icons";
 import {
 	GoogleLoginButton,
 	FacebookLoginButton
 } from "react-social-login-buttons";
 import { connect } from "react-redux";
-import axios from "axios";
 import * as actions from "../actions";
 import { SignUp, Login } from "./Form/pages/info/";
 
@@ -36,17 +33,7 @@ class Registration extends React.Component {
 			tab: newValue
 		});
 	};
-	handleGoogleLogin = async (event) => {
-		const fakeBody = {
-			role: "policyholder",
-			code: "67984894"
-		};
 
-		const response = await axios.get("/auth/google/redirect", {
-			params: fakeBody
-		});
-		console.log(response);
-	};
 	render() {
 		const { classes } = this.props;
 		return (
@@ -84,12 +71,12 @@ class Registration extends React.Component {
 					<Tab label="Sign Up" />
 					<Tab label="Log In" />
 				</Tabs>
-				{this.state.tab === 0 && this.renderSignUpForm()}
-				{this.state.tab === 1 && this.renderLoginForm()}
+				{this.state.tab === 0 && <SignUp />}
+				{this.state.tab === 1 && <Login />}
 				<Divider className={classes.divider} />
 
 				<Grid container className={classes.social}>
-					<GoogleLoginButton onClick={this.handleGoogleLogin}>
+					<GoogleLoginButton>
 						<Link
 							href={"/auth/google"}
 							color="inherit"
@@ -109,36 +96,6 @@ class Registration extends React.Component {
 						</Link>
 					</FacebookLoginButton>
 				</Grid>
-			</div>
-		);
-	};
-
-	renderSignUpForm = () => {
-		const { classes } = this.props;
-		return (
-			<div className={classes.form}>
-				<Avatar className={classes.avatar}>
-					<LockOutlined />
-				</Avatar>
-				<Typography component="h1" variant="h5">
-					Sign Up
-				</Typography>
-
-				<SignUp />
-			</div>
-		);
-	};
-	renderLoginForm = () => {
-		const { classes } = this.props;
-		return (
-			<div className={classes.form}>
-				<Avatar className={classes.avatar}>
-					<LockOpenOutlined />
-				</Avatar>
-				<Typography component="h1" variant="h5">
-					Login
-				</Typography>
-				{/* <Login /> */}
 			</div>
 		);
 	};

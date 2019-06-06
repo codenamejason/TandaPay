@@ -1,9 +1,15 @@
 const styles = (theme) => ({
+	form: {
+		margin: theme.spacing(5),
+		display: "flex",
+		flexDirection: "column",
+		alignItems: "center"
+	},
 	avatar: {
 		margin: theme.spacing(1),
 		backgroundColor: theme.palette.secondary.main
 	},
-	form: {
+	formFix: {
 		width: "100%", // Fix IE 11 issue.
 		marginTop: theme.spacing(1)
 	},

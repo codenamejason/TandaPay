@@ -23,16 +23,6 @@ const styles = (theme) => ({
 		color: "white",
 		textAlign: "center"
 	},
-	form: {
-		margin: theme.spacing(5),
-		display: "flex",
-		flexDirection: "column",
-		alignItems: "center"
-	},
-	avatar: {
-		margin: theme.spacing(1),
-		backgroundColor: theme.palette.secondary.main
-	},
 	area: {
 		margin: theme.spacing(8, 0),
 		display: "flex",

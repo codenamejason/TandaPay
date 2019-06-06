@@ -1,10 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { isEmail, isEmpty, isLength } from "validator";
+import { Form } from "react-final-form";
 //redux
 import { connect } from "react-redux";
 import * as actions from "../../../../actions";
-import { Button, Grid, withStyles } from "@material-ui/core";
+import {
+	Button,
+	Grid,
+	withStyles,
+	Avatar,
+	Typography
+} from "@material-ui/core";
+import { LockOpenOutlined } from "@material-ui/icons";
 import { EmailField, PasswordField } from "../../components/Fields";
 
 import styles from "../../styles/form.style";
@@ -13,72 +20,47 @@ const RegLink = React.forwardRef((props, ref) => (
 ));
 
 class Login extends React.Component {
-	handleSubmit = (event) => {
-		event.preventDefault();
-		// this.props.logIn({ email, password });
-		//make request to sign in
+	onSubmit = (values) => {
+		console.log(values);
+		// this.props.logIn();
 	};
 
 	render() {
 		const { classes } = this.props;
 		return (
-			<form className={classes.form} noValidate>
-				<EmailField />
-				<PasswordField />
-				<Button
-					type="submit"
-					variant="contained"
-					color="primary"
-					className={classes.submit}
-					component={RegLink}
-					to="/admin"
-					onClick={this.handleSubmit}
-				>
-					Login
-				</Button>
-				{this.renderExtra()}
-			</form>
+			<div className={classes.form}>
+				<Avatar className={classes.avatar}>
+					<LockOpenOutlined />
+				</Avatar>
+				<Typography component="h1" variant="h5">
+					Log In
+				</Typography>
+				<Form onSubmit={this.onSubmit}>
+					{({ handleSubmit }) => (
+						<form className={classes.formFix}>
+							<EmailField />
+							<PasswordField />
+							<Button
+								variant="contained"
+								color="primary"
+								className={classes.submit}
+								component={RegLink}
+								to="/admin"
+								type="submit"
+								onClick={(event) => {
+									event.preventDefault();
+									handleSubmit();
+								}}
+							>
+								SIGN UP
+							</Button>
+							{this.renderExtra()}
+						</form>
+					)}
+				</Form>
+			</div>
 		);
 	}
-
-	handleEmailChange = (event) => {
-		//add validation to check for error
-		let email = event.target.value;
-		this.setState({
-			email: email
-		});
-
-		if (!isEmail(email) && !isEmpty(email)) {
-			this.setState({
-				emailError: "Invalid Email"
-			});
-		} else {
-			this.setState({
-				emailError: ""
-			});
-		}
-	};
-
-	handlePasswordChange = (event) => {
-		let password = event.target.value;
-		this.setState({
-			password: password
-		});
-
-		let invalidPassword =
-			!isLength(password, {
-				min: 8
-			}) && !isEmpty(password);
-		if (invalidPassword) {
-			this.setState({
-				passwordError: "Invalid Password"
-			});
-		} else {
-			this.setState({
-				passwordError: ""
-			});
-		}
-	};
 
 	renderExtra = () => {
 		return (
