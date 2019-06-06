@@ -1,19 +1,14 @@
 import React from "react";
 import {
 	CssBaseline,
-	Avatar,
 	Grid,
 	Typography,
 	withStyles,
 	Tabs,
 	Tab,
-	Link,
 	Divider
 } from "@material-ui/core";
-import {
-	GoogleLoginButton,
-	FacebookLoginButton
-} from "react-social-login-buttons";
+import { GoogleLogin, FacebookLogin } from "./Form/components/Buttons";
 import { connect } from "react-redux";
 import * as actions from "../actions";
 import { SignUp, Login } from "./Form/pages/info/";
@@ -76,25 +71,8 @@ class Registration extends React.Component {
 				<Divider className={classes.divider} />
 
 				<Grid container className={classes.social}>
-					<GoogleLoginButton>
-						<Link
-							href={"/auth/google"}
-							color="inherit"
-							className={classes.link}
-						>
-							Sign In With Google
-						</Link>
-					</GoogleLoginButton>
-
-					<FacebookLoginButton>
-						<Link
-							href={"/auth/facebook"}
-							color="inherit"
-							className={classes.link}
-						>
-							Sign In With Facebook
-						</Link>
-					</FacebookLoginButton>
+					<GoogleLogin />
+					<FacebookLogin />
 				</Grid>
 			</div>
 		);
