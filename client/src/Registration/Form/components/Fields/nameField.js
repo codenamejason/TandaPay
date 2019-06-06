@@ -3,22 +3,21 @@ import TextField from "./styled/TextField";
 import { Field } from "react-final-form";
 
 const validate = (value) => {
-	const valid = value !== undefined && value.length >= 8;
+	const valid = value !== undefined;
 	if (valid) {
 		return undefined;
 	} else {
-		return "Invalid Password";
+		return "You must provide a name.";
 	}
 };
 function PasswordField() {
 	return (
 		<Field
-			name="password"
+			name="name"
 			required
-			label="Password"
-			type="password"
-			id="password"
+			label="Name"
 			type="text"
+			id="name"
 			component={TextField}
 			validate={validate}
 		/>
