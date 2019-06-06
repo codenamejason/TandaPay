@@ -105,8 +105,6 @@ function sinonSetup() {
     let stub_getTandaByID = id => Promise.resolve(testTanda);
     let stub_getUserByID = id => Promise.resolve(testUsers[id]);
 
-    sinon.replace(require("../lib/db"), "getTandaByID", stub_getTandaByID);
-    sinon.replace(require("../lib/db"), "getUserByID", stub_getUserByID);
     sinon.replace(require("../lib/twilio"), "sendSMS", fake_sendSMS);
     sinon.replace(require("../lib/twilio"), "sendEmail", fake_sendEmail);
 
