@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Form } from "react-final-form";
 //redux
 import { connect } from "react-redux";
-import * as actions from "../../../../actions";
+import * as actions from "../../../actions";
 import {
 	Button,
 	Grid,
@@ -18,8 +18,8 @@ import {
 	Typography
 } from "@material-ui/core";
 import { LockOutlined } from "@material-ui/icons";
-import styles from "../../styles/form.style";
-import { EmailField, PasswordField, NameField } from "../../components/Fields";
+import styles from "../styles/form.style";
+import { EmailField, PasswordField, NameField } from "../components/Fields";
 
 const RegLink = React.forwardRef((props, ref) => (
 	<Link innerRef={ref} {...props} />
@@ -28,7 +28,8 @@ const RegLink = React.forwardRef((props, ref) => (
 class SignUp extends React.Component {
 	onSubmit = (values) => {
 		console.log(values);
-		// this.props.signUp({ name, email, password, role });
+		const { name, email, password } = values;
+		this.props.signUp({ name, email, password });
 	};
 
 	render() {

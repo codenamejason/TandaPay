@@ -137,12 +137,13 @@ suite("POST /signup", () => {
 			expect(body.name).toEqual(name);
 			expect(body.email).toEqual(email);
 			expect(body.token).toEqual(parsedCookie.value); //user has been authenticated
-
+			expect(body.status).toEqual("approved");
+			expect(body.accountCompleted).toEqual(false);
 			//makes sure user's token has right values
 			const decoded = jwt.decode(body.token);
 			expect(decoded.access).toEqual("auth");
 			expect(decoded.sub).toBeDefined();
-			expect(decoded.accessLevel).toEqual("policyholder");
+			expect(decoded.role).toEqual("policyholder");
 
 			const user = await User.findOne({ email });
 			expect(user).toBeDefined();
@@ -283,7 +284,7 @@ suite("POST /signup", () => {
 			const decoded = jwt.decode(body.token);
 			expect(decoded.access).toEqual("auth");
 			expect(decoded.sub).toBeDefined();
-			expect(decoded.accessLevel).toEqual("secretary");
+			expect(decoded.role).toEqual("secretary");
 
 			const user = await User.findOne({ email });
 			expect(user).toBeDefined();
@@ -392,7 +393,7 @@ suite("POST /login", () => {
 
 			expect(decoded.access).toEqual("auth");
 			expect(decoded.sub).toBeDefined();
-			expect(decoded.accessLevel).toEqual(body["role"]);
+			expect(decoded.role).toEqual(body["role"]);
 		});
 	});
 	suite("Secretary", () => {
@@ -492,7 +493,7 @@ suite("POST /login", () => {
 
 			expect(decoded.access).toEqual("auth");
 			expect(decoded.sub).toBeDefined();
-			expect(decoded.accessLevel).toEqual(body["role"]);
+			expect(decoded.role).toEqual(body["role"]);
 		});
 	});
 });

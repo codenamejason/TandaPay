@@ -11,7 +11,7 @@ import {
 import { GoogleLogin, FacebookLogin } from "./Form/components/Buttons";
 import { connect } from "react-redux";
 import * as actions from "../actions";
-import { SignUp, Login } from "./Form/pages/info/";
+import { SignUp, Login } from "./Form/pages";
 
 import styles from "./registration.style";
 

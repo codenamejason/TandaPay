@@ -7,24 +7,28 @@ import { connect } from "react-redux";
  * 2.) Do not have the appropriate role to see the page
  * @param {Base Page} WrappedComponent
  */
-let withAuthorization = WrappedComponent => {
-  class AuthorizedComponent extends Component {
-    render() {
-      const { user } = this.props;
-      let userHasPemissions = user;
-      if (userHasPemissions) {
-        return <WrappedComponent {...this.props} />;
-      } else {
-        return <Redirect to="/" />;
-      }
-    }
-  }
-  const mapStateToProps = state => {
-    return {
-      user: state.user
-    };
-  };
-  return connect(mapStateToProps)(AuthorizedComponent);
+let withAuthorization = (WrappedComponent) => {
+	class AuthorizedComponent extends Component {
+		render() {
+			const { user } = this.props;
+			let userHasPemissions = user && user.accountCompleted;
+			if (userHasPemissions) {
+				return <WrappedComponent {...this.props} />;
+			} else {
+				if (!user) {
+					return <Redirect to="/" />;
+				} else {
+					return <Redirect to="/setup" />;
+				}
+			}
+		}
+	}
+	const mapStateToProps = (state) => {
+		return {
+			user: state.user
+		};
+	};
+	return connect(mapStateToProps)(AuthorizedComponent);
 };
 
 /**
@@ -32,25 +36,55 @@ let withAuthorization = WrappedComponent => {
  * Redirects the user to the base dashboard page
  * @param {Base Page} WrappedComponent
  */
-let withoutAuthorization = WrappedComponent => {
-  class UnauthorizedComponent extends Component {
-    render() {
-      const { user } = this.props;
-      let userHasPemissions = user;
-      if (!userHasPemissions) {
-        // if the user doesn't exist
-        return <WrappedComponent {...this.props} />;
-      } else {
-        return <Redirect to="/admin" />;
-      }
-    }
-  }
-  const mapStateToProps = state => {
-    return {
-      user: state.user
-    };
-  };
-  return connect(mapStateToProps)(UnauthorizedComponent);
+let withoutAuthorization = (WrappedComponent) => {
+	class UnauthorizedComponent extends Component {
+		render() {
+			const { user } = this.props;
+
+			let userHasPemissions = user;
+			if (!userHasPemissions) {
+				// if the user doesn't exist
+				return <WrappedComponent {...this.props} />;
+			} else {
+				const { accountCompleted } = user;
+
+				if (accountCompleted) {
+					return <Redirect to="/admin" />;
+				} else {
+					return <Redirect to="/setup" />;
+				}
+			}
+		}
+	}
+	const mapStateToProps = (state) => {
+		return {
+			user: state.user
+		};
+	};
+	return connect(mapStateToProps)(UnauthorizedComponent);
 };
 
-export { withAuthorization, withoutAuthorization };
+/**
+ *
+ * @param {*} WrappedComponent
+ */
+let withIncompleteAuthorization = (WrappedComponent) => {
+	class LimitedComponent extends Component {
+		render() {
+			const { user } = this.props;
+			if (!user) {
+				return <Redirect to="/" />;
+			} else if (user && user.accountCompleted) {
+				return <Redirect to="/admin" />;
+			}
+			return <WrappedComponent {...this.props} />;
+		}
+	}
+	const mapStateToProps = (state) => {
+		return { user: state.user };
+	};
+
+	return connect(mapStateToProps)(LimitedComponent);
+};
+
+export { withAuthorization, withoutAuthorization, withIncompleteAuthorization };

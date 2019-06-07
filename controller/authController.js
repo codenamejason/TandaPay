@@ -84,15 +84,13 @@ const oauthController = async (req, res, next) => {
  * @todo Add user model to the request parameters
  */
 const createUser = async (req, res, next) => {
-	const { name, email, password, role } = req.body;
-	if (role === "admin") {
-		return res.status(400).send({
-			error: "Cannot create admin account"
-		});
-	}
-	const status = role === "policyholder" ? "approved" : "pending";
+	const { name, email, password } = req.body;
 	try {
-		const user = new User({ name, email, password, role, status });
+		const user = new User({
+			name,
+			email,
+			password
+		});
 		await user.save();
 		next();
 	} catch (error) {
@@ -108,12 +106,12 @@ const createUser = async (req, res, next) => {
  * @param next - Express callback function that will forward the route to the next controller
  */
 const generateToken = async (req, res, next) => {
-	const { email, name, role } = req.body;
+	const { email } = req.body;
 	const user = await User.findOne({ email });
 	try {
-		const token = await user.generateAuthToken(role);
+		const token = await user.generateAuthToken();
 		req.token = token;
-		req.user = { name, email };
+		req.user = user;
 		next();
 	} catch (e) {
 		res.status(400).send(e);
@@ -172,8 +170,8 @@ const sendCookie = async (req, res) => {
 	});
 
 	if (req.user) {
-		const { email, name, status } = req.user;
-		return res.send({ token, email, name, status });
+		const { email, name, status, accountCompleted } = req.user;
+		return res.send({ token, email, name, status, accountCompleted });
 	} else {
 		return res.send();
 	}

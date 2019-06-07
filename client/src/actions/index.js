@@ -2,7 +2,6 @@ import axios from "axios";
 import { FETCH_USER } from "./types";
 
 export const fetchUser = () => async (dispatch) => {
-	//pull token from header
 	try {
 		const response = await axios.get("/auth/user", {
 			withCredentials: true
@@ -12,9 +11,11 @@ export const fetchUser = () => async (dispatch) => {
 };
 
 export const signUp = (body) => async (dispatch) => {
-	const response = await axios.post("/auth/signup", body);
-	console.log(response);
-	dispatch({ type: FETCH_USER, payload: response.data });
+	try {
+		const response = await axios.post("/auth/signup", body);
+		console.log(response.data);
+		dispatch({ type: FETCH_USER, payload: response.data });
+	} catch (error) {}
 };
 
 export const logIn = (body) => async (dispatch) => {

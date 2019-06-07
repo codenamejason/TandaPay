@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Form } from "react-final-form";
 //redux
 import { connect } from "react-redux";
-import * as actions from "../../../../actions";
+import * as actions from "../../../actions";
 import {
 	Button,
 	Grid,
@@ -12,9 +12,9 @@ import {
 	Typography
 } from "@material-ui/core";
 import { LockOpenOutlined } from "@material-ui/icons";
-import { EmailField, PasswordField } from "../../components/Fields";
+import { EmailField, PasswordField } from "../components/Fields";
 
-import styles from "../../styles/form.style";
+import styles from "../styles/form.style";
 const RegLink = React.forwardRef((props, ref) => (
 	<Link innerRef={ref} {...props} />
 ));

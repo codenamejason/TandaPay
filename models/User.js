@@ -28,7 +28,7 @@ const userSchema = new Schema({
 	},
 	role: {
 		type: String,
-		required: true,
+		required: false,
 		trim: true,
 		validate: [
 			{
@@ -42,6 +42,11 @@ const userSchema = new Schema({
 				message: "{VALUE} is not a valid user role."
 			}
 		]
+	},
+	accountCompleted: {
+		type: Boolean,
+		default: false,
+		required: true
 	},
 	status: {
 		// only necessary for secretaries and admin's. They must be approved
@@ -145,11 +150,12 @@ const userSchema = new Schema({
  * @returns the auth token generated for the user
  * @todo invalidate old tokens
  */
-userSchema.methods.generateAuthToken = async function(accessLevel) {
+userSchema.methods.generateAuthToken = async function() {
 	const user = this;
 	const access = "auth";
+	const { role } = user;
 	let token = jwt.sign(
-		{ sub: user._id.toHexString(), access, accessLevel },
+		{ sub: user._id.toHexString(), access, role },
 		keys.jwtSecret
 	);
 	// const res = await user.update({
