@@ -17,7 +17,6 @@ function EmailField() {
 			label="Email"
 			type="email"
 			id="email"
-			type="text"
 			component={TextField}
 			validate={validate}
 		/>

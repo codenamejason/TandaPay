@@ -18,7 +18,6 @@ function PasswordField() {
 			label="Password"
 			type="password"
 			id="password"
-			type="text"
 			component={TextField}
 			validate={validate}
 		/>

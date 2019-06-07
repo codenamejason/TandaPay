@@ -13,7 +13,7 @@ import {
 
 import Registration from "./Registration/Registration";
 import Dashboard from "./Dashboard/Dashboard";
-import Setup from "./Setup/";
+import Setup from "./Setup/Setup";
 class App extends React.Component {
 	componentDidMount() {
 		this.props.fetchUser();

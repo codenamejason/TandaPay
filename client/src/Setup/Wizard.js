@@ -1,8 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Form } from "react-final-form";
+import { withStyles } from "@material-ui/core";
 
-export default class Wizard extends React.Component {
+import styles from "./setup.style";
+class Wizard extends React.Component {
 	static propTypes = {
 		onSubmit: PropTypes.func.isRequired
 	};
@@ -51,7 +53,7 @@ export default class Wizard extends React.Component {
 	};
 
 	render() {
-		const { children } = this.props;
+		const { children, classes } = this.props;
 		const { page, values } = this.state;
 		const activePage = React.Children.toArray(children)[page];
 		const isLastPage = page === React.Children.count(children) - 1;
@@ -64,7 +66,46 @@ export default class Wizard extends React.Component {
 				{({ handleSubmit, submitting, values }) => (
 					<form onSubmit={handleSubmit}>
 						{activePage}
-						<div className="buttons">
+						<Grid container className={classes.buttonGroup}>
+							{page > 0 && (
+								<Grid item xs={6} className={classes.cancelButton}>
+									<Button
+										variant="contained"
+										color="secondary"
+										className={classes.button}
+										onClick={this.previous}
+									>
+										Cancel
+									</Button>
+								</Grid>
+							)}
+							{!isLastPage && (
+								<Grid item xs={6} className={classes.nextButton}>
+									<Button
+										variant="contained"
+										color="primary"
+										className={classes.button}
+										type="submit"
+									>
+										Next
+									</Button>
+								</Grid>
+							)}
+							{isLastPage && (
+								<Grid item xs={6} className={classes.nextButton}>
+									<Button
+										variant="contained"
+										color="primary"
+										className={classes.button}
+										type="submit"
+										disabled={submitting}
+									>
+										Submit
+									</Button>
+								</Grid>
+							)}
+						</Grid>
+						{/* <div className="buttons">
 							{page > 0 && (
 								<button type="button" onClick={this.previous}>
 									« Previous
@@ -76,7 +117,7 @@ export default class Wizard extends React.Component {
 									Submit
 								</button>
 							)}
-						</div>
+						</div> */}
 
 						<pre>{JSON.stringify(values, 0, 2)}</pre>
 					</form>
@@ -85,3 +126,5 @@ export default class Wizard extends React.Component {
 		);
 	}
 }
+
+export default withStyles(styles, { withTheme: true })(Wizard);
