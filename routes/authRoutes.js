@@ -106,7 +106,9 @@ router.post(
  */
 router.get("/user", authenticated, (req, res) => {
 	//check for user
-	res.send(req.user);
+	const token = req.token;
+	const { email, name, status, accountCompleted } = req.user;
+	return res.send({ token, email, name, status, accountCompleted });
 });
 
 /**

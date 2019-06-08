@@ -96,7 +96,7 @@ const userSchema = new Schema({
 	},
 	googleID: String,
 	facebookID: String,
-	eth: String,
+	ethereumAddress: String,
 	groupID: Schema.Types.ObjectId,
 	payments: [Schema.Types.ObjectId], //replace with array of payment schema when appropriate
 	settings: [
