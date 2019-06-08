@@ -42,7 +42,7 @@ class Login extends React.Component {
 							<PasswordField />
 							<Button
 								variant="contained"
-								color="primary"
+								color="secondary"
 								className={classes.submit}
 								component={RegLink}
 								to="/admin"

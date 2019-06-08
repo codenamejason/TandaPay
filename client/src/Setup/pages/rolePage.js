@@ -71,8 +71,7 @@ class RolePage extends React.Component {
 					<Grid item xs={6} className={classes.cancelButton}>
 						<Button
 							variant="contained"
-							color="secondary"
-							className={classes.button}
+							className={clsx(classes.button, classes.cancel)}
 							onClick={this.props.previousPage}
 						>
 							Cancel
@@ -82,7 +81,7 @@ class RolePage extends React.Component {
 						<Button
 							variant="contained"
 							color="primary"
-							className={classes.button}
+							className={clsx(classes.button, classes.next)}
 							onClick={() => this.props.onPageSubmit(role, accessCode)}
 						>
 							Next

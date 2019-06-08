@@ -11,9 +11,6 @@ let router = express.Router();
 /**
  * @summary Adds the role, groupID/accessCode, walletProvider and ethAddress to the user
  * and sends back a new auth token that says their account is complete.
- * @todo Update the user profile with new info
- * @todo generate a new auth token for the user
- * @todo send cookie with info
  */
 router.patch(
 	"/complete",

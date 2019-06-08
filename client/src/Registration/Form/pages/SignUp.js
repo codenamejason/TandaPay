@@ -51,7 +51,6 @@ class SignUp extends React.Component {
 							{/* {this.renderRoleForm()} */}
 							<Button
 								variant="contained"
-								color="primary"
 								className={classes.submit}
 								component={RegLink}
 								to="/admin"

@@ -7,6 +7,7 @@ import {
 	Card,
 	CardContent
 } from "@material-ui/core";
+import clsx from "clsx";
 import styles from "../setup.style";
 class WalletPage extends React.Component {
 	constructor(props) {
@@ -86,7 +87,7 @@ class WalletPage extends React.Component {
 					<Button
 						variant="contained"
 						color="secondary"
-						className={classes.button}
+						className={clsx(classes.button, classes.cancel)}
 						onClick={this.props.previousPage}
 					>
 						Previous
@@ -96,7 +97,7 @@ class WalletPage extends React.Component {
 					<Button
 						variant="contained"
 						color="primary"
-						className={classes.button}
+						className={clsx(classes.button, classes.next)}
 						onClick={() => this.props.onPageSubmit(walletProvider, ethAddress)}
 					>
 						SAVE

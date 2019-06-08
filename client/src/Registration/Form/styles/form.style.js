@@ -16,10 +16,15 @@ const styles = (theme) => ({
 	submit: {
 		margin: theme.spacing(3, 0, 2),
 		width: "100%",
+		backgroundColor: theme.palette.secondary.light,
+		color: "white",
 		[theme.breakpoints.up("md")]: {
 			width: "auto",
 			padding: theme.spacing(1.5, 6, 1.5, 6),
 			float: "right"
+		},
+		"&:hover": {
+			backgroundColor: theme.palette.secondary.main
 		}
 	},
 	formControl: {

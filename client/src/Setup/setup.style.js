@@ -55,6 +55,20 @@ const styles = (theme) => ({
 	button: {
 		width: theme.spacing(15)
 	},
+	cancel: {
+		backgroundColor: theme.palette.error.main,
+		color: "white",
+		"&:hover": {
+			backgroundColor: theme.palette.error.light
+		}
+	},
+	next: {
+		backgroundColor: theme.palette.secondary.main,
+		color: "white",
+		"&:hover": {
+			backgroundColor: theme.palette.secondary.light
+		}
+	},
 	card: {
 		padding: theme.spacing(3),
 		margin: theme.spacing(3)
