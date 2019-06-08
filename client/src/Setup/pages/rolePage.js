@@ -28,7 +28,7 @@ class RolePage extends React.Component {
 					How will you be using TandaPay?
 				</Typography>
 				<Grid container>
-					<Grid item xs={6} className={classes.area}>
+					<Grid item xs={12} sm={6} className={classes.area}>
 						<IconButton
 							name="policyholder"
 							id="policyholder"
@@ -48,7 +48,7 @@ class RolePage extends React.Component {
 						</Typography>
 						{this.renderCodeField()}
 					</Grid>
-					<Grid item xs={6} className={classes.area}>
+					<Grid item xs={12} sm={6} className={classes.area}>
 						<IconButton
 							disableRipple
 							className={clsx(classes.iconButton, {

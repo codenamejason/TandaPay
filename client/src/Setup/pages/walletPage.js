@@ -5,10 +5,13 @@ import {
 	Button,
 	withStyles,
 	Card,
-	CardContent
+	CardContent,
+	CardMedia
 } from "@material-ui/core";
 import clsx from "clsx";
 import styles from "../setup.style";
+import MetamaskIcon from "../../assets/metamask.svg";
+import FortmaticIcon from "../../assets/fortmatic.svg";
 class WalletPage extends React.Component {
 	constructor(props) {
 		super(props);
@@ -22,12 +25,14 @@ class WalletPage extends React.Component {
 		return (
 			<div>
 				<Grid container>
-					<Grid item xs={6} className={classes.area}>
+					<Grid item xs={12} sm={6} className={classes.area}>
 						<Card className={classes.card}>
 							<CardContent className={classes.cardContent}>
-								<Typography variant="h4" className={classes.subtitle}>
-									Metamask
-								</Typography>
+								<CardMedia
+									src={MetamaskIcon}
+									component="img"
+									title="Metamask"
+								/>
 								<Button
 									variant="outlined"
 									color="primary"
@@ -38,12 +43,14 @@ class WalletPage extends React.Component {
 							</CardContent>
 						</Card>
 					</Grid>
-					<Grid item xs={6} className={classes.area}>
+					<Grid item xs={12} sm={6} className={classes.area}>
 						<Card className={classes.card}>
 							<CardContent className={classes.cardContent}>
-								<Typography variant="h4" className={classes.subtitle}>
-									Fortmatic
-								</Typography>
+								<CardMedia
+									src={FortmaticIcon}
+									component="img"
+									title="Fortmatic"
+								/>
 								<Button
 									variant="outlined"
 									color="primary"
