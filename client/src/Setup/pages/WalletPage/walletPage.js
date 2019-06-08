@@ -9,9 +9,9 @@ import {
 	CardMedia
 } from "@material-ui/core";
 import clsx from "clsx";
-import styles from "../setup.style";
-import MetamaskIcon from "../../assets/metamask.svg";
-import FortmaticIcon from "../../assets/fortmatic.svg";
+import styles from "./wallet.style";
+import MetamaskIcon from "../../../assets/metamask.svg";
+import FortmaticIcon from "../../../assets/fortmatic.svg";
 class WalletPage extends React.Component {
 	constructor(props) {
 		super(props);
@@ -31,12 +31,17 @@ class WalletPage extends React.Component {
 								<CardMedia
 									src={MetamaskIcon}
 									component="img"
+									className={classes.img}
 									title="Metamask"
 								/>
+								<Typography variant="h6" className={classes.highlight}>
+									Advanced Users
+								</Typography>
 								<Button
 									variant="outlined"
 									color="primary"
 									onClick={this.onMetamaskClick}
+									className={classes.connect}
 								>
 									Connect
 								</Button>
@@ -50,11 +55,16 @@ class WalletPage extends React.Component {
 									src={FortmaticIcon}
 									component="img"
 									title="Fortmatic"
+									className={classes.img}
 								/>
+								<Typography variant="h6" className={classes.highlight}>
+									Recommended
+								</Typography>
 								<Button
 									variant="outlined"
 									color="primary"
 									onClick={this.onFormaticClick}
+									className={classes.connect}
 								>
 									Connect
 								</Button>

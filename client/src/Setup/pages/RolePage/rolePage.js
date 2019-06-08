@@ -9,7 +9,7 @@ import {
 	TextField
 } from "@material-ui/core";
 import { Person, AssignmentTurnedIn } from "@material-ui/icons";
-import styles from "../setup.style";
+import styles from "./role.style";
 class RolePage extends React.Component {
 	constructor(props) {
 		super(props);

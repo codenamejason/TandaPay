@@ -2,8 +2,7 @@ import React from "react";
 import { CssBaseline, Grid, withStyles } from "@material-ui/core";
 import { connect } from "react-redux";
 import * as actions from "../actions";
-import RolePage from "./pages/rolePage";
-import WalletPage from "./pages/walletPage";
+import { WalletPage, RolePage } from "./pages";
 import styles from "./setup.style";
 
 class Setup extends React.Component {

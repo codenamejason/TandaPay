@@ -26,10 +26,10 @@ export const logIn = (body) => async (dispatch) => {
 
 export const logOut = () => async (dispatch) => {
 	try {
-		const response = await axios.post("/auth/logout", {
+		await axios.post("/auth/logout", {
 			withCredentials: true
 		});
-		console.log(response.data);
+
 		dispatch({ type: FETCH_USER, payload: undefined });
 	} catch (error) {}
 };
