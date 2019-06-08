@@ -73,6 +73,7 @@ class RolePage extends React.Component {
 							variant="contained"
 							color="secondary"
 							className={classes.button}
+							onClick={this.props.previousPage}
 						>
 							Cancel
 						</Button>

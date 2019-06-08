@@ -6,7 +6,8 @@ export const fetchUser = () => async (dispatch) => {
 		const response = await axios.get("/auth/user", {
 			withCredentials: true
 		});
-		dispatch({ type: FETCH_USER, payload: response });
+		console.log(response.data);
+		dispatch({ type: FETCH_USER, payload: response.data });
 	} catch (error) {}
 };
 
@@ -28,8 +29,28 @@ export const logOut = () => async (dispatch) => {
 		const response = await axios.post("/auth/logout", {
 			withCredentials: true
 		});
+		console.log(response.data);
+		dispatch({ type: FETCH_USER, payload: undefined });
+	} catch (error) {}
+};
+
+export const cancelAccount = () => async (dispatch) => {
+	try {
+		const response = await axios.delete("/user/delete", {
+			withCredentials: true
+		});
 
 		dispatch({ type: FETCH_USER, payload: response.data });
-		window.location.reload();
-	} catch (error) {}
+	} catch (e) {}
+};
+
+export const completeAccount = (body) => async (dispatch) => {
+	console.log(body);
+	try {
+		const response = await axios.patch("/user/complete", body, {
+			withCredentials: true
+		});
+		console.log(response.data);
+		dispatch({ type: FETCH_USER, payload: response.data });
+	} catch (e) {}
 };

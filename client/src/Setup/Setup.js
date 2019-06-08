@@ -12,7 +12,7 @@ class Setup extends React.Component {
 		this.state = {
 			role: "",
 			accessCode: "",
-			walletType: "",
+			walletProvider: "",
 			ethAddress: "",
 			page: 0
 		};
@@ -25,17 +25,26 @@ class Setup extends React.Component {
 		});
 	};
 
-	onWalletSubmit = (walletType, ethAddress) => {
+	onWalletSubmit = (walletProvider, ethAddress) => {
 		this.setState({
-			walletType,
+			walletProvider,
 			ethAddress
 		});
+		const { role, accessCode } = this.state;
 		//call action creator
+		this.props.completeAccount({
+			role,
+			accessCode,
+			walletProvider,
+			ethAddress
+		});
 	};
 	handlePreviuos = () => {
 		const { page } = this.state;
 		if (page === 0) {
 			//cancel user
+			console.log("Cancel the user");
+			this.props.cancelAccount();
 		} else {
 			this.setState({
 				page: 0
@@ -48,13 +57,13 @@ class Setup extends React.Component {
 		return (
 			<Grid container component="main" className={classes.root}>
 				<CssBaseline />
-				{page == 0 && (
+				{page === 0 && (
 					<RolePage
 						onPageSubmit={this.onRoleSubmit}
 						previousPage={this.handlePreviuos}
 					/>
 				)}
-				{page == 1 && (
+				{page === 1 && (
 					<WalletPage
 						onPageSubmit={this.onWalletSubmit}
 						previousPage={this.handlePreviuos}

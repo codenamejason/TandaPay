@@ -54,6 +54,16 @@ const styles = (theme) => ({
 	},
 	button: {
 		width: theme.spacing(15)
+	},
+	card: {
+		padding: theme.spacing(3),
+		margin: theme.spacing(3)
+	},
+	cardContent: {
+		display: "flex",
+		flexDirection: "column",
+		justifyContent: "center",
+		alignItems: "center"
 	}
 });
 
