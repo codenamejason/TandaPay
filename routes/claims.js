@@ -11,13 +11,12 @@ router.post(
     "/",
     authenticated,
     async (req, res, next) => {
-        req.claimantID = req.query.userID;
-        req.tandaID = req.query.tandaID;
+        req.claimantID = req.user._id;
+        req.groupID = req.user.groupID;
 
         // TODO: actually to jwt & database stuff
 
-        res.set("Content-Type", "application/json");
-        res.send("{}");
+        res.status(200).send({});
 
         next();
     },

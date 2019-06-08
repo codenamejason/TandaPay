@@ -3,7 +3,7 @@ let Notifications = require("../lib/notification.js");
 module.exports = createSendNotificationMiddleware;
 function createSendNotificationMiddleware(kind) {
     return function sendNotificationsMiddleware(req, res, next) {
-        let { tandaID } = req;
+        let { groupID } = req;
         let notification = createNotification(kind, req);
 
         // this promise shouldn't be `await`ed because the request shouldn't
