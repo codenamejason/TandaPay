@@ -6,7 +6,6 @@ export const fetchUser = () => async (dispatch) => {
 		const response = await axios.get("/auth/me", {
 			withCredentials: true
 		});
-		console.log(response.data);
 		dispatch({ type: FETCH_USER, payload: response.data });
 	} catch (error) {}
 };

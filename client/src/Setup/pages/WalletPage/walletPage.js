@@ -54,7 +54,10 @@ class WalletPage extends React.Component {
 			</div>
 		);
 	}
-
+	handleNext = () => {
+		const { walletProvider, ethAddress } = this.state;
+		this.props.onPageSubmit(walletProvider, ethAddress);
+	};
 	onMetamaskClick = async () => {
 		const walletProvider = "metamask";
 		const ethAddress = "0xasifojasiofdj";
