@@ -42,7 +42,6 @@ class Setup extends React.Component {
 		const { page } = this.state;
 		if (page === 0) {
 			//cancel user
-			console.log("Cancel the user");
 			this.props.cancelAccount();
 		} else {
 			this.setState({

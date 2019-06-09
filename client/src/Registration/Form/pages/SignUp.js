@@ -27,7 +27,6 @@ const RegLink = React.forwardRef((props, ref) => (
 
 class SignUp extends React.Component {
 	onSubmit = (values) => {
-		console.log(values);
 		const { name, email, password } = values;
 		this.props.signUp({ name, email, password });
 	};

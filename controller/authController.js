@@ -20,8 +20,8 @@ const checkCredentials = async (req, res, next) => {
 
 /**
  *
- * @param {body} req
- * @param {*} res
+ * @param {Object} req
+ * @param {Object} res
  * @param next - Express callback function that will forward the route to the next controller
  * @todo Move the function to the controller folder
  */
@@ -45,11 +45,9 @@ const userDoesNotExist = async (req, res, next) => {
 
 /**
  *
- * @param {*} req
- * @param {*} res
+ * @param {Object} req
+ * @param {Object} res
  * @param next - Express callback function that will forward the route to the next controller
- * @todo Append the user model to the request model
- * @todo Move the function to the controller folder
  */
 const userDoesExist = async (req, res, next) => {
 	const { email, password } = req.body;
@@ -72,7 +70,6 @@ const userDoesExist = async (req, res, next) => {
  * @param {body:  {name, email, password}} req - receives the approved credentials from checkCredentials
  * @param res - The res parameter will remain unchanged if the user was created and saved properly, otherwise it'll return a 400 error
  * @param next - Express callback function that will forward the route to the next controller
- * @todo Add user model to the request parameters
  */
 const createUser = async (req, res, next) => {
 	const { name, email, password } = req.body;
@@ -168,7 +165,7 @@ const sendCookie = async (req, res) => {
  * @summary - The logOut controller will receive the user model and the auth token.
  * It will then remove the token from the user model and user's cookie used for authentication.
  * @param {user, token} req - It will receive the user model and auth token through the request body
- * @param {*} res - It will have the x-auth cookie removed, and respond with a 200 success response.
+ * @param {Object} res - It will have the x-auth cookie removed, and respond with a 200 success response.
  * If there is an issue removing the token and/or the cookie.
  */
 const logOut = async (req, res) => {
@@ -179,7 +176,6 @@ const logOut = async (req, res) => {
 		res.cookie("x-auth", "", { maxAge: Date.now() });
 		res.status(200).send({ success: "You have been logged out successfully" });
 	} catch (e) {
-		console.log(e);
 		res.status(400).send(e);
 	}
 };

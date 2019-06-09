@@ -13,7 +13,6 @@ export const fetchUser = () => async (dispatch) => {
 export const signUp = (body) => async (dispatch) => {
 	try {
 		const response = await axios.post("/auth/signup", body);
-		console.log(response.data);
 		dispatch({ type: FETCH_USER, payload: response.data });
 	} catch (error) {}
 };
@@ -44,12 +43,10 @@ export const cancelAccount = () => async (dispatch) => {
 };
 
 export const completeAccount = (body) => async (dispatch) => {
-	console.log(body);
 	try {
 		const response = await axios.patch("/user/complete", body, {
 			withCredentials: true
 		});
-		console.log(response.data);
 		dispatch({ type: FETCH_USER, payload: response.data });
 	} catch (e) {
 		console.log(e.response);

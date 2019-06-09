@@ -14,8 +14,7 @@ const {
 	createUser,
 	logOut,
 	userDoesExist,
-	userDoesNotExist,
-	sendProfile
+	userDoesNotExist
 } = require("../controller/authController");
 let router = express.Router();
 
@@ -59,20 +58,17 @@ router.get(
 router.get(
 	"/facebook/callback",
 	passport.authenticate("facebook", {
-		session: false
+		session: false,
+		failureRedirect: "/"
 	}),
 	oauthController,
 	sendCookie
 );
 
 /**
- * @summary Allows a user to create an account through email/password. It allows both users and secretaries to sign up.
- * It'll return an error if an user already exists or the input is malformed.
- * @param email
- * @param password
- * @param name
- * @param role
- * @todo Require a user to provide a group access code
+ * @summary It allows a user to create a new account, associated with an email and password.
+ * The route will check the credentails and the uniqueness of the account. If it passes both of those checks it will then create the account and generate a new auth token for it.
+ * Finally, it will set the auth token as a cookie to the header and respond with the user object
  */
 router.post(
 	"/signup",
@@ -84,9 +80,9 @@ router.post(
 );
 
 /**
- * @summary
- * @param email
- * @param password
+ * @summary It allows the user to log in to their existing account associated with an email and password.
+ * It will check the credentails provided and if a user associated with those credentials exists.
+ * Finally, it will generate a new auth token, set as a cookie header and respond with the user object.
  */
 router.post(
 	"/login",
