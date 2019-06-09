@@ -27,7 +27,6 @@ router.patch(
 		});
 
 		if (req.user) {
-			console.log(req.user);
 			const { email, name, status, accountCompleted } = req.user;
 			return res.send({ token, email, name, status, accountCompleted });
 		} else {

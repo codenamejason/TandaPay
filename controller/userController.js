@@ -1,5 +1,6 @@
 let checkSetupSettings = async (req, res, next) => {
 	const { role, accessCode, walletProvider, ethAddress } = req.body;
+
 	if (role === "policyholder" && accessCode === "") {
 		return res.status(400).send("Policyholder must provide access code");
 	}
@@ -8,14 +9,13 @@ let checkSetupSettings = async (req, res, next) => {
 		return res.status(400).send("Invalid role for user");
 	}
 
-	if (walletProvider !== "metamask" && walletProvider !== "formatic") {
+	if (walletProvider !== "metamask" && walletProvider !== "fortmatic") {
 		return res.status(400).send("Invalid Wallet Provider");
 	}
 	//check if the eth address is a valid address
 	if (!ethAddress) {
 		return res.status(400).send("Invalid Ethereum account");
 	}
-
 	next();
 };
 
