@@ -3,7 +3,7 @@ import { FETCH_USER } from "./types";
 
 export const fetchUser = () => async (dispatch) => {
 	try {
-		const response = await axios.get("/auth/user", {
+		const response = await axios.get("/auth/me", {
 			withCredentials: true
 		});
 		console.log(response.data);
