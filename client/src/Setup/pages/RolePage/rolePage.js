@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, Typography, withStyles } from "@material-ui/core";
 import { RoleButton, CodeField } from "./components";
-import ButtonGroup from "../components/ButtonGroup/ButtonGroup";
+import ButtonGroup from "../components/ButtonGroup/";
 import styles from "./role.style";
 class RolePage extends React.Component {
 	constructor(props) {
@@ -42,6 +42,7 @@ class RolePage extends React.Component {
 				<ButtonGroup
 					handleNext={this.handleNext}
 					handlePrevious={this.props.previousPage}
+					page={0}
 				/>
 			</div>
 		);

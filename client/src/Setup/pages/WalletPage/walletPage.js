@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import clsx from "clsx";
 import styles from "./wallet.style";
+import ButtonGroup from "../components/ButtonGroup/";
 import MetamaskIcon from "../../../assets/metamask.svg";
 import FortmaticIcon from "../../../assets/fortmatic.svg";
 class WalletPage extends React.Component {
@@ -92,7 +93,11 @@ class WalletPage extends React.Component {
 						</Card>
 					</Grid>
 				</Grid>
-				{this.renderFormButtons()}
+				<ButtonGroup
+					handleNext={this.handleNext}
+					handlePrevious={this.props.previousPage}
+					page={1}
+				/>
 			</div>
 		);
 	}
@@ -127,34 +132,6 @@ class WalletPage extends React.Component {
 			ethAddress,
 			fortmaticLoading: false
 		});
-	};
-	renderFormButtons = () => {
-		const { classes } = this.props;
-		const { walletProvider, ethAddress } = this.state;
-		return (
-			<Grid container className={classes.buttonGroup}>
-				<Grid item xs={6} className={classes.buttonContainer}>
-					<Button
-						variant="contained"
-						color="secondary"
-						className={clsx(classes.button, classes.cancel)}
-						onClick={this.props.previousPage}
-					>
-						Previous
-					</Button>
-				</Grid>
-				<Grid item xs={6} className={classes.buttonContainer}>
-					<Button
-						variant="contained"
-						color="primary"
-						className={clsx(classes.button, classes.next)}
-						onClick={() => this.props.onPageSubmit(walletProvider, ethAddress)}
-					>
-						SAVE
-					</Button>
-				</Grid>
-			</Grid>
-		);
 	};
 }
 const sleep = (milliseconds) => {
