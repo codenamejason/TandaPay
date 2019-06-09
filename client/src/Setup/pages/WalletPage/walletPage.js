@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, withStyles } from "@material-ui/core";
+import { Grid, withStyles, Typography } from "@material-ui/core";
 import styles from "./wallet.style";
 import ButtonGroup from "../components/ButtonGroup/";
 import MetamaskIcon from "../../../assets/metamask.svg";
@@ -16,9 +16,19 @@ class WalletPage extends React.Component {
 		};
 	}
 	render() {
-		const { walletProvider, metamaskLoading, fortmaticLoading } = this.state;
+		const { classes } = this.props;
+		const {
+			walletProvider,
+			metamaskLoading,
+			fortmaticLoading,
+			ethAddress
+		} = this.state;
+		const formCompleted = walletProvider && ethAddress;
 		return (
 			<div>
+				<Typography variant="h3" className={classes.title}>
+					What will your wallet provider be?
+				</Typography>
 				<Grid container>
 					<WalletCard
 						type="metamask"
@@ -39,6 +49,7 @@ class WalletPage extends React.Component {
 					handleNext={this.handleNext}
 					handlePrevious={this.props.previousPage}
 					page={1}
+					disabled={!formCompleted}
 				/>
 			</div>
 		);

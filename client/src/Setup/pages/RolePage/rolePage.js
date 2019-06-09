@@ -15,6 +15,8 @@ class RolePage extends React.Component {
 	render() {
 		const { classes } = this.props;
 		const { role, accessCode } = this.state;
+		const formCompleted =
+			role === "secretary" || (role === "policyholder" && accessCode);
 		return (
 			<div>
 				<Typography variant="h3" className={classes.title}>
@@ -43,6 +45,7 @@ class RolePage extends React.Component {
 					handleNext={this.handleNext}
 					handlePrevious={this.props.previousPage}
 					page={0}
+					disabled={!formCompleted}
 				/>
 			</div>
 		);
