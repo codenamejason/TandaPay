@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-
+const jwt = require("jsonwebtoken");
+const keys = require("../config/keys");
 const User = mongoose.model("users");
 
 /**
@@ -11,7 +12,7 @@ const User = mongoose.model("users");
  * @param next - Express callback function that will forward the route to the next controller
  * @todo add WWWW-Authenticate Header as specified by the RFC
  */
-let authenticated = (req, res, next) => {
+const authenticated = (req, res, next) => {
 	const token = req.cookies["x-auth"];
 	if (!token) {
 		return res.status(401).send({
@@ -34,6 +35,19 @@ let authenticated = (req, res, next) => {
 		});
 };
 
+const checkSignature = (req, res, next) => {
+	const token = req.cookies["x-auth"];
+	try {
+		const decoded = jwt.verify(token, keys.jwtSecret);
+		req.body = decoded;
+		next();
+	} catch (error) {
+		res.cookie("x-auth", "", { maxAge: Date.now() });
+		return res.status(401).send({ error: "Invalid auth token" });
+	}
+};
+
 module.exports = {
-	authenticated
+	authenticated,
+	checkSignature
 };

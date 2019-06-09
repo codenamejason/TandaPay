@@ -1,7 +1,10 @@
 const express = require("express");
 const passport = require("passport");
 
-const { authenticated } = require("../middleware/authenticated");
+const {
+	authenticated,
+	checkSignature
+} = require("../middleware/authenticated");
 
 const {
 	oauthController,
@@ -86,7 +89,14 @@ router.get(
  * @param role
  * @todo Require a user to provide a group access code
  */
-router.post("/signup", userDoesNotExist, createUser, generateToken, sendCookie);
+router.post(
+	"/signup",
+	checkCredentials,
+	userDoesNotExist,
+	createUser,
+	generateToken,
+	sendCookie
+);
 
 /**
  * @summary
@@ -104,17 +114,51 @@ router.post(
  * @summary retrieves the full information about the user and sends it back as a response
  * @param token identifier to determine which user to retrieve
  */
-router.get("/user", authenticated, (req, res) => {
+router.get("/user", checkSignature, authenticated, (req, res) => {
 	//check for user
 	const token = req.token;
-	const { email, name, status, accountCompleted } = req.user;
-	return res.send({ token, email, name, status, accountCompleted });
+	const {
+		email,
+		name,
+		status,
+		accountCompleted,
+		role,
+		walletProvider,
+		picture,
+		phone,
+		ethereumAddress,
+		settings
+	} = req.user;
+	return res.send({
+		token,
+		email,
+		name,
+		status,
+		accountCompleted,
+		role,
+		walletProvider,
+		picture,
+		phone,
+		ethereumAddress,
+		settings
+	});
 });
 
 /**
  * @summary
  * @param token
  */
-router.post("/logout", authenticated, logOut);
+router.post("/logout", checkSignature, authenticated, logOut);
+
+/**
+ * @summary retrieves the absolute basic user information.
+ * It will will only check for the validity of the token information
+ * @param token
+ */
+
+router.get("/", checkSignature, (req, res) => {
+	const user = req.body;
+	res.status(200).send(user);
+});
 
 module.exports = router;
