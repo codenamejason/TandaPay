@@ -123,12 +123,14 @@ const oauthController = async (req, res, next) => {
 		if (existingUser) {
 			const token = await existingUser.generateAuthToken("user");
 			req.token = token;
+			req.oauth = true;
 			next();
 		} else {
 			const user = new User(req.user);
 			const token = await user.generateAuthToken("user");
 			await user.save();
 			req.token = token;
+			req.oauth = true;
 			next();
 		}
 	} catch (e) {
@@ -151,7 +153,9 @@ const sendCookie = async (req, res) => {
 		httpOnly: true,
 		secure: false
 	});
-
+	if (req.oauth === true) {
+		return res.redirect("/");
+	}
 	if (req.user) {
 		const { email, name, status, accountCompleted } = req.user;
 		return res.send({ token, email, name, status, accountCompleted });
@@ -179,6 +183,7 @@ const logOut = async (req, res) => {
 		res.status(400).send(e);
 	}
 };
+
 module.exports = {
 	oauthController,
 	sendCookie,

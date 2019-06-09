@@ -3,11 +3,25 @@ const User = require("../models/User");
 const {
 	checkSetupSettings,
 	saveUpdates,
-	generateUpdatedToken
+	generateUpdatedToken,
+	sendProfile
 } = require("../controller/userController");
-const { authenticated } = require("../middleware/authenticated");
+const {
+	authenticated,
+	checkSignature
+} = require("../middleware/authenticated");
 let router = express.Router();
 
+/**
+ * MOVE ENTIRE ROUTE TO API FOLDER
+ */
+
+/**
+ * @summary retrieves the full information about the user and sends it back as a response
+ * @param token identifier to determine which user to retrieve
+ * @todo move to the API folder when appropriate
+ */
+router.get("/profile", checkSignature, authenticated, sendProfile);
 /**
  * @summary Adds the role, groupID/accessCode, walletProvider and ethAddress to the user
  * and sends back a new auth token that says their account is complete.

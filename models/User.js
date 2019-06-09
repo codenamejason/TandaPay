@@ -148,7 +148,6 @@ const userSchema = new Schema({
  * @param accessLevel - the access level of the user: user, secretary, admin
  * @this user refers to the instance of the user schema that called the specific method
  * @returns the auth token generated for the user
- * @todo invalidate old tokens
  */
 userSchema.methods.generateAuthToken = async function() {
 	const user = this;

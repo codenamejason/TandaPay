@@ -14,13 +14,13 @@ const {
 	createUser,
 	logOut,
 	userDoesExist,
-	userDoesNotExist
+	userDoesNotExist,
+	sendProfile
 } = require("../controller/authController");
 let router = express.Router();
 
 /**
  * @summary
- * @todo Allow for user form submissions
  */
 router.get(
 	"/google",
@@ -33,23 +33,15 @@ router.get(
 /**
  * @summary
  * @callback
+ * @param {Object} token
  * @returns the cookie with the token and redirects the user back to the application
  */
 router.get(
 	"/google/callback",
 	passport.authenticate("google", { session: false, failureRedirect: "/" }),
 	oauthController,
-	async (req, res) => {
-		const token = req.token;
-		res.cookie("x-auth", token, {
-			maxAge: 9000000000,
-			httpOnly: true,
-			secure: false
-		});
-		res.redirect("/");
-	}
+	sendCookie
 );
-
 /**
  * @summary
  */
@@ -70,14 +62,7 @@ router.get(
 		session: false
 	}),
 	oauthController,
-	async (req, res) => {
-		res.cookie("x-auth", req.token, {
-			maxAge: 9000000000,
-			httpOnly: true,
-			secure: false
-		});
-		res.redirect("/");
-	}
+	sendCookie
 );
 
 /**
@@ -110,39 +95,6 @@ router.post(
 	generateToken,
 	sendCookie
 );
-/**
- * @summary retrieves the full information about the user and sends it back as a response
- * @param token identifier to determine which user to retrieve
- */
-router.get("/user", checkSignature, authenticated, (req, res) => {
-	//check for user
-	const token = req.token;
-	const {
-		email,
-		name,
-		status,
-		accountCompleted,
-		role,
-		walletProvider,
-		picture,
-		phone,
-		ethereumAddress,
-		settings
-	} = req.user;
-	return res.send({
-		token,
-		email,
-		name,
-		status,
-		accountCompleted,
-		role,
-		walletProvider,
-		picture,
-		phone,
-		ethereumAddress,
-		settings
-	});
-});
 
 /**
  * @summary
@@ -153,10 +105,11 @@ router.post("/logout", checkSignature, authenticated, logOut);
 /**
  * @summary retrieves the absolute basic user information.
  * It will will only check for the validity of the token information
- * @param token
+ * @param {Object} token - the encoded token received and validated
+ * @param {Object} user - the decoded user information from the token
  */
 
-router.get("/", checkSignature, (req, res) => {
+router.get("/me", checkSignature, (req, res) => {
 	const user = req.body;
 	res.status(200).send(user);
 });

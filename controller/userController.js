@@ -50,8 +50,39 @@ let generateUpdatedToken = async (req, res, next) => {
 	}
 };
 
+const sendProfile = (req, res) => {
+	const token = req.token;
+	const user = req.user;
+	const {
+		email,
+		name,
+		status,
+		accountCompleted,
+		role,
+		walletProvider,
+		picture,
+		phone,
+		ethereumAddress,
+		settings
+	} = req.user;
+	return res.send({
+		token,
+		email,
+		name,
+		status,
+		accountCompleted,
+		role,
+		walletProvider,
+		picture,
+		phone,
+		ethereumAddress,
+		settings
+	});
+};
 module.exports = {
 	checkSetupSettings,
 	saveUpdates,
-	generateUpdatedToken
+	generateUpdatedToken,
+
+	sendProfile
 };
