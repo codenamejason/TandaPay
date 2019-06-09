@@ -175,6 +175,7 @@ const logOut = async (req, res) => {
 		res.cookie("x-auth", "", { maxAge: Date.now() });
 		res.status(200).send({ success: "You have been logged out successfully" });
 	} catch (e) {
+		console.log(e);
 		res.status(400).send(e);
 	}
 };

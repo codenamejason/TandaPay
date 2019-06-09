@@ -158,15 +158,12 @@ userSchema.methods.generateAuthToken = async function() {
 		{ sub: user._id.toHexString(), access, role, accountCompleted, status },
 		keys.jwtSecret
 	);
-	// const res = await user.update({
-	//   $pull: {
-	//     tokens: {
-	//       access: access
-	//     }
-	//   }
-	// });
-	// console.log(res);
-	user.tokens = user.tokens.concat([{ access, token }]);
+	const tokens = user.tokens;
+	//removes all former auth tokens from the whitelist
+	const updatedTokens = tokens.filter((element) => element.access !== "auth");
+
+	//updates the user document with the new tokens
+	user.tokens = updatedTokens.concat([{ access, token }]);
 	await user.save();
 	return token;
 };

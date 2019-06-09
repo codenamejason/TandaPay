@@ -327,7 +327,7 @@ suite("GET /user", () => {
 	});
 });
 
-suite.only("GET /", () => {
+suite("GET /", () => {
 	const password = "12345lhoasfy943";
 	const name = "Jane Doe";
 	const email = "jane@gmail.com";
