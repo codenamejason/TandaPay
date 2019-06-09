@@ -327,6 +327,52 @@ suite("GET /user", () => {
 	});
 });
 
+suite.only("GET /", () => {
+	const password = "12345lhoasfy943";
+	const name = "Jane Doe";
+	const email = "jane@gmail.com";
+	let cookie;
+	let token;
+	setup(async () => {
+		const response = await request(app)
+			.post("/auth/signup")
+			.send({
+				name,
+				email,
+				password
+			});
+
+		cookie = response.headers["set-cookie"][0];
+		token = response.body.token;
+	});
+
+	test("Should not allow a user without authentication to get their user profile", async () => {
+		const response = await request(app).get("/auth/");
+		expect(response.status).toEqual(401);
+		expect(response.body.error).toEqual("Invalid auth token");
+	});
+	test("Should return the user's auth token when properly authenticated", async () => {
+		const response = await request(app)
+			.get("/auth/")
+			.set("Cookie", cookie);
+
+		expect(response.status).toEqual(200);
+		const user = await User.findOne({ email });
+		expect(user.tokens[0].token).toEqual(token);
+		expect(user.tokens[0].access).toEqual("auth");
+	});
+	test("Should return the user's full profile when properly authenticated", async () => {
+		const response = await request(app)
+			.get("/auth/")
+			.set("Cookie", cookie);
+
+		expect(response.status).toEqual(200);
+		const body = response.body;
+		expect(body.accountCompleted).toEqual(false);
+		expect(body.status).toEqual("pending");
+		expect(body.role).toBeUndefined();
+	});
+});
 suite("POST /logout", () => {
 	let cookie;
 	setup(async () => {
