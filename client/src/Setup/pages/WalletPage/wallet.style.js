@@ -58,6 +58,9 @@ const styles = (theme) => ({
 		"&:hover": {
 			backgroundColor: theme.palette.primary.dark
 		}
+	},
+	loader: {
+		color: "white"
 	}
 });
 

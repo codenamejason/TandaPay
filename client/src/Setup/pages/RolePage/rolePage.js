@@ -14,8 +14,8 @@ class RolePage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			role: "",
-			accessCode: ""
+			role: props.role,
+			accessCode: props.accessCode
 		};
 	}
 

@@ -52,5 +52,7 @@ export const completeAccount = (body) => async (dispatch) => {
 		});
 		console.log(response.data);
 		dispatch({ type: FETCH_USER, payload: response.data });
-	} catch (e) {}
+	} catch (e) {
+		console.log(e.response);
+	}
 };

@@ -38,7 +38,7 @@ class Setup extends React.Component {
 			ethAddress
 		});
 	};
-	handlePreviuos = () => {
+	handlePrevious = () => {
 		const { page } = this.state;
 		if (page === 0) {
 			//cancel user
@@ -52,20 +52,22 @@ class Setup extends React.Component {
 	};
 	render() {
 		const { classes } = this.props;
-		const { page } = this.state;
+		const { page, role, accessCode } = this.state;
 		return (
 			<Grid container component="main" className={classes.root}>
 				<CssBaseline />
 				{page === 0 && (
 					<RolePage
 						onPageSubmit={this.onRoleSubmit}
-						previousPage={this.handlePreviuos}
+						previousPage={this.handlePrevious}
+						role={role}
+						accessCode={accessCode}
 					/>
 				)}
 				{page === 1 && (
 					<WalletPage
 						onPageSubmit={this.onWalletSubmit}
-						previousPage={this.handlePreviuos}
+						previousPage={this.handlePrevious}
 					/>
 				)}
 			</Grid>

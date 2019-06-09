@@ -6,7 +6,7 @@ import {
 	withStyles,
 	Card,
 	CardContent,
-	CardMedia
+	CircularProgress
 } from "@material-ui/core";
 import clsx from "clsx";
 import styles from "./wallet.style";
@@ -17,18 +17,26 @@ class WalletPage extends React.Component {
 		super(props);
 		this.state = {
 			walletProvider: "",
-			ethAddress: ""
+			ethAddress: "",
+			metamaskLoading: false,
+			fortmaticLoading: false
 		};
 	}
 	render() {
 		const { classes } = this.props;
-		const { walletProvider } = this.state;
+		const { walletProvider, metamaskLoading, fortmaticLoading } = this.state;
 		return (
 			<div>
 				<Grid container>
 					<Grid item xs={12} sm={6} className={classes.area}>
 						<Card className={classes.card}>
-							<img src={MetamaskIcon} className={classes.img} />
+							<img
+								src={MetamaskIcon}
+								className={classes.img}
+								alt="Metamask"
+								title="Metamask"
+								aria-label="Metamask"
+							/>
 
 							<CardContent className={classes.cardContent}>
 								<Typography variant="h6" className={classes.highlight}>
@@ -42,14 +50,25 @@ class WalletPage extends React.Component {
 										[classes.connected]: walletProvider === "metamask"
 									})}
 								>
-									{walletProvider === "metamask" ? "Connected" : "Connect"}
+									{metamaskLoading === true && (
+										<CircularProgress className={classes.loader} />
+									)}
+									{walletProvider === "metamask" && metamaskLoading === false
+										? "Connected"
+										: metamaskLoading === false && "Connect"}
 								</Button>
 							</CardContent>
 						</Card>
 					</Grid>
 					<Grid item xs={12} sm={6} className={classes.area}>
 						<Card className={classes.card}>
-							<img src={FortmaticIcon} className={classes.img} />
+							<img
+								src={FortmaticIcon}
+								className={classes.img}
+								alt="Fortmatic"
+								title="Fortmatic"
+								aria-label="Fortmatic"
+							/>
 							<CardContent className={classes.cardContent}>
 								<Typography variant="h6" className={classes.highlight}>
 									Recommended
@@ -62,7 +81,12 @@ class WalletPage extends React.Component {
 										[classes.connected]: walletProvider === "fortmatic"
 									})}
 								>
-									{walletProvider === "fortmatic" ? "Connected" : "Connect"}
+									{fortmaticLoading === true && (
+										<CircularProgress className={classes.loader} />
+									)}
+									{walletProvider === "fortmatic" && fortmaticLoading === false
+										? "Connected"
+										: fortmaticLoading === false && "Connect"}
 								</Button>
 							</CardContent>
 						</Card>
@@ -73,22 +97,35 @@ class WalletPage extends React.Component {
 		);
 	}
 
-	onMetamaskClick = () => {
+	onMetamaskClick = async () => {
 		const walletProvider = "metamask";
 		const ethAddress = "0xasifojasiofdj";
 		this.setState({
 			walletProvider,
-			ethAddress
+			metamaskLoading: true,
+			fortmaticLoading: false
 		});
-		//set the info
+		//enable metamask
+		await sleep(2000);
+		this.setState({
+			ethAddress,
+			metamaskLoading: false
+		});
 	};
 
-	onFormaticClick = () => {
+	onFormaticClick = async () => {
 		const walletProvider = "fortmatic";
-		const ethAddress = "0xoasjofj02j0";
+		const ethAddress = "0xasifojasiofdj";
 		this.setState({
 			walletProvider,
-			ethAddress
+			fortmaticLoading: true,
+			metamaskLoading: false
+		});
+		//enable fortmatic
+		await sleep(2000);
+		this.setState({
+			ethAddress,
+			fortmaticLoading: false
 		});
 	};
 	renderFormButtons = () => {
@@ -96,7 +133,7 @@ class WalletPage extends React.Component {
 		const { walletProvider, ethAddress } = this.state;
 		return (
 			<Grid container className={classes.buttonGroup}>
-				<Grid item xs={6} className={classes.cancelButton}>
+				<Grid item xs={6} className={classes.buttonContainer}>
 					<Button
 						variant="contained"
 						color="secondary"
@@ -106,7 +143,7 @@ class WalletPage extends React.Component {
 						Previous
 					</Button>
 				</Grid>
-				<Grid item xs={6} className={classes.nextButton}>
+				<Grid item xs={6} className={classes.buttonContainer}>
 					<Button
 						variant="contained"
 						color="primary"
@@ -120,5 +157,7 @@ class WalletPage extends React.Component {
 		);
 	};
 }
-
+const sleep = (milliseconds) => {
+	return new Promise((resolve) => setTimeout(resolve, milliseconds));
+};
 export default withStyles(styles, { withTheme: true })(WalletPage);

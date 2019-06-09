@@ -44,6 +44,9 @@ const styles = (theme) => ({
 		color: "white",
 		"&:hover": {
 			backgroundColor: theme.palette.error.light
+		},
+		[theme.breakpoints.up("sm")]: {
+			float: "left"
 		}
 	},
 	next: {
@@ -51,6 +54,9 @@ const styles = (theme) => ({
 		color: "white",
 		"&:hover": {
 			backgroundColor: theme.palette.secondary.light
+		},
+		[theme.breakpoints.up("sm")]: {
+			float: "right"
 		}
 	}
 });
