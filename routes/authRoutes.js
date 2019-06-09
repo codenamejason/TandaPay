@@ -19,7 +19,7 @@ const {
 let router = express.Router();
 
 /**
- * @summary
+ * @summary - PassportJS base route for 0auth 2.0 Google Login
  */
 router.get(
 	"/google",
@@ -30,7 +30,7 @@ router.get(
 );
 
 /**
- * @summary
+ * @summary - PassportJS callback for 0auth 2.0 Google Login
  * @callback
  * @param {Object} token
  * @returns the cookie with the token and redirects the user back to the application
@@ -42,7 +42,7 @@ router.get(
 	sendCookie
 );
 /**
- * @summary
+ * @summary - PassportJS base route for 0auth 2.0 Facebook Login
  */
 router.get(
 	"/facebook",
@@ -53,7 +53,7 @@ router.get(
 );
 
 /**
- * @summary
+ * @summary PassportJS callback for 0uth 2.0 Facebook Login
  */
 router.get(
 	"/facebook/callback",
@@ -93,7 +93,8 @@ router.post(
 );
 
 /**
- * @summary
+ * @summary checks the signature for validity and the whitelist of auth tokens to assure the user is authenticated.
+ * Then removes the token from the DB and cookie header.
  * @param token
  */
 router.post("/logout", checkSignature, authenticated, logOut);
