@@ -277,7 +277,7 @@ suite("POST /login", () => {
 	});
 });
 
-suite("GET /user", () => {
+suite("GET /me", () => {
 	const password = "12345lhoasfy943";
 	const name = "Jane Doe";
 	const email = "jane@gmail.com";
@@ -297,63 +297,13 @@ suite("GET /user", () => {
 	});
 
 	test("Should not allow a user without authentication to get their user profile", async () => {
-		const response = await request(app).get("/auth/user");
+		const response = await request(app).get("/auth/me");
 		expect(response.status).toEqual(401);
 		expect(response.body.error).toEqual("Invalid auth token");
 	});
 	test("Should return the user's auth token when properly authenticated", async () => {
 		const response = await request(app)
-			.get("/auth/user")
-			.set("Cookie", cookie);
-
-		expect(response.status).toEqual(200);
-
-		const user = await User.findOne({ email });
-		expect(user.tokens[0].token).toEqual(token);
-		expect(user.tokens[0].access).toEqual("auth");
-	});
-	test("Should return the user's full profile when properly authenticated", async () => {
-		const response = await request(app)
-			.get("/auth/user")
-			.set("Cookie", cookie);
-
-		expect(response.status).toEqual(200);
-		const body = response.body;
-		expect(body.accountCompleted).toEqual(false);
-		expect(body.status).toEqual("pending");
-		expect(body.role).toBeUndefined();
-		expect(body.walletProvider).toBeUndefined();
-		expect(body.settings).toEqual([]);
-	});
-});
-
-suite("GET /", () => {
-	const password = "12345lhoasfy943";
-	const name = "Jane Doe";
-	const email = "jane@gmail.com";
-	let cookie;
-	let token;
-	setup(async () => {
-		const response = await request(app)
-			.post("/auth/signup")
-			.send({
-				name,
-				email,
-				password
-			});
-
-		cookie = response.headers["set-cookie"][0];
-		token = response.body.token;
-	});
-
-	test("Should not allow a user without authentication to get their user profile", async () => {
-		const response = await request(app).get("/auth/");
-		expect(response.status).toEqual(401);
-		expect(response.body.error).toEqual("Invalid auth token");
-	});
-	test("Should return the user's auth token when properly authenticated", async () => {
-		const response = await request(app)
-			.get("/auth/")
+			.get("/auth/me")
 			.set("Cookie", cookie);
 
 		expect(response.status).toEqual(200);
@@ -363,7 +313,7 @@ suite("GET /", () => {
 	});
 	test("Should return the user's full profile when properly authenticated", async () => {
 		const response = await request(app)
-			.get("/auth/")
+			.get("/auth/me")
 			.set("Cookie", cookie);
 
 		expect(response.status).toEqual(200);
