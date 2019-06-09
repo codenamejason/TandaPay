@@ -2,14 +2,15 @@ const styles = (theme) => ({
 	title: {
 		color: "#22685D",
 		textAlign: "center",
-		fontWeight: "bold"
+		fontWeight: "bold",
+		fontSize: theme.spacing(5)
 	},
 	subtitle: {
 		textAlign: "center",
 		color: "darkgrey"
 	},
 	area: {
-		margin: theme.spacing(8, 0),
+		margin: theme.spacing(5, 0),
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center"
@@ -32,13 +33,8 @@ const styles = (theme) => ({
 		borderColor: theme.palette.primary.main
 	},
 	buttonGroup: {
-		textAlign: "center"
-	},
-	cancelButton: {
-		textAlign: "left"
-	},
-	nextButton: {
-		textAlign: "right"
+		textAlign: "center",
+		margin: theme.spacing(0, 0, 2, 0)
 	},
 	button: {
 		width: theme.spacing(15)

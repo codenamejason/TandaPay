@@ -22,18 +22,15 @@ class WalletPage extends React.Component {
 	}
 	render() {
 		const { classes } = this.props;
+		const { walletProvider } = this.state;
 		return (
 			<div>
 				<Grid container>
 					<Grid item xs={12} sm={6} className={classes.area}>
 						<Card className={classes.card}>
+							<img src={MetamaskIcon} className={classes.img} />
+
 							<CardContent className={classes.cardContent}>
-								<CardMedia
-									src={MetamaskIcon}
-									component="img"
-									className={classes.img}
-									title="Metamask"
-								/>
 								<Typography variant="h6" className={classes.highlight}>
 									Advanced Users
 								</Typography>
@@ -41,22 +38,19 @@ class WalletPage extends React.Component {
 									variant="outlined"
 									color="primary"
 									onClick={this.onMetamaskClick}
-									className={classes.connect}
+									className={clsx(classes.connect, {
+										[classes.connected]: walletProvider === "metamask"
+									})}
 								>
-									Connect
+									{walletProvider === "metamask" ? "Connected" : "Connect"}
 								</Button>
 							</CardContent>
 						</Card>
 					</Grid>
 					<Grid item xs={12} sm={6} className={classes.area}>
 						<Card className={classes.card}>
+							<img src={FortmaticIcon} className={classes.img} />
 							<CardContent className={classes.cardContent}>
-								<CardMedia
-									src={FortmaticIcon}
-									component="img"
-									title="Fortmatic"
-									className={classes.img}
-								/>
 								<Typography variant="h6" className={classes.highlight}>
 									Recommended
 								</Typography>
@@ -64,9 +58,11 @@ class WalletPage extends React.Component {
 									variant="outlined"
 									color="primary"
 									onClick={this.onFormaticClick}
-									className={classes.connect}
+									className={clsx(classes.connect, {
+										[classes.connected]: walletProvider === "fortmatic"
+									})}
 								>
-									Connect
+									{walletProvider === "fortmatic" ? "Connected" : "Connect"}
 								</Button>
 							</CardContent>
 						</Card>

@@ -6,7 +6,8 @@ const styles = (theme) => ({
 		alignItems: "center"
 	},
 	buttonGroup: {
-		textAlign: "center"
+		textAlign: "center",
+		margin: theme.spacing(2)
 	},
 	button: {
 		width: theme.spacing(15)
@@ -34,21 +35,29 @@ const styles = (theme) => ({
 	card: {
 		padding: theme.spacing(3),
 		margin: theme.spacing(0, 3),
-		height: theme.spacing(40)
+		width: theme.spacing(40),
+		display: "flex",
+		flexDirection: "column",
+		justifyContent: "center"
 	},
 	cardContent: {
 		display: "flex",
 		flexDirection: "column",
 		justifyContent: "center",
-		alignItems: "center",
-		height: "100%"
+		alignItems: "center"
 	},
 	img: {
-		width: theme.spacing(30),
-		margin: theme.spacing(0, 0, 5, 0)
+		height: theme.spacing(20)
 	},
 	connect: {
 		width: "100%"
+	},
+	connected: {
+		backgroundColor: theme.palette.primary.main,
+		color: "white",
+		"&:hover": {
+			backgroundColor: theme.palette.primary.dark
+		}
 	}
 });
 
