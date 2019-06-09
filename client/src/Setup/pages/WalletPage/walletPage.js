@@ -1,18 +1,11 @@
 import React from "react";
-import {
-	Grid,
-	Typography,
-	Button,
-	withStyles,
-	Card,
-	CardContent,
-	CircularProgress
-} from "@material-ui/core";
+import { Grid, withStyles } from "@material-ui/core";
 import clsx from "clsx";
 import styles from "./wallet.style";
 import ButtonGroup from "../components/ButtonGroup/";
 import MetamaskIcon from "../../../assets/metamask.svg";
 import FortmaticIcon from "../../../assets/fortmatic.svg";
+import WalletCard from "./components/WalletCard";
 class WalletPage extends React.Component {
 	constructor(props) {
 		super(props);
@@ -24,74 +17,24 @@ class WalletPage extends React.Component {
 		};
 	}
 	render() {
-		const { classes } = this.props;
 		const { walletProvider, metamaskLoading, fortmaticLoading } = this.state;
 		return (
 			<div>
 				<Grid container>
-					<Grid item xs={12} sm={6} className={classes.area}>
-						<Card className={classes.card}>
-							<img
-								src={MetamaskIcon}
-								className={classes.img}
-								alt="Metamask"
-								title="Metamask"
-								aria-label="Metamask"
-							/>
-
-							<CardContent className={classes.cardContent}>
-								<Typography variant="h6" className={classes.highlight}>
-									Advanced Users
-								</Typography>
-								<Button
-									variant="outlined"
-									color="primary"
-									onClick={this.onMetamaskClick}
-									className={clsx(classes.connect, {
-										[classes.connected]: walletProvider === "metamask"
-									})}
-								>
-									{metamaskLoading === true && (
-										<CircularProgress className={classes.loader} />
-									)}
-									{walletProvider === "metamask" && metamaskLoading === false
-										? "Connected"
-										: metamaskLoading === false && "Connect"}
-								</Button>
-							</CardContent>
-						</Card>
-					</Grid>
-					<Grid item xs={12} sm={6} className={classes.area}>
-						<Card className={classes.card}>
-							<img
-								src={FortmaticIcon}
-								className={classes.img}
-								alt="Fortmatic"
-								title="Fortmatic"
-								aria-label="Fortmatic"
-							/>
-							<CardContent className={classes.cardContent}>
-								<Typography variant="h6" className={classes.highlight}>
-									Recommended
-								</Typography>
-								<Button
-									variant="outlined"
-									color="primary"
-									onClick={this.onFormaticClick}
-									className={clsx(classes.connect, {
-										[classes.connected]: walletProvider === "fortmatic"
-									})}
-								>
-									{fortmaticLoading === true && (
-										<CircularProgress className={classes.loader} />
-									)}
-									{walletProvider === "fortmatic" && fortmaticLoading === false
-										? "Connected"
-										: fortmaticLoading === false && "Connect"}
-								</Button>
-							</CardContent>
-						</Card>
-					</Grid>
+					<WalletCard
+						type="metamask"
+						handleClick={this.onMetamaskClick}
+						IconSrc={MetamaskIcon}
+						loading={metamaskLoading}
+						selected={walletProvider}
+					/>
+					<WalletCard
+						type="fortmatic"
+						handleClick={this.onFormaticClick}
+						IconSrc={FortmaticIcon}
+						loading={fortmaticLoading}
+						selected={walletProvider}
+					/>
 				</Grid>
 				<ButtonGroup
 					handleNext={this.handleNext}
