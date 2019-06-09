@@ -5,32 +5,11 @@ const styles = (theme) => ({
 		flexDirection: "column",
 		alignItems: "center"
 	},
-	buttonGroup: {
-		textAlign: "center",
-		margin: theme.spacing(2)
-	},
-	button: {
-		width: theme.spacing(15)
-	},
 	highlight: {
 		color: theme.palette.warning.main,
 		fontWeight: "bold",
 		margin: theme.spacing(0, 0, 3, 0),
 		textAlign: "center"
-	},
-	cancel: {
-		backgroundColor: theme.palette.error.main,
-		color: "white",
-		"&:hover": {
-			backgroundColor: theme.palette.error.light
-		}
-	},
-	next: {
-		backgroundColor: theme.palette.secondary.main,
-		color: "white",
-		"&:hover": {
-			backgroundColor: theme.palette.secondary.light
-		}
 	},
 	card: {
 		padding: theme.spacing(3),

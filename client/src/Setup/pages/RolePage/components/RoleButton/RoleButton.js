@@ -29,7 +29,7 @@ class RoleButton extends React.Component {
 						/>
 					)}
 				</IconButton>
-				<Typography variant="caption" className={classes.subtitle}>
+				<Typography variant="caption" className={classes.caption}>
 					{type === "secretary" ? "As a secretary" : "As a policyholder"}
 				</Typography>
 			</Grid>

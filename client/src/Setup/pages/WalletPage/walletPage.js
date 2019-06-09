@@ -1,6 +1,5 @@
 import React from "react";
 import { Grid, withStyles } from "@material-ui/core";
-import clsx from "clsx";
 import styles from "./wallet.style";
 import ButtonGroup from "../components/ButtonGroup/";
 import MetamaskIcon from "../../../assets/metamask.svg";

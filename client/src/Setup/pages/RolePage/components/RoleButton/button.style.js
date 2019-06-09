@@ -21,6 +21,10 @@ const styles = (theme) => ({
 	},
 	buttonSelected: {
 		borderColor: theme.palette.primary.main
+	},
+	caption: {
+		textAlign: "center",
+		color: "darkgrey"
 	}
 });
 
