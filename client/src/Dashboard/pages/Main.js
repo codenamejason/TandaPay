@@ -2,7 +2,7 @@ import React from "react";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 
-import styles from "../../Navigation/sidebar.style";
+import styles from "../../Navigation/SideBar/sidebar.style";
 const Main = (props) => {
 	const { classes } = props;
 	return (
