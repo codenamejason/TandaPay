@@ -36,11 +36,7 @@ class App extends React.Component {
 							path="/setup"
 							component={withIncompleteAuthorization(Setup)}
 						/>
-						<Route
-							exact
-							path="/admin"
-							component={withAuthorization(Dashboard)}
-						/>
+						<Route path="/admin" component={withAuthorization(Dashboard)} />
 					</Switch>
 				</BrowserRouter>
 			</ThemeProvider>
