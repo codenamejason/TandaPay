@@ -27,5 +27,4 @@ const menuButtons = (props) => {
 		</List>
 	);
 };
-
 export default withStyles(styles, { withTheme: true })(menuButtons);

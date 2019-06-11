@@ -1,42 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import {
-	Drawer,
-	List,
-	Divider,
-	IconButton,
-	ListItem,
-	withStyles,
-	ListItemIcon,
-	ListItemText
-} from "@material-ui/core";
-import {
-	ChevronLeft as ChevronLeftIcon,
-	MoveToInbox as InboxIcon,
-	Mail as MailIcon
-} from "@material-ui/icons";
+import { Drawer, Divider, IconButton, withStyles } from "@material-ui/core";
+import { ChevronLeft as ChevronLeftIcon } from "@material-ui/icons";
 import MenuButtons from "./components/menuButtons";
 import styles from "./sidebar.style";
 class SideBar extends React.Component {
 	handleClose = () => {
 		this.props.onDrawerClose();
-	};
-
-	renderSecondaryMenu = () => {
-		const menuItems = ["Help", "Trash", "Spam"];
-		return (
-			<List>
-				{menuItems.map((text, index) => (
-					<ListItem button key={text}>
-						<ListItemIcon>
-							{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-						</ListItemIcon>
-						<ListItemText primary={text} />
-					</ListItem>
-				))}
-			</List>
-		);
 	};
 	render() {
 		const { classes, open } = this.props;

@@ -22,6 +22,12 @@ const theme = createMuiTheme({
 			main: "#00B09B",
 			dark: "#96C93D"
 		}
+	},
+	overrides: {
+		MuiLink: {
+			textDecoration: "none",
+			color: "inherit"
+		}
 	}
 });
 
