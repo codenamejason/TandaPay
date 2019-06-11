@@ -38,7 +38,7 @@ const extra = {
 		},
 		Settings: {
 			icon: <SettingIcon />,
-			url: "settings"
+			url: "profile"
 		}
 	}
 };
