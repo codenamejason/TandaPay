@@ -1,6 +1,12 @@
 import axios from "axios";
-import { FETCH_USER } from "./types";
-
+import { FETCH_USER, FETCH_CLAIMS } from "./types";
+import data from "../data/data.json";
+export const fetchClaims = () => async (dispatch) => {
+	try {
+		const claims = data.claims;
+		dispatch({ type: FETCH_CLAIMS, payload: claims });
+	} catch (error) {}
+};
 export const fetchUser = () => async (dispatch) => {
 	try {
 		const response = await axios.get("/auth/me", {
