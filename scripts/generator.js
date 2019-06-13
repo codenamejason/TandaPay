@@ -19,6 +19,8 @@ const createClaim = (groupID) => {
 	let claim = {
 		objectID: faker.random.uuid(),
 		groupID: groupID,
+		groupName: faker.company.companyName(),
+		subgroup: faker.name.title(),
 		name: faker.name.findName(),
 		amount: faker.finance.amount(),
 		creatorID: faker.random.uuid(),

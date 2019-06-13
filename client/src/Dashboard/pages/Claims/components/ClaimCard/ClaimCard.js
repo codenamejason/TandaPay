@@ -1,5 +1,5 @@
 import React from "react";
-import { withStyles, Card, Typography, Grid, Button } from "@material-ui/core";
+import { withStyles, Card, Typography, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import clsx from "clsx";
 import moment from "moment";
@@ -8,7 +8,7 @@ const ClaimCard = (props) => {
 	const { classes, claim } = props;
 	return (
 		<Card className={classes.card}>
-			<img src={claim.imageURL} className={classes.img} />
+			<img src={claim.imageURL} className={classes.img} alt="User Profile" />
 			<div className={classes.container}>
 				<Typography className={classes.name}>{claim.name}</Typography>
 				<Typography className={classes.amount}>$ {claim.amount}</Typography>

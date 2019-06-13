@@ -1,5 +1,5 @@
 import ClaimHeader from "./ClaimHeader/ClaimHeader";
 import RecentClaims from "./RecentClaims/RecentClaims";
-import Table from "./Table/Table";
+import ClaimTable from "./Table/Table";
 
-export { ClaimHeader, RecentClaims, Table };
+export { ClaimHeader, RecentClaims, ClaimTable };
