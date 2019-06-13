@@ -16,14 +16,13 @@ const menuButtons = (props) => {
 	const itemProps = type === "nav" ? nav.itemProps : extra.itemProps;
 	const path = props.location.pathname.split("/");
 	const routeSelected = path[2] === undefined ? "" : path[2];
-	console.log(routeSelected);
 	return (
 		<List>
 			{menuItems.map((text, index) => (
 				<Link
 					to={`/admin/${itemProps[text].url}`}
 					className={classes.link}
-					key={text}
+					key={index}
 				>
 					<ListItem
 						button
