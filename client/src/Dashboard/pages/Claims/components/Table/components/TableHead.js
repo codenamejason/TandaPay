@@ -13,11 +13,11 @@ const headRows = [
 		disablePadding: true,
 		label: "Name (Claim Creator)"
 	},
-	{ id: "calories", numeric: true, disablePadding: false, label: "Subgroup" },
-	{ id: "fat", numeric: true, disablePadding: false, label: "Claim Status" },
-	{ id: "carbs", numeric: true, disablePadding: false, label: "Creation Date" },
+	{ id: "subgroup", numeric: true, disablePadding: false, label: "Subgroup" },
+	{ id: "status", numeric: true, disablePadding: false, label: "Claim Status" },
+	{ id: "date", numeric: true, disablePadding: false, label: "Creation Date" },
 	{
-		id: "protein",
+		id: "amount",
 		numeric: true,
 		disablePadding: false,
 		label: "Claim Disbursement"

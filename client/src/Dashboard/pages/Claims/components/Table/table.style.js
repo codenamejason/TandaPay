@@ -1,21 +1,19 @@
 import { darken } from "@material-ui/core/styles";
+
 const styles = (theme) => ({
-	card: {
-		padding: theme.spacing(3),
-		margin: theme.spacing(0, 3),
-		display: "flex",
-		flexDirection: "column"
+	root: {
+		width: "100%",
+		marginTop: theme.spacing(3)
 	},
-	img: {
-		height: theme.spacing(20),
-		backgroundColor: "darkgrey",
-		width: "100%"
+	paper: {
+		width: "100%",
+		marginBottom: theme.spacing(2)
 	},
-	container: {
-		display: "flex",
-		alignItems: "center",
-		justifyContent: "space-between",
-		marginTop: theme.spacing(2)
+	table: {
+		minWidth: 750
+	},
+	tableWrapper: {
+		overflowX: "auto"
 	},
 	status: {
 		fontWeight: "bold",
@@ -35,7 +33,7 @@ const styles = (theme) => ({
 		color: "white",
 		borderRadius: "0",
 		"&:hover": {
-			backgroundColor: darken(theme.palette.button.main, 0.1)
+			backgroundColor: darken(theme.palette.button.main, 0.2)
 		}
 	},
 	amount: {

@@ -1,3 +1,4 @@
+import { darken } from "@material-ui/core/styles";
 const styles = (theme) => ({
 	title: {
 		color: "black"
@@ -15,7 +16,7 @@ const styles = (theme) => ({
 		color: "white",
 		borderRadius: "0",
 		"&:hover": {
-			backgroundColor: theme.palette.button.dark
+			backgroundColor: darken(theme.palette.button.main, 0.1)
 		},
 		[theme.breakpoints.down("xs")]: {
 			marginTop: theme.spacing(3)

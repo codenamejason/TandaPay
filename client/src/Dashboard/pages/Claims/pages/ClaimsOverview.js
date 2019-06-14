@@ -23,7 +23,9 @@ class Claims extends React.Component {
 				<RecentClaims claims={topClaims} />
 
 				<Typography variant="h4">All Claims</Typography>
-				<ClaimTable claims={claims} />
+				<div>
+					<ClaimTable claims={claims} />
+				</div>
 			</React.Fragment>
 		);
 	}
