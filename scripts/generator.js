@@ -14,7 +14,7 @@ const generateClaims = (amount) => {
 	fs.writeFileSync("client/src/data/data.json", jsonObj);
 };
 const createClaim = (groupID) => {
-	const type = Math.floor(Math.random() * Math.floor(2));
+	const type = Math.floor(Math.random() * Math.floor(3));
 	const status = type === 0 ? "pending" : type === 1 ? "approved" : "denied";
 	let claim = {
 		objectID: faker.random.uuid(),
