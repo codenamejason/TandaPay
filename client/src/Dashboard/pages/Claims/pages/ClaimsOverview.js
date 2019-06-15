@@ -9,11 +9,21 @@ import { RecentClaims, ClaimHeader, ClaimTable } from "../components/";
 class Claims extends React.Component {
 	constructor(props) {
 		super(props);
-		this.props.fetchClaims();
+		this.state = {
+			topClaims: []
+		};
+	}
+	async componentDidMount() {
+		await this.props.fetchClaims();
+		const topClaims = this.getTopClaims();
+		this.setState({
+			topClaims
+		});
 	}
 	render() {
 		const { user, claims } = this.props;
-		const topClaims = this.getTopClaims(claims, user);
+		console.log(user);
+		const { topClaims } = this.state;
 		const headerText =
 			user.role === "secretary" ? "Recent Claims" : "My Claims";
 		const headerButtons = [
@@ -34,7 +44,8 @@ class Claims extends React.Component {
 	 * @summary it will sort the group claims by the date created, and then if the user is a secretary show the top 4 most recent claims.
 	 * Or if the user is a policyholder then it will show their top 4 most recent claims(instead of the group's most recent)
 	 */
-	getTopClaims = (claims, user) => {
+	getTopClaims = () => {
+		const { claims, user } = this.props;
 		if (claims === undefined || user === undefined) {
 			console.log("hey");
 			return [];
