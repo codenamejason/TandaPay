@@ -13,12 +13,12 @@ class Claims extends React.Component {
 	}
 	render() {
 		const { user, claims } = this.props;
+		const topClaims = this.getTopClaims(claims, user);
 		const headerText =
 			user.role === "secretary" ? "Recent Claims" : "My Claims";
 		const headerButtons = [
 			{ text: "NEW CLAIM", type: "green", url: "/admin/claims/new" }
 		];
-		const topClaims = this.getTopClaims();
 		return (
 			<React.Fragment>
 				<ClaimHeader title="(Group Name) Claims" buttons={headerButtons} />
@@ -34,8 +34,11 @@ class Claims extends React.Component {
 	 * @summary it will sort the group claims by the date created, and then if the user is a secretary show the top 4 most recent claims.
 	 * Or if the user is a policyholder then it will show their top 4 most recent claims(instead of the group's most recent)
 	 */
-	getTopClaims = () => {
-		const { claims, user } = this.props;
+	getTopClaims = (claims, user) => {
+		if (claims === undefined || user === undefined) {
+			console.log("hey");
+			return [];
+		}
 		//sorts by whichever one is the most recent
 		const sortedClaims = claims.sort(
 			(a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
@@ -47,9 +50,11 @@ class Claims extends React.Component {
 				.filter((claim) => claim.creatorID === user.sub)
 				.splice(0, 4);
 			return userTop;
-		} else {
+		} else if (user.role === "secretary") {
 			const sortedTop = sortedClaims.slice(0, 4);
 			return sortedTop;
+		} else {
+			return [];
 		}
 	};
 }
