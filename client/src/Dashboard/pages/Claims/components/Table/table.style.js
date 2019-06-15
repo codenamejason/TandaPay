@@ -3,7 +3,11 @@ import { darken } from "@material-ui/core/styles";
 const styles = (theme) => ({
 	root: {
 		width: "100%",
-		marginTop: theme.spacing(3)
+		marginTop: theme.spacing(3),
+		[theme.breakpoints.down("xs")]: {
+			maxWidth: theme.spacing(40),
+			overflow: "hidden"
+		}
 	},
 	paper: {
 		width: "100%",
