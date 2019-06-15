@@ -16,7 +16,7 @@ class Claims extends React.Component {
 		const headerText =
 			user.role === "secretary" ? "Recent Claims" : "My Claims";
 		const headerButtons = [
-			{ text: "NEW CLAIM", type: "green", url: "admin/claims/new" }
+			{ text: "NEW CLAIM", type: "green", url: "/admin/claims/new" }
 		];
 		const topClaims = this.getTopClaims();
 		return (
@@ -25,10 +25,7 @@ class Claims extends React.Component {
 				<Typography variant="h4">{headerText}</Typography>
 				<RecentClaims claims={topClaims} />
 
-				<Typography variant="h4">All Claims</Typography>
-				<div>
-					<ClaimTable claims={claims} />
-				</div>
+				<ClaimTable claims={claims} />
 			</React.Fragment>
 		);
 	}

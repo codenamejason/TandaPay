@@ -27,9 +27,10 @@ const ClaimHeader = (props) => {
 							variant="contained"
 							className={clsx({
 								[classes.buttonGreen]: button.type === "green",
-								[classes.buttonRed]: button.type === "red"
+								[classes.buttonRed]: button.type === "red",
+								[classes.buttonBlue]: button.type === "blue"
 							})}
-							to={button.url !== undefined ? "/admin/claims/new" : null}
+							to={button.url !== undefined ? button.url : null}
 							component={button.url !== undefined ? RegLink : Button}
 							key={index}
 							onClick={button.handleClick}
