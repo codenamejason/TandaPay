@@ -26,22 +26,38 @@ const ClaimHeader = (props) => {
 						if (button.role === "secretary" && role === "policyholder") {
 							return null;
 						}
-						return (
-							<Button
-								variant="contained"
-								className={clsx({
-									[classes.buttonGreen]: button.type === "green",
-									[classes.buttonRed]: button.type === "red",
-									[classes.buttonBlue]: button.type === "blue"
-								})}
-								to={button.url !== undefined ? button.url : null}
-								component={button.url !== undefined ? RegLink : Button}
-								key={index}
-								onClick={button.handleClick}
-							>
-								{button.text}
-							</Button>
-						);
+						if (button.url !== undefined) {
+							return (
+								<Button
+									variant="contained"
+									className={clsx({
+										[classes.buttonGreen]: button.type === "green",
+										[classes.buttonRed]: button.type === "red",
+										[classes.buttonBlue]: button.type === "blue"
+									})}
+									to={button.url}
+									component={RegLink}
+									key={index}
+								>
+									{button.text}
+								</Button>
+							);
+						} else {
+							return (
+								<Button
+									variant="contained"
+									className={clsx({
+										[classes.buttonGreen]: button.type === "green",
+										[classes.buttonRed]: button.type === "red",
+										[classes.buttonBlue]: button.type === "blue"
+									})}
+									key={index}
+									onClick={button.handleClick}
+								>
+									{button.text}
+								</Button>
+							);
+						}
 					})}
 				</Grid>
 			</Grid>

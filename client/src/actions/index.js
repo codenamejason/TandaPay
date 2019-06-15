@@ -16,4 +16,12 @@ export const fetchClaims = () => async (dispatch) => {
 	} catch (error) {}
 };
 
+export const createClaim = (summary, files) => async (dispatch) => {
+	try {
+		const claims = data.claims;
+		console.log("created claim");
+		dispatch({ type: FETCH_CLAIMS, payload: claims });
+	} catch (error) {}
+};
+
 export { fetchUser, signUp, logIn, logOut, cancelAccount, completeAccount };
