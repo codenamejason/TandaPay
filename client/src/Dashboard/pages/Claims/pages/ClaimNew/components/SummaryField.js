@@ -15,7 +15,7 @@ const SummaryField = (props) => {
 				value={value}
 				onChange={handleUpdate}
 				label="Incident Summary"
-				rows="8"
+				rows="7"
 				rowsMax="8"
 				placeholder="Type out a short paragraph(s) long summary about the incident"
 			/>

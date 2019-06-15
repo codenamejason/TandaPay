@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, withStyles } from "@material-ui/core";
+import { Grid, withStyles, Typography } from "@material-ui/core";
 
 import ClaimCard from "../ClaimCard/ClaimCard";
 
@@ -13,6 +13,9 @@ const RecentClaims = (props) => {
 					<ClaimCard claim={claim} />
 				</Grid>
 			))}
+			{claims.length === 0 && (
+				<Typography variant="h4">You have made no claims</Typography>
+			)}
 		</Grid>
 	);
 };

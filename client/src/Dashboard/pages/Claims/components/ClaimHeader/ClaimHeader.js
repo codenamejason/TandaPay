@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import clsx from "clsx";
 import styles from "./header.style.js";
 const ClaimHeader = (props) => {
-	const { classes, title, buttons } = props;
+	const { classes, title, buttons, role } = props;
 	const titleSize = 12 - 2 * buttons.length;
 	const buttonSize = 2 * buttons.length;
 	return (
@@ -22,22 +22,27 @@ const ClaimHeader = (props) => {
 					</Typography>
 				</Grid>
 				<Grid item xs={12} sm={buttonSize} className={classes.buttonContainer}>
-					{buttons.map((button, index) => (
-						<Button
-							variant="contained"
-							className={clsx({
-								[classes.buttonGreen]: button.type === "green",
-								[classes.buttonRed]: button.type === "red",
-								[classes.buttonBlue]: button.type === "blue"
-							})}
-							to={button.url !== undefined ? button.url : null}
-							component={button.url !== undefined ? RegLink : Button}
-							key={index}
-							onClick={button.handleClick}
-						>
-							{button.text}
-						</Button>
-					))}
+					{buttons.map((button, index) => {
+						if (button.role === "secretary" && role === "policyholder") {
+							return null;
+						}
+						return (
+							<Button
+								variant="contained"
+								className={clsx({
+									[classes.buttonGreen]: button.type === "green",
+									[classes.buttonRed]: button.type === "red",
+									[classes.buttonBlue]: button.type === "blue"
+								})}
+								to={button.url !== undefined ? button.url : null}
+								component={button.url !== undefined ? RegLink : Button}
+								key={index}
+								onClick={button.handleClick}
+							>
+								{button.text}
+							</Button>
+						);
+					})}
 				</Grid>
 			</Grid>
 			<Divider className={classes.divider} />

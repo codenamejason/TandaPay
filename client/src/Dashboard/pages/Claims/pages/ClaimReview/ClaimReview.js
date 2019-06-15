@@ -10,6 +10,20 @@ import ProfileCard from "./components/ProfileCard";
 import ClaimDocs from "./components/ClaimDocs";
 const claims = data.claims;
 class ClaimReview extends React.Component {
+	headerButtons = [
+		{
+			text: "REJECT",
+			type: "red",
+			handleClick: this.handleClaimReject,
+			role: "secretary"
+		},
+		{
+			text: "APPROVE",
+			type: "green",
+			handleClick: this.handleClaimApproval,
+			role: "secretary"
+		}
+	];
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -30,15 +44,16 @@ class ClaimReview extends React.Component {
 		});
 	}
 	render() {
-		const { classes } = this.props;
+		const { classes, user } = this.props;
 		const { claim } = this.state;
-		const headerButtons = [
-			{ text: "REJECT", type: "red", handleClick: this.handleClaimReject },
-			{ text: "APPROVE", type: "green", handleClick: this.handleClaimApproval }
-		];
+		console.log(user);
 		return (
 			<React.Fragment>
-				<ClaimHeader title="Claim Overview" buttons={headerButtons} />
+				<ClaimHeader
+					title="Claim Overview"
+					buttons={this.headerButtons}
+					role={user.role}
+				/>
 				<Grid container className={classes.topSection}>
 					<ProfileCard claim={claim} />
 					<Grid item xs={12} sm={6}>
