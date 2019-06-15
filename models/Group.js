@@ -7,22 +7,36 @@ const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
 const groupSchema = new Schema({
-    members: [ObjectId],
-});
-
-groupSchema.pre("save", function(next) {
-    var user = this;
-
-    if (user.isModified("password")) {
-        bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(user.password, salt, (err, hash) => {
-                user.password = hash;
-                next();
-            });
-        });
-    } else {
-        next();
-    }
+    secretary: {
+        name: {
+            type: String,
+            required: true,
+            trim: true,
+            minlenth: 1,
+        },
+        email: {
+            type: String,
+            required: true,
+            trim: true,
+            validate: [
+                {
+                    validator: value => {
+                        return validator.isEmail(value);
+                    },
+                    message: "{VALUE} is not a valid email.",
+                },
+            ],
+        },
+        phone: String,
+    },
+    members: [
+        { id: ObjectId, name: String, profile: String, standing: String },
+    ],
+    groupName: String,
+    premium: String,
+    groupDocs: [String],
+    groupStanding: String,
+    subgroups: [ObjectId],
 });
 
 module.exports = mongoose.model("groups", groupSchema);
