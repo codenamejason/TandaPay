@@ -32,10 +32,9 @@ class ClaimReview extends React.Component {
 	render() {
 		const { classes } = this.props;
 		const { claim } = this.state;
-		console.log(claim);
 		const headerButtons = [
-			{ text: "REJECT", type: "red" },
-			{ text: "APPROVE", type: "green" }
+			{ text: "REJECT", type: "red", handleClick: this.handleClaimReject },
+			{ text: "APPROVE", type: "green", handleClick: this.handleClaimApproval }
 		];
 		return (
 			<React.Fragment>
@@ -51,6 +50,14 @@ class ClaimReview extends React.Component {
 			</React.Fragment>
 		);
 	}
+
+	handleClaimReject = () => {
+		console.log("Rejected");
+	};
+
+	handleClaimApproval = () => {
+		console.log("Approved");
+	};
 }
 
 function mapStateToProps({ user }) {

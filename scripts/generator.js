@@ -24,7 +24,7 @@ const createClaim = (groupID) => {
 		name: faker.name.findName(),
 		amount: faker.finance.amount(),
 		creatorID: faker.random.uuid(),
-		summary: faker.lorem.paragraph(),
+		summary: faker.lorem.paragraphs(3),
 		documents: faker.lorem.paragraph(),
 		status: status,
 		imageURL: faker.image.imageUrl(),

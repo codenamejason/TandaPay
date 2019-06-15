@@ -21,7 +21,10 @@ TabContainer.propTypes = {
 const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
-		backgroundColor: theme.palette.background.paper
+		backgroundColor: theme.palette.background.paper,
+		marginTop: theme.spacing(5),
+		borderRadius: theme.spacing(1),
+		boxShadow: "1px 1px 5px darkgrey"
 	}
 }));
 
@@ -35,13 +38,11 @@ export default function SimpleTabs() {
 
 	return (
 		<div className={classes.root}>
-			<AppBar position="static">
-				<Tabs value={value} onChange={handleChange}>
-					<Tab label="Item One" />
-					<Tab label="Item Two" />
-					<Tab label="Item Three" />
-				</Tabs>
-			</AppBar>
+			<Tabs value={value} onChange={handleChange}>
+				<Tab label="Item One" />
+				<Tab label="Item Two" />
+				<Tab label="Item Three" />
+			</Tabs>
 			{value === 0 && <TabContainer>Item One</TabContainer>}
 			{value === 1 && <TabContainer>Item Two</TabContainer>}
 			{value === 2 && <TabContainer>Item Three</TabContainer>}

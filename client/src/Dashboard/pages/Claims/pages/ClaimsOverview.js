@@ -15,7 +15,9 @@ class Claims extends React.Component {
 		const { user, claims } = this.props;
 		const headerText =
 			user.role === "secretary" ? "Recent Claims" : "My Claims";
-		const headerButtons = [{ text: "NEW CLAIM", type: "green" }];
+		const headerButtons = [
+			{ text: "NEW CLAIM", type: "green", url: "admin/claims/new" }
+		];
 		const topClaims = this.getTopClaims();
 		return (
 			<React.Fragment>

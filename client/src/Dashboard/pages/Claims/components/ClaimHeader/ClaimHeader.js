@@ -29,9 +29,10 @@ const ClaimHeader = (props) => {
 								[classes.buttonGreen]: button.type === "green",
 								[classes.buttonRed]: button.type === "red"
 							})}
-							to="/admin/claims/new"
-							component={RegLink}
+							to={button.url !== undefined ? "/admin/claims/new" : null}
+							component={button.url !== undefined ? RegLink : Button}
 							key={index}
+							onClick={button.handleClick}
 						>
 							{button.text}
 						</Button>

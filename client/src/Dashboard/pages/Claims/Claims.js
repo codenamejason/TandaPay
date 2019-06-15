@@ -14,8 +14,8 @@ class Claims extends React.Component {
 				<div className={classes.toolbar} />
 				<Switch>
 					<Route exact path="/admin/claims" component={ClaimsOverview} />
-					<Route exact path="/admin/claims/:id" component={ClaimReview} />
 					<Route exact path="/admin/claims/new" component={ClaimNew} />
+					<Route exact path="/admin/claims/:id" component={ClaimReview} />
 				</Switch>
 			</main>
 		);
