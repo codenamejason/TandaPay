@@ -3,7 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { Route, Switch } from "react-router-dom";
 import styles from "./claims.style";
 import ClaimsOverview from "./pages/ClaimsOverview";
-import ClaimReview from "./pages/ClaimReview";
+import ClaimReview from "./pages/ClaimReview/ClaimReview";
 import ClaimNew from "./pages/ClaimNew";
 
 class Claims extends React.Component {

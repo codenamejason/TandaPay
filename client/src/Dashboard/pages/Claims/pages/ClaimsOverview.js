@@ -15,10 +15,11 @@ class Claims extends React.Component {
 		const { user, claims } = this.props;
 		const headerText =
 			user.role === "secretary" ? "Recent Claims" : "My Claims";
+		const headerButtons = [{ text: "NEW CLAIM", type: "green" }];
 		const topClaims = this.getTopClaims();
 		return (
 			<React.Fragment>
-				<ClaimHeader />
+				<ClaimHeader title="(Group Name) Claims" buttons={headerButtons} />
 				<Typography variant="h4">{headerText}</Typography>
 				<RecentClaims claims={topClaims} />
 
@@ -48,7 +49,7 @@ class Claims extends React.Component {
 				.splice(0, 4);
 			return userTop;
 		} else {
-			const sortedTop = sortedClaims.splice(0, 4);
+			const sortedTop = sortedClaims.slice(0, 4);
 			return sortedTop;
 		}
 	};

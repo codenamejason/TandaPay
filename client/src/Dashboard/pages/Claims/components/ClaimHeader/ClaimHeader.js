@@ -7,27 +7,35 @@ import {
 	Divider
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
-
+import clsx from "clsx";
 import styles from "./header.style.js";
 const ClaimHeader = (props) => {
-	const { classes } = props;
+	const { classes, title, buttons } = props;
+	const titleSize = 12 - 2 * buttons.length;
+	const buttonSize = 2 * buttons.length;
 	return (
 		<React.Fragment>
 			<Grid container>
-				<Grid item xs={12} sm={10}>
+				<Grid item xs={12} sm={titleSize}>
 					<Typography variant="h3" className={classes.title}>
-						Claims Pages
+						{title}
 					</Typography>
 				</Grid>
-				<Grid item xs={12} sm={2} className={classes.buttonContainer}>
-					<Button
-						variant="contained"
-						className={classes.button}
-						to="/admin/claims/new"
-						component={RegLink}
-					>
-						NEW CLAIM
-					</Button>
+				<Grid item xs={12} sm={buttonSize} className={classes.buttonContainer}>
+					{buttons.map((button, index) => (
+						<Button
+							variant="contained"
+							className={clsx({
+								[classes.buttonGreen]: button.type === "green",
+								[classes.buttonRed]: button.type === "red"
+							})}
+							to="/admin/claims/new"
+							component={RegLink}
+							key={index}
+						>
+							{button.text}
+						</Button>
+					))}
 				</Grid>
 			</Grid>
 			<Divider className={classes.divider} />

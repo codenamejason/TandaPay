@@ -41,6 +41,11 @@ const styles = (theme) => ({
 		justifyContent: "center",
 		marginTop: theme.spacing(3),
 		marginBottom: theme.spacing(6)
+	},
+	img: {
+		height: theme.spacing(20),
+		backgroundColor: "darkgrey",
+		width: "100%"
 	}
 });
 
