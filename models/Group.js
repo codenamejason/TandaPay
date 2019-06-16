@@ -2,7 +2,7 @@
 
 const mongoose = require("mongoose");
 const validator = require("validator");
-
+const subgroupSchema = require("./Subgroup");
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
@@ -36,7 +36,7 @@ const groupSchema = new Schema({
     premium: String,
     groupDocs: [String],
     groupStanding: String,
-    subgroups: [ObjectId],
+    subgroups: [subgroupSchema],
 });
 
 module.exports = mongoose.model("groups", groupSchema);
