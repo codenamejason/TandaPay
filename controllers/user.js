@@ -1,3 +1,6 @@
+const mongoose = require("mongoose");
+const Group = mongoose.model("groups");
+
 let checkSetupSettings = async (req, res, next) => {
     const { role, accessCode, walletProvider, ethAddress } = req.body;
 
@@ -21,18 +24,20 @@ let checkSetupSettings = async (req, res, next) => {
 
 /**
  *
- * @param {*} req
- * @param {*} res
- * @param {*} next
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Function} next
+ * @todo get groupID from accessCode
  */
 let saveUpdates = async (req, res, next) => {
     const { role, accessCode, walletProvider, ethAddress } = req.body;
+    const group = await Group.findOne({ accessCode });
     const user = req.user;
     user.role = role;
     user.walletProvider = walletProvider;
-    user.accessCode = accessCode;
     user.ethereumAddress = ethAddress;
     user.accountCompleted = true;
+    user.groupID = group._id;
     await user.save();
     req.user = user;
     next();

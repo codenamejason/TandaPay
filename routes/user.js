@@ -5,7 +5,7 @@ const {
     saveUpdates,
     generateUpdatedToken,
     sendProfile,
-} = require("../controller/user");
+} = require("../controllers/user");
 const {
     authenticated,
     checkSignature,
