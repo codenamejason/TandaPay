@@ -1,5 +1,9 @@
 import axios from "axios";
 import { FETCH_USER } from "./types";
+
+/**
+ * @summary
+ */
 export const fetchUser = () => async (dispatch) => {
 	try {
 		const response = await axios.get("/auth/me", {
@@ -9,6 +13,9 @@ export const fetchUser = () => async (dispatch) => {
 	} catch (error) {}
 };
 
+/**
+ * @summary
+ */
 export const signUp = (body) => async (dispatch) => {
 	try {
 		const response = await axios.post("/auth/signup", body);
@@ -16,11 +23,18 @@ export const signUp = (body) => async (dispatch) => {
 	} catch (error) {}
 };
 
+/**
+ * @summary
+ * @param {Object} body
+ */
 export const logIn = (body) => async (dispatch) => {
 	const response = await axios.post("/auth/login", body);
 	dispatch({ type: FETCH_USER, payload: response.data });
 };
 
+/**
+ * @summary
+ */
 export const logOut = () => async (dispatch) => {
 	try {
 		await axios.post("/auth/logout", {
@@ -31,6 +45,9 @@ export const logOut = () => async (dispatch) => {
 	} catch (error) {}
 };
 
+/**
+ * @summary
+ */
 export const cancelAccount = () => async (dispatch) => {
 	try {
 		const response = await axios.delete("/user/delete", {
@@ -41,6 +58,10 @@ export const cancelAccount = () => async (dispatch) => {
 	} catch (e) {}
 };
 
+/**
+ * @summary
+ * @param {Object} body
+ */
 export const completeAccount = (body) => async (dispatch) => {
 	try {
 		const response = await axios.patch("/user/complete", body, {
