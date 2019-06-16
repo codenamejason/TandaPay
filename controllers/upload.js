@@ -1,6 +1,5 @@
 let uuid = require("uuid/v4");
 let { createUploadUrl } = require("../lib/storage.js");
-
 /**
  * @summary: Upload controller generates signed upload urls
  * @param req: The Express request object

@@ -3,8 +3,8 @@ const { Schema } = mongoose;
 const validator = require("validator");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-
-const { JWT_SECRET } = process.env;
+const paymentSchema = require("./Payment");
+const keys = require("../config/keys");
 
 const userSchema = new Schema({
     name: {
@@ -28,7 +28,7 @@ const userSchema = new Schema({
     },
     role: {
         type: String,
-        required: true,
+        required: false,
         trim: true,
         validate: [
             {
@@ -42,6 +42,11 @@ const userSchema = new Schema({
                 message: "{VALUE} is not a valid user role.",
             },
         ],
+    },
+    accountCompleted: {
+        type: Boolean,
+        default: false,
+        required: true,
     },
     status: {
         // only necessary for secretaries and admin's. They must be approved
@@ -89,11 +94,26 @@ const userSchema = new Schema({
         minlength: 8,
         required: false,
     },
+    standing: {
+        type: String,
+        trim: true,
+        default: "good",
+        validate: [
+            {
+                validator: value => {
+                    return (
+                        value === "good" || value === "okay" || value === "bad"
+                    );
+                },
+                message: "{VALUE} is not a valid standing.",
+            },
+        ],
+    },
     googleID: String,
     facebookID: String,
-    eth: String,
+    ethereumAddress: String,
     groupID: Schema.Types.ObjectId,
-    payments: [Schema.Types.ObjectId], //replace with array of payment schema when appropriate
+    payments: [paymentSchema], //replace with array of payment schema when appropriate
     settings: [
         {
             code: {
@@ -143,24 +163,21 @@ const userSchema = new Schema({
  * @param accessLevel - the access level of the user: user, secretary, admin
  * @this user refers to the instance of the user schema that called the specific method
  * @returns the auth token generated for the user
- * @todo invalidate old tokens
  */
-userSchema.methods.generateAuthToken = async function(accessLevel) {
+userSchema.methods.generateAuthToken = async function() {
     const user = this;
     const access = "auth";
+    const { role, accountCompleted, status } = user;
     let token = jwt.sign(
-        { sub: user._id.toHexString(), access, accessLevel },
-        JWT_SECRET
+        { sub: user._id.toHexString(), access, role, accountCompleted, status },
+        keys.jwtSecret
     );
-    // const res = await user.update({
-    //   $pull: {
-    //     tokens: {
-    //       access: access
-    //     }
-    //   }
-    // });
-    // console.log(res);
-    user.tokens = user.tokens.concat([{ access, token }]);
+    const tokens = user.tokens;
+    //removes all former auth tokens from the whitelist
+    const updatedTokens = tokens.filter(element => element.access !== "auth");
+
+    //updates the user document with the new tokens
+    user.tokens = updatedTokens.concat([{ access, token }]);
     await user.save();
     return token;
 };
@@ -175,7 +192,7 @@ userSchema.statics.findByToken = function(token) {
     var decoded;
 
     try {
-        decoded = jwt.verify(token, JWT_SECRET);
+        decoded = jwt.verify(token, keys.jwtSecret);
     } catch (e) {
         return Promise.reject();
     }
