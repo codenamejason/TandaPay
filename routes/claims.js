@@ -1,29 +1,46 @@
 let express = require("express");
 let router = express.Router();
 
-let unimplemented = require("../controllers/unimplemented");
 let { authenticated } = require("../middleware/authenticated");
 let sendNotifications = require("../middleware/notification");
 let { secretaryOnly } = require("../middleware/roleCheck");
 
-router.get("/", unimplemented);
-router.post(
-    "/",
-    authenticated,
-    async (req, res, next) => {
-        req.claimantID = req.user._id;
-        req.groupID = req.user.groupID;
+/**
+ * @summary
+ * @param
+ */
+router.get("/", authenticated, (req, res) => {
+    console.log(req.body);
+});
 
-        // TODO: actually to jwt & database stuff
+/**
+ * @summary
+ */
+router.post("/", authenticated, async (req, res, next) => {
+    console.log(req.body);
+});
 
-        res.status(200).send({});
+/**
+ * @summary
+ * @param {String} claimID - ObjectID of the claim to retrieve
+ * @param {Object} user - model instance of authenticated user.
+ */
+router.get("/:claimID", authenticated, (req, res) => {
+    console.log(req.body);
+});
 
-        next();
-    },
-    sendNotifications("claim_created")
-);
-router.get("/:claimID", unimplemented);
-router.patch("/:claimID", unimplemented);
-router.post("/approve/:claimID", authenticated, secretaryOnly, unimplemented);
+/**
+ * @summary
+ */
+router.patch("/:claimID", authenticated, (req, res) => {
+    console.log(req.body);
+});
+
+/**
+ * @summary
+ */
+router.post("/approve/:claimID", authenticated, secretaryOnly, (req, res) => {
+    console.log(req.body);
+});
 
 module.exports = router;

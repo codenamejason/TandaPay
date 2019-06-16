@@ -6,9 +6,8 @@ const { MONGO_URI } = process.env;
 require("./models/register");
 require("mongoose").connect(MONGO_URI, { useNewUrlParser: true });
 
+const app = require("./routes");
 
-let api = require("./routes");
-
-api.listen(PORT, () => {
-    console.log(`Server listening on http://localhost:${PORT}`);
+app.listen(PORT, () => {
+    console.log(`Server listening on ${PORT}`);
 });

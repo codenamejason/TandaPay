@@ -34,55 +34,19 @@ let authenticated = (req, res, next) => {
         });
 };
 
-/**
- *
- * @param {body} req
- * @param {*} res
- * @param next - Express callback function that will forward the route to the next controller
- * @todo Move the function to the controller folder
- */
-let userDoesNotExist = async (req, res, next) => {
-    const { email } = req.body;
-
-    //checks for existing user
-    const existingUser = await User.findOne({
-        email,
-    });
-    if (existingUser) {
-        return res.status(409).send({
-            errors: {
-                email: "Email already in use.",
-            },
-        });
+const checkSignature = (req, res, next) => {
+    const token = req.cookies["x-auth"];
+    try {
+        const decoded = jwt.verify(token, keys.jwtSecret);
+        req.body = decoded;
+        next();
+    } catch (error) {
+        res.cookie("x-auth", "", { maxAge: Date.now() });
+        return res.status(401).send({ error: "Invalid auth token" });
     }
-
-    next();
-};
-
-/**
- *
- * @param {*} req
- * @param {*} res
- * @param next - Express callback function that will forward the route to the next controller
- * @todo Append the user model to the request model
- * @todo Move the function to the controller folder
- */
-let userDoesExist = async (req, res, next) => {
-    const { email, password } = req.body;
-
-    const existingUser = await User.findByCredentials(email, password);
-    if (!existingUser) {
-        return res.status(409).send({
-            error: "User with given credentials not found",
-        });
-    }
-    const { name, role } = existingUser;
-    req.body = { email, password, name, role };
-    next();
 };
 
 module.exports = {
     authenticated,
-    userDoesNotExist,
-    userDoesExist,
+    checkSignature,
 };
