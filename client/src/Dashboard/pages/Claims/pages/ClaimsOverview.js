@@ -30,7 +30,14 @@ class Claims extends React.Component {
 		];
 		return (
 			<React.Fragment>
-				<ClaimHeader title="(Group Name) Claims" buttons={headerButtons} />
+				<ClaimHeader
+					title={
+						claims[0] === undefined
+							? "Group Claims"
+							: `${claims[0].groupName} Claims`
+					}
+					buttons={headerButtons}
+				/>
 				<Typography variant="h4">{headerText}</Typography>
 				<RecentClaims claims={topClaims} />
 
