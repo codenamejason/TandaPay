@@ -12,7 +12,21 @@ const claimSchema = new Schema({
     creatorName: String,
     summary: String,
     documents: [String],
-    status: String,
+    status: {
+        type: String,
+        validate: [
+            {
+                validator: value => {
+                    return (
+                        value === "pending" ||
+                        value === "approved" ||
+                        value === "denied"
+                    );
+                },
+                message: "{VALUE} is not a valid claim status",
+            },
+        ],
+    },
     claimAmount: Number,
 });
 
