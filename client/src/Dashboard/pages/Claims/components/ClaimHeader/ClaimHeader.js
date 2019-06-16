@@ -51,6 +51,7 @@ const ClaimHeader = (props) => {
 										[classes.buttonRed]: button.type === "red",
 										[classes.buttonBlue]: button.type === "blue"
 									})}
+									disabled={button.disabled}
 									key={index}
 									onClick={button.handleClick}
 								>

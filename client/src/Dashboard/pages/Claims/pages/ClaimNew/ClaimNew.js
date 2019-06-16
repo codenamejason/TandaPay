@@ -38,13 +38,18 @@ class ClaimNew extends React.Component {
 	};
 
 	render() {
+		const { classes } = this.props;
+		const { summary, files } = this.state;
 		const headerButtons = [
 			{ text: "VIEW GUIDE", type: "blue", handleClick: this.displayGuide },
 			{ text: "CANCEL", type: "red", url: "/admin/claims" },
-			{ text: "SUBMIT", type: "green", handleClick: this.handleClaimSubmit }
+			{
+				text: "SUBMIT",
+				type: "green",
+				handleClick: this.handleClaimSubmit,
+				disabled: summary === "" || files.length === 0
+			}
 		];
-		const { classes } = this.props;
-		const { summary, files } = this.state;
 		return (
 			<React.Fragment>
 				<ClaimHeader title="Create New Claim" buttons={headerButtons} />

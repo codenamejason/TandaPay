@@ -13,6 +13,4 @@ class FilePreview extends React.Component {
 		);
 	}
 }
-const getPreview = (file) => {};
-
 export default withStyles(styles, { withTheme: true })(FilePreview);

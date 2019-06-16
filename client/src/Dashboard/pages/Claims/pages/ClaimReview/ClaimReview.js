@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { Grid, Typography, withStyles } from "@material-ui/core";
 import * as actions from "../../../../../actions";
 import { ClaimHeader } from "../../components";
@@ -10,20 +11,6 @@ import ProfileCard from "./components/ProfileCard";
 import ClaimDocs from "./components/ClaimDocs";
 const claims = data.claims;
 class ClaimReview extends React.Component {
-	headerButtons = [
-		{
-			text: "REJECT",
-			type: "red",
-			handleClick: this.handleClaimReject,
-			role: "secretary"
-		},
-		{
-			text: "APPROVE",
-			type: "green",
-			handleClick: this.handleClaimApproval,
-			role: "secretary"
-		}
-	];
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -44,14 +31,27 @@ class ClaimReview extends React.Component {
 		});
 	}
 	render() {
+		const headerButtons = [
+			{
+				text: "REJECT",
+				type: "red",
+				handleClick: this.handleClaimReject,
+				role: "secretary"
+			},
+			{
+				text: "APPROVE",
+				type: "green",
+				handleClick: this.handleClaimApproval,
+				role: "secretary"
+			}
+		];
 		const { classes, user } = this.props;
 		const { claim } = this.state;
-		console.log(user);
 		return (
 			<React.Fragment>
 				<ClaimHeader
 					title="Claim Overview"
-					buttons={this.headerButtons}
+					buttons={headerButtons}
 					role={user.role}
 				/>
 				<Grid container className={classes.topSection}>
@@ -66,12 +66,20 @@ class ClaimReview extends React.Component {
 		);
 	}
 
+	/**
+	 * @summary
+	 */
 	handleClaimReject = () => {
 		console.log("Rejected");
+		this.props.history.push("/admin/claims");
 	};
 
+	/**
+	 *
+	 */
 	handleClaimApproval = () => {
 		console.log("Approved");
+		this.props.history.push("/admin/claims");
 	};
 }
 
@@ -79,7 +87,9 @@ function mapStateToProps({ user }) {
 	return { user };
 }
 
-export default connect(
-	mapStateToProps,
-	actions
-)(withStyles(styles, { withTheme: true })(ClaimReview));
+export default withRouter(
+	connect(
+		mapStateToProps,
+		actions
+	)(withStyles(styles, { withTheme: true })(ClaimReview))
+);
