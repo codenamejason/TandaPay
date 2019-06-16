@@ -8,7 +8,7 @@ const renderFilesSelected = (files) => {
 	const size = files.length;
 	let output = [];
 	for (var x = 0; x < size; x++) {
-		output.push(<FilePreview file={files[x]} />);
+		output.push(<FilePreview key={x} file={files[x]} />);
 	}
 	return output;
 };

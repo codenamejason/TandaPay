@@ -18,16 +18,25 @@ const styles = (theme) => ({
 		justifyContent: "center",
 		border: "dashed",
 		borderColor: "lightgray",
-		height: theme.spacing(20),
 		flexDirection: "column"
 	},
 	files: {
 		display: "flex",
 		width: "80%",
-		justifyContent: "space-evenly"
+		justifyContent: "space-evenly",
+		flexDirection: "row",
+		flexWrap: "wrap"
 	},
 	card: {
-		padding: theme.spacing(2)
+		padding: theme.spacing(2),
+		width: theme.spacing(15),
+		margin: theme.spacing(1),
+		display: "flex",
+		flexDirection: "column",
+		justifyContent: "space-between"
+	},
+	image: {
+		width: "100%"
 	}
 });
 

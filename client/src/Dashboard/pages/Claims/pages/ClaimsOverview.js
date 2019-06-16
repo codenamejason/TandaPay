@@ -22,7 +22,6 @@ class Claims extends React.Component {
 	}
 	render() {
 		const { user, claims } = this.props;
-		console.log(user);
 		const { topClaims } = this.state;
 		const headerText =
 			user.role === "secretary" ? "Recent Claims" : "My Claims";
