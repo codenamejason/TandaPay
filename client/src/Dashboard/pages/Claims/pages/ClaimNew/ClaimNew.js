@@ -1,5 +1,6 @@
 import React from "react";
 import { Grid, withStyles } from "@material-ui/core";
+import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { ClaimHeader } from "../../components";
 import * as actions from "../../../../../actions";
@@ -18,6 +19,7 @@ class ClaimNew extends React.Component {
 	handleClaimSubmit = () => {
 		const { files, summary } = this.state;
 		this.props.createClaim(summary, files);
+		this.props.history.push("/admin/claims");
 	};
 	displayGuide = (guideURL) => {
 		window.open(guideURL, "_blank");
@@ -58,7 +60,9 @@ class ClaimNew extends React.Component {
 	}
 }
 
-export default connect(
-	null,
-	actions
-)(withStyles(styles, { withTheme: true })(ClaimNew));
+export default withRouter(
+	connect(
+		null,
+		actions
+	)(withStyles(styles, { withTheme: true })(ClaimNew))
+);
