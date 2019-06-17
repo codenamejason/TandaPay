@@ -8,8 +8,6 @@ let MemoryMongo = require("mongo-in-memory");
 let { fake_sendSMS, fake_sendEmail, fake_upload } = sinonSetup();
 let alice, bob;
 
-process.env.JWT_SECRET = "tandatest";
-
 require("../models/register");
 let app = require("../routes");
 let http = () => request(app);
