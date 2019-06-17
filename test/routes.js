@@ -99,6 +99,22 @@ test.serial("GET /groups/:id - gets a group by ID", async t => {
     t.truthy(res.body.members);
 });
 
+test.serial("POST /groups/new - creates a new group", async t => {
+    let res = await http()
+        .post("/groups/new")
+        .set("Cookie", "x-auth=" + alice.tokens[0].token)
+        .send({ groupName: 'test group', premium: "20.00" });
+
+    t.is(res.statusCode, 200);
+    t.regex(res.header["content-type"], /json/);
+    t.truthy(res.body._id);
+    t.truthy(res.body.secretary);
+    t.truthy(res.body.members);
+
+    let Group = require("../models/Group");
+    t.truthy(await Group.findById(res.body._id));
+});
+
 function sleep(ms) {
     return new Promise(res => setTimeout(res, ms));
 }
