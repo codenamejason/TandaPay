@@ -209,7 +209,32 @@ async function mongoSetup() {
     await alice.save();
     await bob.save();
 
-    let tanda = new Group({ members: [alice._id, bob._id] });
+    let tanda = new Group({
+        secretary: {
+            name: alice.name,
+            email: alice.email,
+            phone: alice.phone,
+        },
+        members: [
+            {
+                id: alice._id,
+                name: alice.name,
+                profile: "thiswasneverdocumented",
+                standing: "good",
+            },
+            {
+                id: bob._id,
+                name: bob.name,
+                profile: "thiswasneverdocumented",
+                standing: "good",
+            },
+        ],
+        groupName: "sally",
+        premium: "20.00",
+        groupDocs: [],
+        groupStanding: "good",
+        subgrouos: [],
+    });
 
     await tanda.save();
 
