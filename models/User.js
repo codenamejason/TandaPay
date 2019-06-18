@@ -94,6 +94,19 @@ const userSchema = new Schema({
 		minlength: 8,
 		required: false
 	},
+	standing: {
+		type: String,
+		trim: true,
+		default: "good",
+		validate: [
+			{
+				validator: (value) => {
+					return value === "good" || value === "okay" || value === "bad";
+				},
+				message: "{VALUE} is not a valid standing."
+			}
+		]
+	},
 	googleID: String,
 	facebookID: String,
 	ethereumAddress: String,

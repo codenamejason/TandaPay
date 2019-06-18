@@ -8,8 +8,8 @@ const theme = createMuiTheme({
 		},
 		secondary: {
 			light: "#89C98C",
-			main: "#85BB65",
-			dark: "#355D36"
+			main: "#355D36",
+			dark: "#268072"
 		},
 		error: {
 			main: "#C31432"
@@ -21,12 +21,14 @@ const theme = createMuiTheme({
 		sidebar: {
 			main: "#00B09B",
 			dark: "#96C93D"
-		}
-	},
-	overrides: {
-		MuiLink: {
-			textDecoration: "none",
-			color: "inherit"
+		},
+		button: {
+			main: "#96C93D",
+
+			dark: "#268072"
+		},
+		money: {
+			main: "#85BB65"
 		}
 	}
 });

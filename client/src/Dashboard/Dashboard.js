@@ -16,7 +16,7 @@ const Dashboard = (props) => {
 				<Route exact path="/admin/profile" component={Profile} />
 				<Route exact path="/admin/groups" component={Group} />
 				<Route exact path="/admin/wallet" component={Wallet} />
-				<Route exact path="/admin/claims" component={Claims} />
+				<Route path="/admin/claims" component={Claims} />
 				<Route exact path="/admin/help" component={Help} />
 			</Switch>
 		</div>
