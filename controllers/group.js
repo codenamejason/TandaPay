@@ -1,5 +1,7 @@
 let mongoose = require("mongoose");
 let Group = mongoose.model("groups");
+let { sendEmail } = require("../lib/twilio");
+let invitationTemplate = require("../templates/invite.html.js");
 
 /**
  * @summary: Retrieves the group doc via the request's params
@@ -72,7 +74,54 @@ async function newGroupController(req, res, next) {
     next();
 }
 
+/**
+ * @summary: Creates an invitation to a group
+ * @param req: The Express request object
+ * @param res: The Express response object
+ * @param next: The Express next function
+ * @returns: void
+ */
+async function inviteToGroupController(req, res, next) {
+    let secretary = req.user;
+
+    let { groupID } = req.params;
+    if (!groupID) {
+        return res.status(400).send({ error: "no :id" });
+    }
+
+    let userEmail = req.body.email;
+    if (!userEmail) {
+        res.status(400).send({ error: "missing email" });
+    }
+
+    let group = await Group.findById(groupID);
+    if (!group) {
+        return res.status(404).send({ error: "no such group" });
+    }
+
+    if (group.secretary.email != secretary.email) {
+        return res
+            .status(403)
+            .send({ error: "you don't have access to this group" });
+    }
+
+    let html = invitationTemplate({
+        group: group.groupName,
+        secretary: secretary.name,
+        url: "http://tandapay.com/accept?code=" + group.accessCode,
+    });
+
+    await sendEmail(
+        userEmail,
+        "You've been invited to a group on TandaPay",
+        html
+    );
+
+    res.status(200).send({ success: true });
+}
+
 module.exports = {
     getGroupByIDController,
     newGroupController,
+    inviteToGroupController,
 };

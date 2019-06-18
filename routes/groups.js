@@ -6,11 +6,11 @@ let { secretaryOnly } = require("../middleware/roleCheck");
 let {
     getGroupByIDController,
     newGroupController,
+    inviteToGroupController,
 } = require("../controllers/group");
-let unimplemented = require("../controllers/unimplemented");
 
-router.get("/:groupID", authenticated, getGroupByIDController);
 router.post("/new", authenticated, secretaryOnly, newGroupController);
-router.post("/invite", authenticated, unimplemented);
+router.get("/:groupID", authenticated, getGroupByIDController);
+router.post("/:groupID/invite", authenticated, inviteToGroupController);
 
 module.exports = router;
