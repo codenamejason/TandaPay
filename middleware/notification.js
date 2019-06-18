@@ -3,12 +3,16 @@ let Notifications = require("../lib/notification.js");
 module.exports = createSendNotificationMiddleware;
 function createSendNotificationMiddleware(kind) {
     return function sendNotificationsMiddleware(req, res, next) {
-        let { groupID } = req;
-        let notification = createNotification(kind, req);
+        try {
+            let { groupID } = req;
+            let notification = createNotification(kind, req);
 
-        // this promise shouldn't be `await`ed because the request shouldn't
-        // block on delivery. error handling happens inside .deliver()
-        notification.deliver();
+            // this promise shouldn't be `await`ed because the request shouldn't
+            // block on delivery
+            notification.deliver();
+        } catch (e) {
+            console.error(e);
+        }
 
         next();
     };
