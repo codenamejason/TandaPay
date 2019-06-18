@@ -1,6 +1,7 @@
 let mongoose = require("mongoose");
 let Group = mongoose.model("groups");
 let { sendEmail } = require("../lib/twilio");
+let invitationTemplate = require("../templates/invite.html.js");
 
 /**
  * @summary: Retrieves the group doc via the request's params
@@ -104,11 +105,16 @@ async function inviteToGroupController(req, res, next) {
             .send({ error: "you don't have access to this group" });
     }
 
+    let html = invitationTemplate({
+        group: group.groupName,
+        secretary: secretary.name,
+        url: "http://tandapay.com/accept?code=" + group.accessCode,
+    });
+
     await sendEmail(
         userEmail,
         "You've been invited to a group on TandaPay",
-        "You've been invited to a group on TandaPay. Use the following access code to join: " +
-            group.accessCode
+        html
     );
 
     res.status(200).send({ success: true });
