@@ -103,7 +103,7 @@ test.serial("POST /groups/new - creates a new group", async t => {
     let res = await http()
         .post("/groups/new")
         .set("Cookie", "x-auth=" + alice.tokens[0].token)
-        .send({ groupName: 'test group', premium: "20.00" });
+        .send({ groupName: "test group", premium: "20.00" });
 
     t.is(res.statusCode, 200);
     t.regex(res.header["content-type"], /json/);
@@ -113,6 +113,18 @@ test.serial("POST /groups/new - creates a new group", async t => {
 
     let Group = require("../models/Group");
     t.truthy(await Group.findById(res.body._id));
+});
+
+test.serial("POST /groups/:id/invite - sends invitation to group", async t => {
+    let res = await http()
+        .post(`/groups/${group._id}/invite`)
+        .set("Cookie", "x-auth=" + alice.tokens[0].token)
+        .send({ email: "claire@example.org" });
+
+    t.is(res.statusCode, 200);
+    t.regex(res.header["content-type"], /json/);
+    t.true(fake_sendEmail.callCount > 0);
+    t.regex(fake_sendEmail.getCall(0).args[2], /test-access-code/);
 });
 
 function sleep(ms) {
@@ -198,6 +210,7 @@ async function mongoSetup() {
         groupDocs: [],
         groupStanding: "good",
         subgrouos: [],
+        accessCode: "test-access-code",
     });
 
     await group.save();

@@ -5,6 +5,7 @@ const validator = require("validator");
 const subgroupSchema = require("./Subgroup");
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
+const generateAccessCode = require("../lib/accessCode");
 
 const groupSchema = new Schema({
     secretary: {
@@ -37,6 +38,12 @@ const groupSchema = new Schema({
     groupDocs: [String],
     groupStanding: String,
     subgroups: [subgroupSchema],
+    accessCode: String,
+});
+
+groupSchema.pre("save", next => {
+    if (!this.accessCode) this.accessCode = generateAccessCode();
+    next();
 });
 
 module.exports = mongoose.model("groups", groupSchema);
