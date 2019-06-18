@@ -6,7 +6,7 @@ let MemoryMongo = require("mongo-in-memory");
 
 // set up sinon mocks before local requires
 let { fake_sendSMS, fake_sendEmail, fake_upload } = sinonSetup();
-let alice, bob;
+let alice, bob, group;
 
 require("../models/register");
 let app = require("../routes");
@@ -88,6 +88,33 @@ test.serial("POST /upload - generates upload urls", async t => {
     t.true(fake_upload.callCount > 0);
 });
 
+test.serial("GET /groups/:id - gets a group by ID", async t => {
+    let res = await http()
+        .get("/groups/" + group._id)
+        .set("Cookie", "x-auth=" + bob.tokens[0].token);
+
+    t.is(res.statusCode, 200);
+    t.regex(res.header["content-type"], /json/);
+    t.truthy(res.body.secretary);
+    t.truthy(res.body.members);
+});
+
+test.serial("POST /groups/new - creates a new group", async t => {
+    let res = await http()
+        .post("/groups/new")
+        .set("Cookie", "x-auth=" + alice.tokens[0].token)
+        .send({ groupName: 'test group', premium: "20.00" });
+
+    t.is(res.statusCode, 200);
+    t.regex(res.header["content-type"], /json/);
+    t.truthy(res.body._id);
+    t.truthy(res.body.secretary);
+    t.truthy(res.body.members);
+
+    let Group = require("../models/Group");
+    t.truthy(await Group.findById(res.body._id));
+});
+
 function sleep(ms) {
     return new Promise(res => setTimeout(res, ms));
 }
@@ -146,7 +173,7 @@ async function mongoSetup() {
     await alice.generateAuthToken();
     await bob.generateAuthToken();
 
-    let tanda = new Group({
+    group = new Group({
         secretary: {
             name: alice.name,
             email: alice.email,
@@ -173,10 +200,10 @@ async function mongoSetup() {
         subgrouos: [],
     });
 
-    await tanda.save();
+    await group.save();
 
-    alice.groupID = tanda._id;
-    bob.groupID = tanda._id;
+    alice.groupID = group._id;
+    bob.groupID = group._id;
 
     await alice.save();
     await bob.save();
