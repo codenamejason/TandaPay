@@ -151,6 +151,25 @@ function setupAll(test) {
         resetSinon();
     });
 
+    test("in memory MongoDB works", async t => {
+        let User = require("../models/User.js");
+
+        let eve = new User({
+            name: "Eve",
+            email: "Eve@example.org",
+            password: "mynameeve",
+            role: "secretary",
+            status: "pending",
+        });
+
+        // save eve
+        await eve.save();
+
+        // retrieve eve
+        let eve2 = await User.findOne({ _id: eve._id });
+        t.truthy(eve2);
+    });
+
     return { fake, http, data };
 }
 

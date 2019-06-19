@@ -1,50 +1,9 @@
-// TODO: split up by top level route
 let test = require("ava");
-let { setupAll, sleep } = require("./common");
+let { setupAll, sleep } = require("../common");
 
 let { fake, http, data } = setupAll(test);
 
-test("server starts (and reports version)", async t => {
-    let { version } = require("../package.json");
-    let res = await http().get("/version");
-
-    t.is(res.statusCode, 200);
-    t.is(res.text, version);
-    t.regex(res.header["content-type"], /text/);
-});
-
-test("in memory MongoDB works", async t => {
-    let User = require("../models/User.js");
-
-    let eve = new User({
-        name: "Eve",
-        email: "Eve@example.org",
-        password: "mynameeve",
-        role: "secretary",
-        status: "pending",
-    });
-
-    // save eve
-    await eve.save();
-
-    // retrieve eve
-    let eve2 = await User.findOne({ _id: eve._id });
-    t.truthy(eve2);
-});
-
-// skip until claims code actually works
-test.skip("POST /claims - delivers notifications", async t => {
-    let res = await http()
-        .post("/claims")
-        .set("Cookie", "x-auth=" + data.bob.tokens[0].token);
-
-    t.is(res.statusCode, 200);
-    t.regex(res.header["content-type"], /json/);
-
-    await sleep(50);
-
-    t.true(fake.sendEmail.callCount > 0);
-});
+let Group = require("../../models/Group");
 
 test.serial("POST /upload - generates upload urls", async t => {
     let res = await http()
@@ -82,7 +41,6 @@ test.serial("POST /groups/new - creates a new group", async t => {
     t.truthy(res.body.secretary);
     t.truthy(res.body.members);
 
-    let Group = require("../models/Group");
     t.truthy(await Group.findById(res.body._id));
 });
 
