@@ -4,7 +4,8 @@ import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import * as actions from "../../../../actions/index";
 import styles from "../claims.style";
-import { RecentClaims, ClaimHeader, ClaimTable } from "../components/";
+import { RecentClaims, ClaimTable } from "../components/";
+import PageHeader from "../../../components/PageHeader";
 
 class Claims extends React.Component {
 	constructor(props) {
@@ -30,7 +31,7 @@ class Claims extends React.Component {
 		];
 		return (
 			<React.Fragment>
-				<ClaimHeader
+				<PageHeader
 					title={
 						claims[0] === undefined
 							? "Group Claims"

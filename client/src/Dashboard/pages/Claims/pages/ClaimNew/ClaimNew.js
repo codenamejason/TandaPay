@@ -2,7 +2,7 @@ import React from "react";
 import { Grid, withStyles } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { ClaimHeader } from "../../components";
+import PageHeader from "../../../../components/PageHeader";
 import * as actions from "../../../../../actions";
 import styles from "./new.style.js";
 import FileUpload from "./components/FileUpload";
@@ -52,7 +52,7 @@ class ClaimNew extends React.Component {
 		];
 		return (
 			<React.Fragment>
-				<ClaimHeader title="Create New Claim" buttons={headerButtons} />
+				<PageHeader title="Create New Claim" buttons={headerButtons} />
 				<Grid container className={classes.container}>
 					<SummaryField
 						value={summary}

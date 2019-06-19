@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Grid, Typography, withStyles } from "@material-ui/core";
 import * as actions from "../../../../../actions";
-import { ClaimHeader } from "../../components";
+import PageHeader from "../../../../components/PageHeader";
 
-import data from "../../../../../data/data.json";
+import data from "../../../../../data/claims.json";
 import styles from "./review.style";
 import ProfileCard from "./components/ProfileCard";
 import ClaimDocs from "./components/ClaimDocs";
@@ -49,7 +49,7 @@ class ClaimReview extends React.Component {
 		const { claim } = this.state;
 		return (
 			<React.Fragment>
-				<ClaimHeader
+				<PageHeader
 					title="Claim Overview"
 					buttons={headerButtons}
 					role={user.role}
