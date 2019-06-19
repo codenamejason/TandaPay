@@ -2,8 +2,8 @@ async function setupMongo() {
     let MemoryMongo = require("mongo-in-memory");
     let mongoose = require("mongoose");
 
-    // TODO: randomize ports
-    let mongo = new MemoryMongo();
+    let port = 10000 + Math.floor(50000 * Math.random());
+    let mongo = new MemoryMongo(port);
 
     // ugh, callbacks
     await new Promise((res, rej) =>
