@@ -12,7 +12,7 @@ const generateClaims = (amount) => {
 		claims: claims
 	};
 	const jsonObj = JSON.stringify(object);
-	fs.writeFileSync("client/src/data/data.json", jsonObj);
+	fs.writeFileSync("client/src/data/claims.json", jsonObj);
 };
 const createClaim = (groupID, groupName) => {
 	const type = Math.floor(Math.random() * Math.floor(3));
