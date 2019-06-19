@@ -1,3 +1,5 @@
+let Group = require("../models/Group");
+
 let checkSetupSettings = async (req, res, next) => {
 	const { role, accessCode, walletProvider, ethAddress } = req.body;
 
@@ -28,9 +30,18 @@ let checkSetupSettings = async (req, res, next) => {
 let saveUpdates = async (req, res, next) => {
 	const { role, accessCode, walletProvider, ethAddress } = req.body;
 	const user = req.user;
+
+	if (user.accountCompleted) {
+		return res.status(400).send("User already completed");
+	}
+
+	let group = await Group.findByAccessCode(accessCode);
+	if (!group) {
+		return res.status(400).send("Invalid access code");
+	}
+
 	user.role = role;
 	user.walletProvider = walletProvider;
-	user.accessCode = accessCode;
 	user.ethereumAddress = ethAddress;
 	user.accountCompleted = true;
 	await user.save();
