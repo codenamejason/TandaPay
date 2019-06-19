@@ -1,4 +1,3 @@
-// TODO: Refactor
 let test = require("ava");
 let sinon = require("sinon");
 
@@ -6,7 +5,7 @@ let {
     adminOnly,
     secretaryOnly,
     policyholderOnly,
-} = require("../middleware/roleCheck.js");
+} = require("../../middleware/roleCheck.js");
 
 function noop() {}
 
