@@ -9,6 +9,7 @@
     "fmt": "prettier --write index.js \"lib/**/*.js\"",
     "test": "ava",
     "test:watch": "ava --watch",
+    "test:verbose": "ava --verbose",
     "test:debug": "node inspect node_modules/ava/profile.js"
   },
   "husky": {
@@ -50,5 +51,12 @@
     "precise-commits": "^1.0.2",
     "prettier": "^1.17.1",
     "sinon": "^7.3.2"
+  },
+  "ava": {
+    "files": [
+      "test/**/*",
+      "!test/common.js"
+    ],
+    "timeout": "10s"
   }
 }
