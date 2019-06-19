@@ -1,5 +1,14 @@
 import React from "react";
-import Typography from "@material-ui/core/Typography";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableRow,
+    Paper,
+    Button,
+    Grid,
+    Typography,
+} from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 
@@ -20,14 +29,23 @@ const Group = props => {
             <PageHeader title={group.groupName + " Information"} />
             <Typography variant="h4">Members</Typography>
 
-            <ul>
-                {group.members.map(member => (
-                    <li style={{ fontSize: 14 }}>
-                        {member.name}
-                        <StandingLabel standing="good" classes={classes} />
-                    </li>
-                ))}
-            </ul>
+            <Paper>
+                <Table>
+                    <TableBody>
+                        {group.members.map(member => (
+                            <TableRow style={{ fontSize: 14 }}>
+                                <TableCell>{member.name}</TableCell>
+                                <TableCell>
+                                    <StandingLabel
+                                        standing="good"
+                                        classes={classes}
+                                    />
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>material-ui
+            </Paper>
         </main>
     );
 };
