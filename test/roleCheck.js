@@ -1,3 +1,4 @@
+// TODO: Refactor
 let test = require("ava");
 let sinon = require("sinon");
 

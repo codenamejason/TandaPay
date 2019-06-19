@@ -1,7 +1,12 @@
+// TODO: Refactor
 let test = require("ava");
-let sinon = require("sinon");
-let mongoose = require("mongoose");
-let MemoryMongo = require("mongo-in-memory");
+let {
+    setupMongo,
+    seedMongo,
+    setupSinon,
+    resetSinon,
+    sleep,
+} = require("./common");
 
 let { fake_sendSMS, fake_sendEmail } = sinonSetup();
 
@@ -149,7 +154,7 @@ test.serial("notification middleware delivers notifications", async t => {
     // terrible horrible no good very bad hack. middleware intentionally doesn't
     // wait for notifications to be delivered, so from here we have no way of
     // knowing when delivery is done.  sleep 100ms before checking status
-    await new Promise(res => setTimeout(res, 100));
+    sleep(100);
 
     // middleware should call next()
     t.is(fake_next.callCount, 1);
