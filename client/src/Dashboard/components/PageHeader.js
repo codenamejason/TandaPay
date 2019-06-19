@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import clsx from "clsx";
 import { darken } from "@material-ui/core/styles";
 const PageHeader = (props) => {
-	const { classes, title, buttons, role } = props;
+	const { classes, title, buttons = [], role } = props;
 	const titleSize = 12 - 2 * buttons.length;
 	const buttonSize = 2 * buttons.length;
 	return (
