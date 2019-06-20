@@ -3,14 +3,23 @@ import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 
 import styles from "../../Navigation/SideBar/sidebar.style";
-const Profile = (props) => {
-	const { classes } = props;
-	return (
-		<main className={classes.content}>
-			<div className={classes.toolbar} />
-			<Typography variant="h2">Profile Pages</Typography>
-		</main>
-	);
+import PageHeader from "../components/PageHeader";
+const Profile = props => {
+    const { classes } = props;
+    const headerText = "My Profile";
+    const headerButtons = [
+        {
+            text: "ADVANCED SETTINGS",
+            type: "blue",
+            url: "/admin/profile/advanced",
+        },
+    ];
+    return (
+        <main className={classes.content}>
+            <div className={classes.toolbar} />
+            <PageHeader title={headerText} buttons={headerButtons} />
+        </main>
+    );
 };
 
 export default withStyles(styles, { withTheme: true })(Profile);
