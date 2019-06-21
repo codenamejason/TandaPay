@@ -1,5 +1,5 @@
 import Claims from "./Claims/Claims";
-import Group from "./Group";
+import Group from "./Group/Group";
 import Profile from "./Profile";
 import Wallet from "./Wallet";
 import Main from "./Main";
