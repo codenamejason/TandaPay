@@ -2,7 +2,7 @@ import React from "react";
 import { CssBaseline, Grid, withStyles } from "@material-ui/core";
 import { connect } from "react-redux";
 import * as actions from "../actions";
-import { WalletPage, RolePage, GroupPage } from "./pages";
+import { WalletPage, RolePage } from "./pages";
 import styles from "./setup.style";
 
 class Setup extends React.Component {
@@ -13,50 +13,31 @@ class Setup extends React.Component {
 			accessCode: "",
 			walletProvider: "",
 			ethAddress: "",
-			page: 0,
+			page: 0
 		};
 	}
 	onRoleSubmit = (role, accessCode) => {
 		this.setState({
 			role,
 			accessCode,
-			page: 1,
+			page: 1
 		});
 	};
 
-	onWalletSubmit = async (walletProvider, ethAddress) => {
+	onWalletSubmit = (walletProvider, ethAddress) => {
 		this.setState({
 			walletProvider,
-			ethAddress,
+			ethAddress
 		});
 		const { role, accessCode } = this.state;
 		//call action creator
-
-		if (role === "secretary") {
-			this.setState({
-				page: 2,
-			});
-		} else {
-			this.props.completeAccount({
-				role,
-				accessCode,
-				walletProvider,
-				ethAddress,
-			});
-		}
-	};
-
-	onGroupSubmit = async (name, premium) => {
-		let { role, accessCode, walletProvider, ethAddress } = this.state;
-		await this.props.completeAccount({
+		this.props.completeAccount({
 			role,
 			accessCode,
 			walletProvider,
-			ethAddress,
+			ethAddress
 		});
-		await this.props.createGroup({ name, premium });
 	};
-
 	handlePrevious = () => {
 		const { page } = this.state;
 		if (page === 0) {
@@ -64,7 +45,7 @@ class Setup extends React.Component {
 			this.props.cancelAccount();
 		} else {
 			this.setState({
-				page: page - 1,
+				page: 0
 			});
 		}
 	};
@@ -85,12 +66,6 @@ class Setup extends React.Component {
 				{page === 1 && (
 					<WalletPage
 						onPageSubmit={this.onWalletSubmit}
-						previousPage={this.handlePrevious}
-					/>
-				)}
-				{page === 2 && (
-					<GroupPage
-						onPageSubmit={this.onGroupSubmit}
 						previousPage={this.handlePrevious}
 					/>
 				)}

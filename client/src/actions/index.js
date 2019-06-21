@@ -1,6 +1,8 @@
-import { FETCH_CLAIMS } from "./types";
+import axios from "axios";
+import { FETCH_CLAIMS, FETCH_GROUP } from "./types";
 
 import claimsData from "../data/claims.json";
+import group from "../data/group.json";
 
 export const fetchClaims = () => async dispatch => {
     try {
@@ -17,6 +19,10 @@ export const createClaim = (summary, files) => async dispatch => {
     } catch (error) {}
 };
 
+export const fetchGroup = () => async dispatch => {
+    dispatch({ type: FETCH_GROUP, payload: group });
+};
+
 export {
     fetchUser,
     signUp,
@@ -25,8 +31,3 @@ export {
     cancelAccount,
     completeAccount,
 } from "./user";
-
-export {
-    fetchGroup,
-    createGroup,
-} from "./group";
