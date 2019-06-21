@@ -5,7 +5,7 @@ let {
     adminOnly,
     secretaryOnly,
     policyholderOnly,
-} = require("../middleware/roleCheck.js");
+} = require("../../middleware/roleCheck.js");
 
 function noop() {}
 
