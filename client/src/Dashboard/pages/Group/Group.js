@@ -14,6 +14,7 @@ import { connect } from "react-redux";
 
 import * as actions from "../../../actions";
 import PageHeader from "../../components/PageHeader";
+import GroupCreator from "./components/GroupCreator/GroupCreator";
 import styles from "./group.style.js";
 
 const Group = props => {
@@ -21,15 +22,17 @@ const Group = props => {
 
     if (!group) {
         props.fetchGroup();
-        return <main className={classes.content}>Loading...</main>;
+        return <Wrapper classes={classes}>Loading...</Wrapper>;
+    }
+
+    if (group.mustBeCreated) {
+        return <Wrapper classes={classes}><GroupCreator /></Wrapper>;
     }
 
     return (
-        <main className={classes.content}>
-            <div className={classes.toolbar} />
+        <Wrapper classes={classes}>
             <PageHeader title={group.groupName + " Information"} />
             <Typography variant="h4">Members</Typography>
-
             <Paper>
                 <Table>
                     <TableBody>
@@ -45,8 +48,17 @@ const Group = props => {
                             </TableRow>
                         ))}
                     </TableBody>
-                </Table>material-ui
+                </Table>
             </Paper>
+        </Wrapper>
+    );
+};
+
+const Wrapper = ({ children, classes }) => {
+    return (
+        <main className={classes.content}>
+            <div className={classes.toolbar} />
+            {children}
         </main>
     );
 };
