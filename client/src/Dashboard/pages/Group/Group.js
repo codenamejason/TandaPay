@@ -41,7 +41,7 @@ const Group = props => {
                 <Table>
                     <TableBody>
                         {group.members.map(member => (
-                            <TableRow style={{ fontSize: 14 }}>
+                            <TableRow key={member.id} style={{ fontSize: 14 }}>
                                 <TableCell>{member.name}</TableCell>
                                 <TableCell>
                                     <StandingLabel
