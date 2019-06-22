@@ -1,6 +1,6 @@
 import React from "react";
-import PageHeader from "../../../../components/PageHeader";
 import { Grid, Card, withStyles } from "@material-ui/core";
+import PageHeader from "../../../../components/PageHeader";
 import styles from "./basic.style";
 const headerText = "My Profile";
 const headerButtons = [
@@ -17,9 +17,22 @@ const BasicSettings = props => {
             <PageHeader title={headerText} buttons={headerButtons} />
             <Grid container className={classes.container}>
                 <Grid item xs={12} sm={6} className={classes.cardContainer}>
-                    <Card className={classes.overview}>
-                        <h1>User Overview</h1>
-                    </Card>
+                    <Grid
+                        container
+                        component={Card}
+                        className={classes.overview}
+                    >
+                        <Grid item xs={12} sm={6}>
+                            <div>
+                                <h1>Profile Info</h1>
+                            </div>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <div>
+                                <h1>Image</h1>
+                            </div>
+                        </Grid>
+                    </Grid>
                 </Grid>
                 <Grid item xs={12} sm={6} className={classes.cardContainer}>
                     <Card className={classes.basic}>

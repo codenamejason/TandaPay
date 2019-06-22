@@ -10,7 +10,8 @@ const connectToMetamask = async () => {
     if (window.ethereum) {
         window.web3 = new Web3(window.ethereum);
         try {
-            await window.ethereum.enable();
+            const accounts = await window.ethereum.enable();
+            console.log(accounts);
             return ["success", null];
         } catch (error) {
             //User rejected account access
@@ -34,6 +35,7 @@ const connectToFortmatic = async () => {
 
     try {
         const accounts = await window.web3.currentProvider.enable();
+        console.log(accounts);
         return ["success", null];
     } catch (error) {
         console.log(error);

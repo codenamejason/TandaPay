@@ -7,6 +7,17 @@ import FortmaticIcon from "../../../assets/fortmatic.svg";
 import WalletCard from "./components/WalletCard";
 
 import { connectToMetamask, connectToFortmatic } from "../../../web3/";
+
+/**
+ * @summary
+ * @class
+ * @typedef {React.Component} WalletPage
+ * @property {Object} classes
+ * @property {String} ethAddress
+ * @property {String} walletProvider
+ * @property {Boolean} fortmaticLoading
+ * @property {Boolean} metamaskLoading
+ */
 class WalletPage extends React.Component {
     constructor(props) {
         super(props);
@@ -16,7 +27,7 @@ class WalletPage extends React.Component {
             wallet = "fortmatic";
         }
 
-        if (currentProvider.host == "metamask") {
+        if (currentProvider.host === "metamask") {
             wallet = "metamask";
         }
         this.state = {
@@ -69,29 +80,40 @@ class WalletPage extends React.Component {
         const { walletProvider, ethAddress } = this.state;
         this.props.onPageSubmit(walletProvider, ethAddress);
     };
+
+    /**
+     * @summary
+     * @async
+     * @returns {VoidFunction} - will update component state with the ethereum addressif successful, otherwise resets component visuals from loading
+     */
     onMetamaskClick = async () => {
         const walletProvider = "metamask";
         const ethAddress = "0xasifojasiofdj";
         this.setState({
-            walletProvider,
             metamaskLoading: true,
             fortmaticLoading: false,
         });
         //enable metamask
         const [result, error] = await connectToMetamask();
+        console.log(result);
         if (error) {
             this.setState({
-                walletProvider: "",
                 metamaskLoading: false,
             });
         } else {
             this.setState({
+                walletProvider,
                 ethAddress,
                 metamaskLoading: false,
             });
         }
     };
 
+    /**
+     * @summary
+     * @async
+     * @returns {VoidFunction}
+     */
     onFormaticClick = async () => {
         const walletProvider = "fortmatic";
         const ethAddress = "0xasifojasiofdj";
@@ -102,6 +124,7 @@ class WalletPage extends React.Component {
         });
         //enable fortmatic
         const [result, error] = await connectToFortmatic();
+        console.log(result);
         if (error) {
             this.setState({
                 walletProvider: "",
@@ -115,7 +138,4 @@ class WalletPage extends React.Component {
         }
     };
 }
-const sleep = milliseconds => {
-    return new Promise(resolve => setTimeout(resolve, milliseconds));
-};
 export default withStyles(styles, { withTheme: true })(WalletPage);
