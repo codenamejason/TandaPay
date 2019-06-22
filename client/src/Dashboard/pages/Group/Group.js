@@ -26,7 +26,11 @@ const Group = props => {
     }
 
     if (group.mustBeCreated) {
-        return <Wrapper classes={classes}><GroupCreator /></Wrapper>;
+        return (
+            <Wrapper classes={classes}>
+                <GroupCreator createGroup={props.createGroup} />
+            </Wrapper>
+        );
     }
 
     return (

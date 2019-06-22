@@ -23,7 +23,7 @@ class GroupCreator extends React.Component {
 
     handleSubmit = evt => {
         if (!this.isSubmittable) return;
-        console.log(this.state);
+        this.props.createGroup(this.state);
     };
 
     render() {

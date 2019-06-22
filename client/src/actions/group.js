@@ -21,7 +21,9 @@ export const fetchGroup = () => async dispatch => {
 /**
  * @summary Redux action creator to create a group
  */
-export const createGroup = () => async dispatch => {
+export const createGroup = ({ name, premium }) => async dispatch => {
+    group.groupName = name;
+    group.premium = premium;
     localStorage.hasBeenCreated = "yes";
-    dispatch({ type: FETCH_GROUP, payload: group })
+    dispatch({ type: FETCH_GROUP, payload: group });
 };
