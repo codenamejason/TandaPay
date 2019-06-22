@@ -1,7 +1,8 @@
 import React from "react";
-import { withStyles } from "@material-ui/core";
+import { Grid, withStyles } from "@material-ui/core";
 import PageHeader from "../../../../components/PageHeader";
 import styles from "./advanced.style";
+import { WalletProviders, Notifications } from "./components/";
 
 const headerText = "My Profile";
 const headerButtons = [
@@ -11,12 +12,16 @@ const headerButtons = [
         url: "/admin/profile/",
     },
 ];
-const AdvancedSettings = () => {
+const AdvancedSettings = props => {
+    const { classes } = props;
     return (
-        <div>
+        <React.Fragment>
             <PageHeader title={headerText} buttons={headerButtons} />
-            <h1>Advanced Settings</h1>
-        </div>
+            <Grid container className={classes.container}>
+                <Notifications />
+                <WalletProviders />
+            </Grid>
+        </React.Fragment>
     );
 };
 

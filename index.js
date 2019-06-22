@@ -16,23 +16,24 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(passport.initialize());
 mongoose.connect(keys.mongoURI, {
-	useNewUrlParser: true
+    useNewUrlParser: true,
 });
 
 app.use("/auth", authRoutes);
 app.use("/user/", userRoutes);
 if (process.env.NODE_ENV === "production") {
-	app.use(morgan("combined"));
-	const path = require("path");
-	app.get("*", (req, res) => {
-		res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-	});
+    app.use(morgan("combined"));
+    const path = require("path");
+    app.get("*", (req, res) => {
+        res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+    });
 }
+
 let server = app.listen(PORT, () => {
-	console.log(`Listening on port ${PORT}`);
+    console.log(`Listening on port ${PORT}`);
 });
 
 module.exports = {
-	server,
-	app
+    server,
+    app,
 };
