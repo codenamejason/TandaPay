@@ -12,28 +12,36 @@ import {
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 
-import * as actions from "../../actions";
-import PageHeader from "../components/PageHeader";
+import * as actions from "../../../actions";
+import PageHeader from "../../components/PageHeader";
+import GroupCreator from "./components/GroupCreator/GroupCreator";
+import styles from "./group.style.js";
 
 const Group = props => {
     let { group, classes } = props;
 
     if (!group) {
         props.fetchGroup();
-        return <main className={classes.content}>Loading...</main>;
+        return <Wrapper classes={classes}>Loading...</Wrapper>;
+    }
+
+    if (group.mustBeCreated) {
+        return (
+            <Wrapper classes={classes}>
+                <GroupCreator createGroup={props.createGroup} />
+            </Wrapper>
+        );
     }
 
     return (
-        <main className={classes.content}>
-            <div className={classes.toolbar} />
+        <Wrapper classes={classes}>
             <PageHeader title={group.groupName + " Information"} />
             <Typography variant="h4">Members</Typography>
-
             <Paper>
                 <Table>
                     <TableBody>
                         {group.members.map(member => (
-                            <TableRow style={{ fontSize: 14 }}>
+                            <TableRow key={member.id} style={{ fontSize: 14 }}>
                                 <TableCell>{member.name}</TableCell>
                                 <TableCell>
                                     <StandingLabel
@@ -44,8 +52,17 @@ const Group = props => {
                             </TableRow>
                         ))}
                     </TableBody>
-                </Table>material-ui
+                </Table>
             </Paper>
+        </Wrapper>
+    );
+};
+
+const Wrapper = ({ children, classes }) => {
+    return (
+        <main className={classes.content}>
+            <div className={classes.toolbar} />
+            {children}
         </main>
     );
 };
@@ -59,38 +76,6 @@ const StandingLabel = ({ standing, classes }) => (
 function mapStateToProps({ group }) {
     return { group };
 }
-
-const styles = theme => ({
-    toolbar: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "flex-end",
-        padding: "0 8px",
-        ...theme.mixins.toolbar,
-    },
-    content: {
-        flexGrow: 1,
-        padding: theme.spacing(3),
-    },
-    standing: {
-        fontWeight: "bold",
-        border: "1px solid",
-        padding: "2px 2px 1px 2px",
-        margin: "0px 2px",
-    },
-    good: {
-        color: "#2ECC40",
-        borderColor: "#2ECC40",
-    },
-    okay: {
-        color: "#FFDC00",
-        borderColor: "#FFDC00",
-    },
-    bad: {
-        color: "#FF4136",
-        borderColor: "#FF4136",
-    },
-});
 
 export default connect(
     mapStateToProps,
