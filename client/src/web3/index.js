@@ -4,6 +4,20 @@ const fm = new Fortmatic("pk_test_B9292FFD792747D9");
 
 /**
  * @summary
+ * @param {*} user
+ * @global
+ */
+const attemptConnection = async user => {
+    const { walletProvider } = user;
+    console.log(user);
+    if (walletProvider === "metamask") {
+        connectToMetamask();
+    } else {
+        connectToFortmatic();
+    }
+};
+/**
+ * @summary
  * @global
  */
 const connectToMetamask = async () => {
@@ -11,8 +25,8 @@ const connectToMetamask = async () => {
         window.web3 = new Web3(window.ethereum);
         try {
             const accounts = await window.ethereum.enable();
-            console.log(accounts);
-            return ["success", null];
+            console.log("Metamask Web3 function: ", accounts);
+            return [accounts, null];
         } catch (error) {
             //User rejected account access
             return [null, "There's been an error"];
@@ -35,12 +49,33 @@ const connectToFortmatic = async () => {
 
     try {
         const accounts = await window.web3.currentProvider.enable();
-        console.log(accounts);
-        return ["success", null];
+        console.log("Fortmatic Web3 Function: ", accounts);
+        return [accounts, null];
     } catch (error) {
         console.log(error);
         return [null, error];
     }
 };
 
-export { connectToMetamask, connectToFortmatic };
+/**
+ * @summary
+ * @global
+ */
+const currentProvider = () => {
+    const currentProvider = window.web3.currentProvider;
+    let wallet = "";
+    if (currentProvider.isFortmatic) {
+        wallet = "fortmatic";
+    } else if (currentProvider.host === "metamask") {
+        wallet = "metamask";
+    }
+
+    return wallet;
+};
+
+export {
+    connectToMetamask,
+    connectToFortmatic,
+    currentProvider,
+    attemptConnection,
+};

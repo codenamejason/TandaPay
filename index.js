@@ -20,7 +20,7 @@ mongoose.connect(keys.mongoURI, {
 });
 
 app.use("/auth", authRoutes);
-app.use("/user/", userRoutes);
+app.use("/user", userRoutes);
 if (process.env.NODE_ENV === "production") {
     app.use(morgan("combined"));
     const path = require("path");

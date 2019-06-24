@@ -30,4 +30,5 @@ export {
     logOut,
     cancelAccount,
     completeAccount,
+    updateWallet,
 } from "./user";

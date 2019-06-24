@@ -6,7 +6,11 @@ import MetamaskIcon from "../../../assets/metamask.svg";
 import FortmaticIcon from "../../../assets/fortmatic.svg";
 import WalletCard from "./components/WalletCard";
 
-import { connectToMetamask, connectToFortmatic } from "../../../web3/";
+import {
+    connectToMetamask,
+    connectToFortmatic,
+    currentProvider,
+} from "../../../web3/";
 
 /**
  * @summary
@@ -21,15 +25,7 @@ import { connectToMetamask, connectToFortmatic } from "../../../web3/";
 class WalletPage extends React.Component {
     constructor(props) {
         super(props);
-        const currentProvider = window.web3.currentProvider;
-        let wallet = "";
-        if (currentProvider.isFortmatic) {
-            wallet = "fortmatic";
-        }
-
-        if (currentProvider.host === "metamask") {
-            wallet = "metamask";
-        }
+        const wallet = currentProvider();
         this.state = {
             walletProvider: wallet,
             ethAddress: "",
@@ -88,14 +84,13 @@ class WalletPage extends React.Component {
      */
     onMetamaskClick = async () => {
         const walletProvider = "metamask";
-        const ethAddress = "0xasifojasiofdj";
         this.setState({
             metamaskLoading: true,
             fortmaticLoading: false,
         });
         //enable metamask
         const [result, error] = await connectToMetamask();
-        console.log(result);
+        const ethAddress = result[0];
         if (error) {
             this.setState({
                 metamaskLoading: false,
@@ -116,7 +111,6 @@ class WalletPage extends React.Component {
      */
     onFormaticClick = async () => {
         const walletProvider = "fortmatic";
-        const ethAddress = "0xasifojasiofdj";
         this.setState({
             walletProvider,
             fortmaticLoading: true,
@@ -124,7 +118,7 @@ class WalletPage extends React.Component {
         });
         //enable fortmatic
         const [result, error] = await connectToFortmatic();
-        console.log(result);
+        const ethAddress = result[0];
         if (error) {
             this.setState({
                 walletProvider: "",

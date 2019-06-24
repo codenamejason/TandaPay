@@ -5,7 +5,16 @@ const styles = theme => ({
     },
     card: {
         width: "70%",
-        height: theme.spacing(30),
+        padding: theme.spacing(3),
+    },
+    divider: {
+        width: "100%",
+        color: "black",
+    },
+    providers: {
+        display: "flex",
+        justifyContent: "space-evenly",
+        flexDirection: "column",
     },
 });
 
