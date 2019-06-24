@@ -1,6 +1,6 @@
 import Claims from "./Claims/Claims";
-import Group from "./Group";
 import Profile from "./Profile/Profile";
+import Group from "./Group/Group";
 import Wallet from "./Wallet";
 import Main from "./Main";
 import Help from "./Help";

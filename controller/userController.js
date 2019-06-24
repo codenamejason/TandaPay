@@ -39,6 +39,15 @@ let saveUpdates = async (req, res, next) => {
     if (user.accountCompleted) {
         return res.status(400).send("User already completed");
     }
+    if (role === "policyholder") {
+		let group = await Group.findByAccessCode(accessCode);
+
+		if (!group) {
+			return res.status(400).send("Invalid access code");
+		}
+
+		user.groupID = group._id;
+	}
 
     user.role = role;
     user.walletProvider = walletProvider;

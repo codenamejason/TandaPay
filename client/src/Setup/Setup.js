@@ -30,6 +30,7 @@ class Setup extends React.Component {
 			ethAddress
 		});
 		const { role, accessCode } = this.state;
+		localStorage.groupCreated = (role === "policyholder") ? "yes" : "no";
 		//call action creator
 		this.props.completeAccount({
 			role,
