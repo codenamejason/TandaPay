@@ -165,9 +165,9 @@ const userSchema = new Schema({
 userSchema.methods.generateAuthToken = async function() {
 	const user = this;
 	const access = "auth";
-	const { role, accountCompleted, status } = user;
+	const { role, accountCompleted, status, walletProvider } = user;
 	let token = jwt.sign(
-		{ sub: user._id.toHexString(), access, role, accountCompleted, status },
+		{ sub: user._id.toHexString(), access, role, accountCompleted, status, walletProvider },
 		keys.jwtSecret
 	);
 	const tokens = user.tokens;

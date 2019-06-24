@@ -54,7 +54,6 @@ class Claims extends React.Component {
     getTopClaims = () => {
         const { claims, user } = this.props;
         if (claims === undefined || user === undefined) {
-            console.log("hey");
             return [];
         }
         //sorts by whichever one is the most recent
