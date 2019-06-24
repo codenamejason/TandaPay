@@ -13,6 +13,7 @@ install:
     - npm install
     - npm run build
 script:
+    - node scripts/claims --amount 50
     - nohup npm run start &
     - sleep 3
     - npm run test
