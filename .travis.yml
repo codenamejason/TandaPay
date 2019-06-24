@@ -24,4 +24,4 @@ deploy:
     - on: app-stable
 before_install:
     - openssl aes-256-cbc -K $encrypted_787cea924d04_key -iv $encrypted_787cea924d04_iv
-      -in keyfile.json.enc -out keyfile.json -d
+      -in config/keyfile.json.enc -out keyfile.json -d
