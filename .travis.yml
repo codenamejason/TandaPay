@@ -15,7 +15,6 @@ cache:
 
 install:
     - npm install
-    - node scripts/claims --amount 50
     - npm run build
 script:
     - nohup npm run start &
