@@ -2,7 +2,7 @@ import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { Button, TextField } from "@material-ui/core";
 import PageHeader from "../../../../components/PageHeader";
-import { connect } from "react-redux";
+// import { connect } from "react-redux";
 
 import styles from "./GroupCreator.style.js";
 
