@@ -17,6 +17,22 @@ const styles = theme => ({
         color: "#FF4136",
         borderColor: "#FF4136",
     },
+    card: {
+        margin: 20,
+    },
+    img: {
+        width: '100%',
+        height: 'auto,'
+    },
+    container: {
+        padding: 10,
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+    right: {
+        textAlign: "right",
+    },
 });
 
 export default styles;
