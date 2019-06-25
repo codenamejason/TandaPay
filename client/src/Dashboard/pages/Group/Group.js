@@ -1,18 +1,10 @@
 import React from "react";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableRow,
-    Paper,
-    Typography,
-} from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 
 import * as actions from "../../../actions";
 import PageHeader from "../../components/PageHeader";
-import GroupCreator from "./components/GroupCreator/GroupCreator";
+import { GroupCreator, Me, Members, Subgroup } from "./components";
 import styles from "./group.style.js";
 
 const Group = props => {
@@ -33,25 +25,10 @@ const Group = props => {
 
     return (
         <Wrapper classes={classes}>
-            <PageHeader title={group.groupName + " Information"} />
-            <Typography variant="h4">Members</Typography>
-            <Paper>
-                <Table>
-                    <TableBody>
-                        {group.members.map(member => (
-                            <TableRow key={member.id} style={{ fontSize: 14 }}>
-                                <TableCell>{member.name}</TableCell>
-                                <TableCell>
-                                    <StandingLabel
-                                        standing="good"
-                                        classes={classes}
-                                    />
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </Paper>
+            <PageHeader title={group.groupName + " Members"} />
+            <Me />
+            <Subgroup />
+            <Members />
         </Wrapper>
     );
 };
@@ -64,12 +41,6 @@ const Wrapper = ({ children, classes }) => {
         </main>
     );
 };
-
-const StandingLabel = ({ standing, classes }) => (
-    <span className={classes.standing + " " + classes[standing]}>
-        {standing.substr(0, 1).toUpperCase() + standing.substr(1)}
-    </span>
-);
 
 function mapStateToProps({ group }) {
     return { group };
