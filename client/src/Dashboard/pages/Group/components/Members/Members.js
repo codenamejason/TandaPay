@@ -1,33 +1,54 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableRow,
-    Paper,
-    Typography,
-    Card,
-    Button,
-    Grid,
-} from "@material-ui/core";
+import { Typography, Card, Button, Grid, TextField } from "@material-ui/core";
 
 import styles from "./Members.style.js";
 import * as actions from "../../../../../actions";
 
-const Members = ({ group, classes }) => (
-    <div id="members">
-        <Typography variant="h4">All Members</Typography>
-        <Grid container>
-            {group.members.map(m => (
-                <Grid key={m.name} item sm="3">
-                    <MemberCard member={m} classes={classes} />
+class Members extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = { filter: "" };
+    }
+
+    handleFilterChange = evt => {
+        this.setState({ filter: evt.target.value });
+    };
+
+    render() {
+        let { group, classes } = this.props;
+        let { filter } = this.state;
+        let filterExp = RegExp(filter, 'i');
+
+        return (
+            <div id="members">
+                <div className={classes.spaceBetween}>
+                    <Typography style={{ alignSelf: "flex-end" }} variant="h4">
+                        All Members
+                    </Typography>
+                    <TextField
+                        label="Filter"
+                        type="search"
+                        margin="normal"
+                        value={this.state.filter}
+                        onChange={this.handleFilterChange}
+                    />
+                </div>
+                <Grid container>
+                    {group.members
+                        .filter(m => filterExp.test(m.name))
+                        .map(m => (
+                            <Grid key={m.name} item sm="3">
+                                <MemberCard member={m} classes={classes} />
+                            </Grid>
+                        ))}
                 </Grid>
-            ))}
-        </Grid>
-    </div>
-);
+            </div>
+        );
+    }
+}
 
 const StandingLabel = ({ standing, classes, style }) => (
     <span className={classes.standing + " " + classes[standing]} style={style}>
@@ -42,7 +63,7 @@ const MemberCard = ({ classes, member }) => (
             className={classes.img}
             alt="User Profile"
         />
-        <div className={classes.container}>
+        <div className={classes.spaceBetween} style={{ padding: 10 }}>
             <div>
                 <Typography>{member.name}</Typography>
                 <Typography>Subgroup</Typography>
@@ -51,10 +72,7 @@ const MemberCard = ({ classes, member }) => (
                 <div>
                     <StandingLabel classes={classes} standing="good" />
                 </div>
-                <Button
-                    variant="contained"
-                    color="secondary"
-                >
+                <Button variant="contained" color="secondary">
                     Details
                 </Button>
             </div>

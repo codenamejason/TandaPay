@@ -21,17 +21,16 @@ const styles = theme => ({
         margin: 20,
     },
     img: {
-        width: '100%',
-        height: 'auto,'
-    },
-    container: {
-        padding: 10,
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
+        width: "100%",
+        height: "auto,",
     },
     right: {
         textAlign: "right",
+    },
+    spaceBetween: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
     },
 });
 
