@@ -8,15 +8,11 @@ import { GroupCreator, Myself, Members, Subgroup } from "./components";
 import styles from "./group.style.js";
 import * as actions from "../../../actions";
 
-const styler = withStyles(styles, { withTheme: true });
-const connectAndStyle = component =>
-    connect(
-        mapStateToProps,
-        actions
-    )(styler(component));
-
-const Group = connectAndStyle(props => {
-    let { group, classes } = props;
+const Group = connect(
+    mapStateToProps,
+    actions
+)(props => {
+    let { group } = props;
 
     if (!group) {
         props.fetchGroup();
@@ -37,14 +33,16 @@ const Group = connectAndStyle(props => {
     );
 });
 
-const Wrapper = styler(({ children, classes }) => {
-    return (
-        <main className={classes.content}>
-            <div className={classes.toolbar} />
-            {children}
-        </main>
-    );
-});
+const Wrapper = withStyles(styles, { withTheme: true })(
+    ({ children, classes }) => {
+        return (
+            <main className={classes.content}>
+                <div className={classes.toolbar} />
+                {children}
+            </main>
+        );
+    }
+);
 
 function mapStateToProps({ group }) {
     return { group };
