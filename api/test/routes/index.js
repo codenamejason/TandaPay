@@ -1,4 +1,3 @@
-// TODO: split up by top level route
 let test = require("ava");
 let { setupAll, sleep } = require("../common");
 
