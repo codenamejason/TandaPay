@@ -50,7 +50,7 @@ function mapStateToProps({ group }) {
     return { group };
 }
 
-export default () => (
+const GroupRouting = () => (
     <Wrapper>
         <Switch>
             <Route exact path="/admin/groups" component={Group} />
@@ -58,3 +58,5 @@ export default () => (
         </Switch>
     </Wrapper>
 );
+
+export default GroupRouting;
