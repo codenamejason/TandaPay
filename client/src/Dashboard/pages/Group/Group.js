@@ -1,52 +1,60 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
-import * as actions from "../../../actions";
 import PageHeader from "../../components/PageHeader";
 import { GroupCreator, Me, Members, Subgroup } from "./components";
 import styles from "./group.style.js";
+import * as actions from "../../../actions";
 
-const Group = props => {
+const styler = withStyles(styles, { withTheme: true });
+const connectAndStyle = component =>
+    connect(
+        mapStateToProps,
+        actions
+    )(styler(component));
+
+const Group = connectAndStyle(props => {
     let { group, classes } = props;
 
     if (!group) {
         props.fetchGroup();
-        return <Wrapper classes={classes}>Loading...</Wrapper>;
+        return "Loading...";
     }
 
     if (group.mustBeCreated) {
-        return (
-            <Wrapper classes={classes}>
-                <GroupCreator createGroup={props.createGroup} />
-            </Wrapper>
-        );
+        return <Redirect to="/admin/groups/new" />;
     }
 
     return (
-        <Wrapper classes={classes}>
+        <React.Fragment>
             <PageHeader title={group.groupName + " Members"} />
             <Me />
             <Subgroup />
             <Members />
-        </Wrapper>
+        </React.Fragment>
     );
-};
+});
 
-const Wrapper = ({ children, classes }) => {
+const Wrapper = styler(({ children, classes }) => {
     return (
         <main className={classes.content}>
             <div className={classes.toolbar} />
             {children}
         </main>
     );
-};
+});
 
 function mapStateToProps({ group }) {
     return { group };
 }
 
-export default connect(
-    mapStateToProps,
-    actions
-)(withStyles(styles, { withTheme: true })(Group));
+export default () => (
+    <Wrapper>
+        <Switch>
+            <Route exact path="/admin/groups" component={Group} />
+            <Route exact path="/admin/groups/new" component={GroupCreator} />
+        </Switch>
+    </Wrapper>
+);

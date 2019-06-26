@@ -3,6 +3,10 @@
     "version": "1.0.0",
     "description": "TandaPay is a supplemental insurance product based off of the concept of shared community finance. TandaPay serves as a means by which communities can cover the cost of an insurance deductible.",
     "main": "index.js",
+    "engines": {
+        "node": "10.*.*",
+        "npm": "6.*"
+    },
     "scripts": {
         "test": "mocha -ui tdd test/**/*.test.js --exit",
         "start": "node index.js",
