@@ -23,8 +23,7 @@ install:
 script:
     - npm run test
 deploy:
-    - provider: gae
-    - keyfile: config/keyfile.json
-    - project: peerless-dahlia-229121
-    - on:
-          branch: app-stable
+    provider: gae
+    keyfile: config/keyfile.json
+    project: peerless-dahlia-229121
+    on: app-stable
