@@ -24,6 +24,6 @@ export const fetchGroup = () => async dispatch => {
 export const createGroup = ({ name, premium }) => async dispatch => {
     group.groupName = name;
     group.premium = premium;
-    localStorage.hasBeenCreated = "yes";
+    localStorage.groupCreated = "yes";
     dispatch({ type: FETCH_GROUP, payload: group });
 };

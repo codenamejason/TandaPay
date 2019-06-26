@@ -1,10 +1,12 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { Button, TextField } from "@material-ui/core";
+import { Redirect } from "react-router-dom";
 import PageHeader from "../../../../components/PageHeader";
-// import { connect } from "react-redux";
+import { connect } from "react-redux";
 
 import styles from "./GroupCreator.style.js";
+import * as actions from "../../../../../actions";
 
 class GroupCreator extends React.Component {
     constructor(props) {
@@ -28,8 +30,13 @@ class GroupCreator extends React.Component {
 
     render() {
         let { groupName, premium } = this.state;
+
+        if (!this.props.group.mustBeCreated) {
+            return <Redirect to="/admin/groups" />;
+        }
+
         return (
-            <React.Fragment>
+            <div>
                 <PageHeader title="Create a Group" />
                 <div className={this.props.classes.form}>
                     <TextField
@@ -64,9 +71,16 @@ class GroupCreator extends React.Component {
                         Create
                     </Button>
                 </div>
-            </React.Fragment>
+            </div>
         );
     }
 }
 
-export default withStyles(styles, { withTheme: true })(GroupCreator);
+function mapStateToProps({ group }) {
+    return { group };
+}
+
+export default connect(
+    mapStateToProps,
+    actions
+)(withStyles(styles, { withTheme: true })(GroupCreator));

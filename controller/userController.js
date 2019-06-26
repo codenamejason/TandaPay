@@ -19,10 +19,6 @@ let checkSetupSettings = async (req, res, next) => {
         return res.status(400).send("Invalid Ethereum account");
     }
 
-    let group = await Group.findByAccessCode(accessCode);
-    if (!group) {
-        return res.status(400).send("Invalid access code");
-    }
     next();
 };
 
