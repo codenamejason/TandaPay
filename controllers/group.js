@@ -44,6 +44,10 @@ async function newGroupController(req, res, next) {
         return res.status(400).send({ error: "premium required" });
     }
 
+    if (isNaN(premium) || premium < 0) {
+        return res.status(400).send({ error: "invalid premium" });
+    }
+
     try {
         let group = new Group({
             secretary: {
@@ -91,7 +95,11 @@ async function inviteToGroupController(req, res, next) {
 
     let userEmail = req.body.email;
     if (!userEmail) {
-        res.status(400).send({ error: "missing email" });
+        return res.status(400).send({ error: "missing email" });
+    }
+
+    if (!/\S+@\S+\.\S+/.test(userEmail)) {
+        return res.status(400).send({ error: "invalid email" });
     }
 
     let group = await Group.findById(groupID);
