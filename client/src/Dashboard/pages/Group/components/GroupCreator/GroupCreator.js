@@ -1,6 +1,6 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { Button, TextField } from "@material-ui/core";
+import { Button, TextField, Typography } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
 import PageHeader from "../../../../components/PageHeader";
 import { connect } from "react-redux";
@@ -11,7 +11,7 @@ import * as actions from "../../../../../actions";
 class GroupCreator extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { name: "", premium: "" };
+        this.state = { name: "", premium: "", files: [] };
     }
 
     handleFieldChange = evt => {
@@ -20,8 +20,15 @@ class GroupCreator extends React.Component {
         });
     };
 
+    handleUpload = evt => {
+        this.setState({ files: evt.target.files });
+    };
+
     isSubmittable = () =>
-        this.state.name && !isNaN(this.state.premium) && this.state.premium > 0;
+        this.state.name &&
+        !isNaN(this.state.premium) &&
+        this.state.premium > 0 &&
+        this.state.files.length > 0;
 
     handleSubmit = evt => {
         if (!this.isSubmittable) return;
@@ -39,6 +46,7 @@ class GroupCreator extends React.Component {
             <div>
                 <PageHeader title="Create a Group" />
                 <div className={this.props.classes.form}>
+                    <Typography variant="h4">Group Properties</Typography>
                     <TextField
                         type="text"
                         id="name"
@@ -57,6 +65,22 @@ class GroupCreator extends React.Component {
                         variant="outlined"
                         className={this.props.classes.formItem}
                     />
+                    <Typography variant="h4">Group Charter</Typography>
+                    <div
+                        className={
+                            this.props.classes.formItem +
+                            " " +
+                            this.props.classes.files
+                        }
+                    >
+                        <input
+                            id="files"
+                            multiple
+                            type="file"
+                            onChange={this.handleUpload}
+                        />
+                    </div>
+                    <br />
                     <Button
                         variant="contained"
                         color="primary"
