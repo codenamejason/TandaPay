@@ -4,7 +4,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 import PageHeader from "../../components/PageHeader";
-import { GroupCreator, Me, Members, Subgroup } from "./components";
+import { GroupCreator, Myself, Members, Subgroup } from "./components";
 import styles from "./group.style.js";
 import * as actions from "../../../actions";
 
@@ -30,7 +30,7 @@ const Group = connectAndStyle(props => {
     return (
         <React.Fragment>
             <PageHeader title={group.groupName + " Members"} />
-            <Me />
+            <Myself />
             <Subgroup />
             <Members />
         </React.Fragment>

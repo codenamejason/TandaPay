@@ -5,9 +5,9 @@ import { Typography, Button } from "@material-ui/core";
 
 import * as actions from "../../../../../actions";
 
-import styles from "./Me.style.js";
+import styles from "./Myself.style.js";
 
-const Me = ({ classes, group }) => (
+const Myself = ({ classes, group }) => (
     <div>
         <Typography variant="h4">Me</Typography>
         <div className={classes.main}>
@@ -58,4 +58,4 @@ function mapStateToProps({ group }) {
 export default connect(
     mapStateToProps,
     actions
-)(withStyles(styles, { withTheme: true })(Me));
+)(withStyles(styles, { withTheme: true })(Myself));
