@@ -6,34 +6,34 @@ import * as actions from "../../../../actions";
 
 export const withGroup = WrappedComponent => {
     let HasGroupComponent = props => {
-        let { group } = props;
+        let { user, group } = props;
 
-        if (group == null) return <GroupLoader />;
+        if (user.groupID) {
+            if (group == null) {
+                return <GroupLoader />
+            }
 
-        if (!group.mustBeCreated) {
             return <WrappedComponent {...props} />;
         } else {
             return <Redirect to="/admin/groups/new" />;
         }
     };
 
-    return connect(state => ({ group: state.group }))(HasGroupComponent);
+    return connect(state => state)(HasGroupComponent);
 };
 
 export const withoutGroup = WrappedComponent => {
     let GrouplessComponent = props => {
-        let { group } = props;
+        let { user } = props;
 
-        if (group == null) return <GroupLoader />;
-
-        if (group.mustBeCreated) {
+        if (!user.groupID) {
             return <WrappedComponent {...props} />;
         } else {
             return <Redirect to="/admin/groups" />;
         }
     };
 
-    return connect(state => ({ group: state.group }))(GrouplessComponent);
+    return connect(state => state)(GrouplessComponent);
 };
 
 const GroupLoader = connect(
