@@ -3,6 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { Route, Switch } from "react-router-dom";
 
 import { GroupCreator, GroupDashboard } from "./pages";
+import { withGroup, withoutGroup } from "./components/HOCs.js";
 import styles from "./group.style.js";
 
 const Wrapper = withStyles(styles, { withTheme: true })(
@@ -19,11 +20,18 @@ const Wrapper = withStyles(styles, { withTheme: true })(
 const Group = () => (
     <Wrapper>
         <Switch>
-            <Route exact path="/admin/groups" component={GroupDashboard} />
-            <Route exact path="/admin/groups/new" component={GroupCreator} />
+            <Route
+                exact
+                path="/admin/groups"
+                component={withGroup(GroupDashboard)}
+            />
+            <Route
+                exact
+                path="/admin/groups/new"
+                component={withoutGroup(GroupCreator)}
+            />
         </Switch>
     </Wrapper>
 );
-
 
 export default Group;

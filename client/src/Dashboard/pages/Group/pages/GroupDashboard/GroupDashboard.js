@@ -1,5 +1,4 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { Myself, Subgroup, Members } from "./components";
@@ -15,10 +14,6 @@ const GroupDashboard = connect(
     if (!group) {
         props.fetchGroup();
         return "Loading...";
-    }
-
-    if (group.mustBeCreated) {
-        return <Redirect to="/admin/groups/new" />;
     }
 
     return (
