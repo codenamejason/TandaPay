@@ -3,8 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { Typography, Button } from "@material-ui/core";
 
-import * as actions from "../../../../../actions";
-
+import * as actions from "../../../../../../../actions";
 import styles from "./Myself.style.js";
 
 const Myself = ({ classes, group }) => (

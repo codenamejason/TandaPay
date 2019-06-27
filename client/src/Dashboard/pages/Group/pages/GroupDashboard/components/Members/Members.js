@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Typography, Card, Button, Grid, TextField } from "@material-ui/core";
 
 import styles from "./Members.style.js";
-import * as actions from "../../../../../actions";
+import * as actions from "../../../../../../../actions";
 
 class Members extends React.Component {
     constructor(props) {

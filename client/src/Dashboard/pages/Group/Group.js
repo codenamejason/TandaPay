@@ -1,37 +1,9 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { Route, Switch, Redirect } from "react-router-dom";
-import { connect } from "react-redux";
+import { Route, Switch } from "react-router-dom";
 
-import PageHeader from "../../components/PageHeader";
-import { GroupCreator, Myself, Members, Subgroup } from "./components";
+import { GroupCreator, GroupDashboard } from "./pages";
 import styles from "./group.style.js";
-import * as actions from "../../../actions";
-
-const Group = connect(
-    mapStateToProps,
-    actions
-)(props => {
-    let { group } = props;
-
-    if (!group) {
-        props.fetchGroup();
-        return "Loading...";
-    }
-
-    if (group.mustBeCreated) {
-        return <Redirect to="/admin/groups/new" />;
-    }
-
-    return (
-        <React.Fragment>
-            <PageHeader title={group.groupName + " Members"} />
-            <Myself />
-            <Subgroup />
-            <Members />
-        </React.Fragment>
-    );
-});
 
 const Wrapper = withStyles(styles, { withTheme: true })(
     ({ children, classes }) => {
@@ -44,17 +16,14 @@ const Wrapper = withStyles(styles, { withTheme: true })(
     }
 );
 
-function mapStateToProps({ group }) {
-    return { group };
-}
-
-const GroupRouting = () => (
+const Group = () => (
     <Wrapper>
         <Switch>
-            <Route exact path="/admin/groups" component={Group} />
+            <Route exact path="/admin/groups" component={GroupDashboard} />
             <Route exact path="/admin/groups/new" component={GroupCreator} />
         </Switch>
     </Wrapper>
 );
 
-export default GroupRouting;
+
+export default Group;

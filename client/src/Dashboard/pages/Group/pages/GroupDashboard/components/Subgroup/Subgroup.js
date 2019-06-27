@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Typography, Button } from "@material-ui/core";
 
 import styles from "./Subgroup.style.js";
-import * as actions from "../../../../../actions";
+import * as actions from "../../../../../../../actions";
 
 const Subgroup = ({ classes }) => (
     <div>
