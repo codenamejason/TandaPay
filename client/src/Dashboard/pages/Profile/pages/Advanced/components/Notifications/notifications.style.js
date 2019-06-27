@@ -5,7 +5,7 @@ const styles = theme => ({
     },
     card: {
         width: "80%",
-        height: theme.spacing(30),
+        padding: 25,
     },
 });
 
