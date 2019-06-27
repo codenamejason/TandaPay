@@ -2,3 +2,5 @@ node_modules
 dev.js
 .DS_Store
 keyfile.json
+env.sh
+*.tar.gz

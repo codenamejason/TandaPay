@@ -15,8 +15,9 @@ cache:
     directories:
         - node_modules
 before_install:
-    - openssl aes-256-cbc -K $encrypted_464b4534abaf_key -iv $encrypted_464b4534abaf_iv
-      -in config/keyfile.json.enc -out config/keyfile.json -d
+    - openssl aes-256-cbc -K $encrypted_787cea924d04_key -iv $encrypted_787cea924d04_iv
+      -in config/credentials.tar.gz.enc -out config/credentials.tar.gz -d
+    - tar -xzf config/credentials.tar.gz
 install:
     - npm install
     - npm run build
