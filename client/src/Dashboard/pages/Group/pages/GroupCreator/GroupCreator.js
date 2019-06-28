@@ -1,7 +1,6 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { Button, TextField, Typography } from "@material-ui/core";
-import { Redirect } from "react-router-dom";
 import PageHeader from "../../../../components/PageHeader";
 import { connect } from "react-redux";
 
@@ -37,10 +36,6 @@ class GroupCreator extends React.Component {
 
     render() {
         let { groupName, premium } = this.state;
-
-        if (!this.props.group.mustBeCreated) {
-            return <Redirect to="/admin/groups" />;
-        }
 
         return (
             <div>
