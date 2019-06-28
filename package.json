@@ -9,6 +9,7 @@
     },
     "scripts": {
         "test": "mocha -ui tdd test/**/*.test.js --exit",
+        "prestart": "./config/env.sh",
         "start": "node index.js",
         "server": "nodemon index.js",
         "client": "npm run start --prefix client",
