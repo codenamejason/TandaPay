@@ -1,30 +1,30 @@
 language: node_js
 node_js:
-    - "8"
+- '8'
 dist: trusty
 branches:
-    only:
-        - master
-        - app-stable
-        - api-stable
+  only:
+  - master
+  - app-stable
+  - api-stable
 services:
-    - mongodb
+- mongodb
 env:
-    - NODE_ENV=ci
+- NODE_ENV=ci
 cache:
-    directories:
-        - node_modules
+  directories:
+  - node_modules
 before_install:
-    - openssl aes-256-cbc -K $encrypted_464b4534abaf_key -iv $encrypted_464b4534abaf_iv
-      -in config/credentials.tar.gz.enc -out config/credentials.tar.gz -d
-    - tar -C config/ -xzf config/credentials.tar.gz
+- openssl aes-256-cbc -K $encrypted_464b4534abaf_key -iv $encrypted_464b4534abaf_iv
+  -in config/credentials.tar.gz.enc -out config/credentials.tar.gz -d
+- tar -C config/ -xzf config/credentials.tar.gz
 install:
-    - npm install
-    - npm run build
+- npm install
+- npm run build
 script:
-    - npm run test
+- npm run test
 deploy:
-    provider: gae
-    keyfile: config/keyfile.json
-    project: peerless-dahlia-229121
-    on: app-stable
+  provider: gae
+  keyfile: config/keyfile.json
+  project: peerless-dahlia-229121
+  on: app-stable
