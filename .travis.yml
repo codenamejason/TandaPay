@@ -24,6 +24,7 @@ install:
     - npm run build
 script:
     - npm run test
+    - touch testFile.txt
 deploy:
     provider: gae
     keyfile: config/keyfile.json
