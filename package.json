@@ -9,7 +9,7 @@
     },
     "scripts": {
         "test": "mocha -ui tdd test/**/*.test.js --exit",
-        "start": "export NODE_ENV=production || SET \"NODE_ENV=production\"node index.js",
+        "start": "export NODE_ENV=production || SET \"NODE_ENV=production\" && node index.js",
         "server": "nodemon index.js",
         "client": "npm run start --prefix client",
         "dev": "concurrently \"npm run server\" \"npm run client\"",
