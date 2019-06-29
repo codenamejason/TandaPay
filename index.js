@@ -22,6 +22,7 @@ mongoose.connect(keys.mongoURI, {
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
 if (process.env.NODE_ENV === "production") {
+    app.use(express.static('client/build'));
     app.use(morgan("combined"));
     const path = require("path");
     app.get("*", (req, res) => {
