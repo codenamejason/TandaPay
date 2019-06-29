@@ -1,5 +1,6 @@
 if (process.env.NODE_ENV === "production") {
     require("./config/env");
+    console.log(process.env.MONGO_URI);
 }
 const express = require("express");
 const passport = require("passport");
