@@ -22,7 +22,6 @@ before_install:
   - cat config/env.js
 install:
   - npm install
-  - npm run build
 script:
   - npm run test
 deploy:
