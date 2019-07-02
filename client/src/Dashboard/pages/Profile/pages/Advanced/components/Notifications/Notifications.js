@@ -1,10 +1,13 @@
 import React from "react";
 import {
     Grid,
-    Card,
     Typography,
-    FormGroup,
-    FormControlLabel,
+    Paper,
+    Table,
+    TableHead,
+    TableBody,
+    TableRow,
+    TableCell,
     Checkbox,
     withStyles,
 } from "@material-ui/core";
@@ -32,48 +35,52 @@ const NOTIFICATION_TYPES = [
 
 const Notifications = props => {
     const { classes } = props;
+
     return (
         <Grid item xs={12} sm={7} className={classes.container}>
-            <Card className={classes.card}>
-                <Typography variant="h6">NOTIFICATION SETTINGS</Typography>
-                {NOTIFICATION_TYPES.map(n => (
-                    <Setting type={n} />
-                ))}
-            </Card>
+            <Paper>
+                <div className={classes.spaceBetween}>
+                    <Typography className={classes.heading} variant="h5">
+                        Notifications
+                    </Typography>
+                    <Typography
+                        className={classes.heading + " " + classes.saveStatus}
+                        variant="body2"
+                    >
+                        Saving...
+                    </Typography>
+                </div>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Notification</TableCell>
+                            <TableCell>SMS</TableCell>
+                            <TableCell>Email</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {NOTIFICATION_TYPES.map(n => (
+                            <Row key={n.code} notif={n} />
+                        ))}
+                    </TableBody>
+                </Table>
+            </Paper>
         </Grid>
     );
-};
 
-const Setting = ({ type, sms, email }) => (
-    <div
-        style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-        }}
-    >
-        <p>{type.name}</p>
-        <FormGroup row>
-            <FormControlLabel
-                control={
-                    <Checkbox
-                        checked={false}
-                        onChange={() => console.log("change")}
-                    />
-                }
-                label="SMS"
-            />
-            <FormControlLabel
-                control={
-                    <Checkbox
-                        checked={false}
-                        onChange={() => console.log("change")}
-                    />
-                }
-                label="Email"
-            />
-        </FormGroup>
-    </div>
-);
+    function Row({ notif }) {
+        return (
+            <TableRow>
+                <TableCell>{notif.name}</TableCell>
+                <TableCell>
+                    <Checkbox checked={false} />
+                </TableCell>
+                <TableCell>
+                    <Checkbox checked={false} />
+                </TableCell>
+            </TableRow>
+        );
+    }
+};
 
 export default withStyles(styles, { withTheme: true })(Notifications);
