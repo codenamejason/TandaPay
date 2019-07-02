@@ -19,6 +19,20 @@ class Notifications extends React.Component {
         super(props);
 
         this.state = {
+            notifs: [],
+            saving: null,
+        };
+    }
+
+    componentDidMount() {
+        this.load().catch(console.error);
+    }
+
+    async load() {
+        // TODO: replace with HTTP
+        await new Promise(res => setTimeout(res, 750));
+
+        this.setState({
             notifs: [
                 {
                     code: "claim_created",
@@ -41,12 +55,21 @@ class Notifications extends React.Component {
                     email: false,
                 },
             ],
-        };
+        });
+    }
+
+    async save() {
+        this.setState({ saving: true });
+
+        // TODO: replace with HTTP
+        await new Promise(res => setTimeout(res, 750));
+
+        this.setState({ saving: "done" });
     }
 
     render() {
         let { classes } = this.props;
-        let { notifs } = this.state;
+        let { notifs, saving } = this.state;
 
         return (
             <Grid item xs={12} sm={7} className={classes.container}>
@@ -61,7 +84,8 @@ class Notifications extends React.Component {
                             }
                             variant="body2"
                         >
-                            Saving...
+                            {saving === true ? "Saving..." : null}
+                            {saving === "done" ? "Saved" : null}
                         </Typography>
                     </div>
                     <Table>
@@ -99,10 +123,10 @@ class Notifications extends React.Component {
         );
     };
 
-    handleChange = (domain, code) => (evt) => {
+    handleChange = (domain, code) => evt => {
         let notif = this.state.notifs.find(n => n.code === code);
         notif[domain] = !notif[domain];
-        this.setState(this.state);
+        this.setState(this.state, () => this.save().catch(console.error));
     };
 }
 
