@@ -60,4 +60,18 @@ router.delete("/delete", authenticated, async (req, res) => {
     }
 });
 
+router.get("/settings", authenticated, (req, res) => {
+    res.status(200).send(req.user.settings);
+});
+
+router.put("/settings", authenticated, async (req, res) => {
+    try {
+        req.user.settings = req.body;
+        await req.user.save();
+        res.status(200).send();
+    } catch (e) {
+        res.status(400).send(e);
+    }
+});
+
 module.exports = router;
