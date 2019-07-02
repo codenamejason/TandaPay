@@ -24,25 +24,21 @@ class Notifications extends React.Component {
                     code: "claim_created",
                     sms: false,
                     email: true,
-                    name: "Claim Created",
                 },
                 {
                     code: "claim_updated",
                     sms: false,
                     email: false,
-                    name: "Claim Updated",
                 },
                 {
                     code: "claim_approved",
                     sms: true,
                     email: true,
-                    name: "Claim Approved",
                 },
                 {
-                    code: "premiun_paid",
+                    code: "premium_paid",
                     sms: false,
                     email: false,
-                    name: "Premium Paid",
                 },
             ],
         };
@@ -86,7 +82,7 @@ class Notifications extends React.Component {
     renderRow = notif => {
         return (
             <TableRow key={notif.code}>
-                <TableCell>{notif.name}</TableCell>
+                <TableCell>{NOTIFICATION_NAMES[notif.code]}</TableCell>
                 <TableCell>
                     <Checkbox
                         checked={notif.sms}
@@ -109,5 +105,12 @@ class Notifications extends React.Component {
         this.setState(this.state);
     };
 }
+
+const NOTIFICATION_NAMES = {
+    premium_paid: "Premium Paid",
+    claim_created: "Claim Created",
+    claim_updated: "Claim Updated",
+    claim_approved: "Claim Approved",
+};
 
 export default withStyles(styles, { withTheme: true })(Notifications);
