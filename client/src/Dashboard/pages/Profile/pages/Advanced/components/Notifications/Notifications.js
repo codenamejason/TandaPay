@@ -14,73 +14,100 @@ import {
 
 import styles from "./notifications.style";
 
-const NOTIFICATION_TYPES = [
-    {
-        code: "claim_created",
-        name: "Claim Created",
-    },
-    {
-        code: "claim_updated",
-        name: "Claim Updated",
-    },
-    {
-        code: "claim_approved",
-        name: "Claim Approved",
-    },
-    {
-        code: "premiun_paid",
-        name: "Premium Paid",
-    },
-];
+class Notifications extends React.Component {
+    constructor(props) {
+        super(props);
 
-const Notifications = props => {
-    const { classes } = props;
+        this.state = {
+            notifs: [
+                {
+                    code: "claim_created",
+                    sms: false,
+                    email: true,
+                    name: "Claim Created",
+                },
+                {
+                    code: "claim_updated",
+                    sms: false,
+                    email: false,
+                    name: "Claim Updated",
+                },
+                {
+                    code: "claim_approved",
+                    sms: true,
+                    email: true,
+                    name: "Claim Approved",
+                },
+                {
+                    code: "premiun_paid",
+                    sms: false,
+                    email: false,
+                    name: "Premium Paid",
+                },
+            ],
+        };
+    }
 
-    return (
-        <Grid item xs={12} sm={7} className={classes.container}>
-            <Paper>
-                <div className={classes.spaceBetween}>
-                    <Typography className={classes.heading} variant="h5">
-                        Notifications
-                    </Typography>
-                    <Typography
-                        className={classes.heading + " " + classes.saveStatus}
-                        variant="body2"
-                    >
-                        Saving...
-                    </Typography>
-                </div>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Notification</TableCell>
-                            <TableCell>SMS</TableCell>
-                            <TableCell>Email</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {NOTIFICATION_TYPES.map(n => (
-                            <Row key={n.code} notif={n} />
-                        ))}
-                    </TableBody>
-                </Table>
-            </Paper>
-        </Grid>
-    );
+    render() {
+        let { classes } = this.props;
+        let { notifs } = this.state;
 
-    function Row({ notif }) {
         return (
-            <TableRow>
+            <Grid item xs={12} sm={7} className={classes.container}>
+                <Paper>
+                    <div className={classes.spaceBetween}>
+                        <Typography className={classes.heading} variant="h5">
+                            Notifications
+                        </Typography>
+                        <Typography
+                            className={
+                                classes.heading + " " + classes.saveStatus
+                            }
+                            variant="body2"
+                        >
+                            Saving...
+                        </Typography>
+                    </div>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Notification</TableCell>
+                                <TableCell>SMS</TableCell>
+                                <TableCell>Email</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>{notifs.map(this.renderRow)}</TableBody>
+                    </Table>
+                </Paper>
+            </Grid>
+        );
+    }
+
+    renderRow = notif => {
+        return (
+            <TableRow key={notif.code}>
                 <TableCell>{notif.name}</TableCell>
                 <TableCell>
-                    <Checkbox checked={false} />
+                    <Checkbox
+                        checked={notif.sms}
+                        onChange={this.handleChange("sms", notif.code)}
+                    />
                 </TableCell>
                 <TableCell>
-                    <Checkbox checked={false} />
+                    <Checkbox
+                        checked={notif.email}
+                        onChange={this.handleChange("email", notif.code)}
+                    />
                 </TableCell>
             </TableRow>
         );
-    }
-};
+    };
+
+    handleChange = (domain, code) => (evt) => {
+        let notif = this.state.notifs.find(n => n.code === code);
+        notif[domain] = !notif[domain];
+        this.setState(this.state);
+    };
+}
 
 export default withStyles(styles, { withTheme: true })(Notifications);
