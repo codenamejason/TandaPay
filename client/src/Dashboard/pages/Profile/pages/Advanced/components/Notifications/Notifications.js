@@ -122,7 +122,7 @@ class Notifications extends React.Component {
 
     handleChange = (domain, code) => evt => {
         let notif = this.state.notifs.find(
-            n => n.code === code && n.domain == domain
+            n => n.code === code && n.domain === domain
         );
         notif.value = !notif.value;
         this.setState(this.state, () => this.save().catch(console.error));
