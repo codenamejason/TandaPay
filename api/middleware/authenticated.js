@@ -34,7 +34,7 @@ let authenticated = (req, res, next) => {
 };
 
 const checkSignature = (req, res, next) => {
-    const token = req.cookies["x-auth"];
+    const token = (req.headers["authorization"] || "").replace("Bearer ", "");
     try {
         const decoded = jwt.verify(token, keys.jwtSecret);
         req.body = decoded;
