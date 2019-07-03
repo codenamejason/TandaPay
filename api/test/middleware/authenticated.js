@@ -14,7 +14,7 @@ test.before(async t => {
 });
 
 test("authenticated allows valid tokens", async t => {
-    let req = { cookies: { "x-auth": data.bob.tokens[0].token } };
+    let req = { headers: { "authorization": "Bearer " + data.bob.tokens[0].token } };
     let res = {};
     let next;
 
@@ -28,7 +28,7 @@ test("authenticated allows valid tokens", async t => {
 });
 
 test("authenticated disallows missing tokens", async t => {
-    let req = { cookies: {} };
+    let req = { headers: {} };
     let res = { status: sinon.fake.returns({ send: () => {} }) };
     let next = sinon.fake.returns();
 
@@ -40,7 +40,7 @@ test("authenticated disallows missing tokens", async t => {
 });
 
 test("authenticated disallows invalid tokens", async t => {
-    let req = { cookies: { "x-auth": "foo.bar.baz" } };
+    let req = { headers: { "authorization": "Bearer " + "foo.bar.baz" } };
     let res = { status: null };
     let next = sinon.fake.returns();
 
