@@ -6,7 +6,7 @@ let { fake, http, data } = setupAll(test);
 test("POST /upload - generates upload urls", async t => {
     let res = await http()
         .post("/upload")
-        .set("Cookie", "x-auth=" + data.bob.tokens[0].token);
+        .set("Authorization", "Bearer " + data.bob.tokens[0].token);
 
     t.is(res.statusCode, 200);
     t.regex(res.header["content-type"], /json/);

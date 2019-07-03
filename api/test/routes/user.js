@@ -7,7 +7,7 @@ let User = require("../../models/User.js");
 test("GET /user/settings - gets a user's notification settings", async t => {
     let res = await http()
         .get("/user/settings")
-        .set("Cookie", "x-auth=" + data.bob.tokens[0].token);
+        .set("Authorization", "Bearer " + data.bob.tokens[0].token);
 
     t.is(res.statusCode, 200);
     t.regex(res.header["content-type"], /json/);
@@ -19,7 +19,7 @@ test("GET /user/settings - gets a user's notification settings", async t => {
 test("PUT /user/settings - sets a user's notification settings", async t => {
     let res = await http()
         .put("/user/settings")
-        .set("Cookie", "x-auth=" + data.bob.tokens[0].token)
+        .set("Authorization", "Bearer " + data.bob.tokens[0].token)
         .send([
             { code: "claim_approved", domain: "email", value: true },
             { code: "claim_approved", domain: "sms", value: true },
@@ -35,7 +35,7 @@ test("PUT /user/settings - sets a user's notification settings", async t => {
 test("PUT /user/settings - rejects malformed requests", async t => {
     let res = await http()
         .put("/user/settings")
-        .set("Cookie", "x-auth=" + data.bob.tokens[0].token)
+        .set("Authorization", "Bearer " + data.bob.tokens[0].token)
         .send([
             { code: "claim_approved", value: true },
             { code: "example", value: true },
