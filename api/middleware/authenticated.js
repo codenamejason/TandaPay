@@ -9,10 +9,9 @@ const User = mongoose.model("users");
  * The token and user object will be defined in the request object if the user is authenticated
  * @param res - Will be unchanged if the user is authenticated, the request will be forwarded to the route controllers.
  * @param next - Express callback function that will forward the route to the next controller
- * @todo add WWWW-Authenticate Header as specified by the RFC
  */
 let authenticated = (req, res, next) => {
-    const token = req.cookies["x-auth"];
+    const token = (req.headers["authorization"] || "").replace("Bearer ", "");
     if (!token) {
         return res.status(401).send({
             error: "User must be logged in",

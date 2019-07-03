@@ -1,7 +1,9 @@
 let app = require("express")();
-const bodyParser = require("body-parser");
+let bodyParser = require("body-parser");
+let cors = require("cors");
 
 //middleware
+app.use(cors({ allowedHeaders: ["Content-Type", "Authorization"] }));
 app.use(require("cookie-parser")());
 app.use(bodyParser.json());
 app.get("/version", (req, res) => {
