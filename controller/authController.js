@@ -147,7 +147,7 @@ const sendCookie = async (req, res) => {
 	const token = req.token;
 	res.cookie("x-auth", token, {
 		maxAge: 9000000000,
-		httpOnly: true,
+		httpOnly: false,
 		secure: false
 	});
 	if (req.oauth === true) {

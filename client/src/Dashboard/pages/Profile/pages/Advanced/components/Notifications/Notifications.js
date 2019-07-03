@@ -11,12 +11,21 @@ import {
     Checkbox,
     withStyles,
 } from "@material-ui/core";
+import axios from "axios";
 
 import styles from "./notifications.style";
 
 class Notifications extends React.Component {
     constructor(props) {
         super(props);
+
+        this.api = axios.create({
+            baseURL: "http://localhost:8080",
+            headers: {
+                Authorization:
+                    "Bearer " + document.cookie.replace("x-auth=", ""),
+            },
+        });
 
         this.state = {
             notifs: [],
@@ -29,41 +38,13 @@ class Notifications extends React.Component {
     }
 
     async load() {
-        // TODO: replace with HTTP
-        await new Promise(res => setTimeout(res, 750));
-
-        this.setState({
-            notifs: [
-                {
-                    code: "claim_created",
-                    sms: false,
-                    email: true,
-                },
-                {
-                    code: "claim_updated",
-                    sms: false,
-                    email: false,
-                },
-                {
-                    code: "claim_approved",
-                    sms: true,
-                    email: true,
-                },
-                {
-                    code: "premium_paid",
-                    sms: false,
-                    email: false,
-                },
-            ],
-        });
+        let notifs = (await this.api.get("/user/settings")).data;
+        this.setState({ notifs });
     }
 
     async save() {
         this.setState({ saving: true });
-
-        // TODO: replace with HTTP
-        await new Promise(res => setTimeout(res, 750));
-
+        await this.api.put("/user/settings", this.state.notifs);
         this.setState({ saving: "done" });
     }
 
@@ -96,36 +77,54 @@ class Notifications extends React.Component {
                                 <TableCell>Email</TableCell>
                             </TableRow>
                         </TableHead>
-                        <TableBody>{notifs.map(this.renderRow)}</TableBody>
+                        <TableBody>
+                            {notifs
+                                .map(n => n.code)
+                                .filter(unique)
+                                .map(this.renderRow)}
+                        </TableBody>
                     </Table>
                 </Paper>
             </Grid>
         );
     }
 
-    renderRow = notif => {
+    renderRow = code => {
+        let sms = this.state.notifs.find(
+            n => n.code === code && n.domain === "sms"
+        );
+        let email = this.state.notifs.find(
+            n => n.code === code && n.domain === "email"
+        );
+
         return (
-            <TableRow key={notif.code}>
-                <TableCell>{NOTIFICATION_NAMES[notif.code]}</TableCell>
+            <TableRow key={code}>
+                <TableCell>{NOTIFICATION_NAMES[code]}</TableCell>
                 <TableCell>
-                    <Checkbox
-                        checked={notif.sms}
-                        onChange={this.handleChange("sms", notif.code)}
-                    />
+                    {sms ? (
+                        <Checkbox
+                            checked={sms.value}
+                            onChange={this.handleChange("sms", code)}
+                        />
+                    ) : null}
                 </TableCell>
                 <TableCell>
-                    <Checkbox
-                        checked={notif.email}
-                        onChange={this.handleChange("email", notif.code)}
-                    />
+                    {email ? (
+                        <Checkbox
+                            checked={email.value}
+                            onChange={this.handleChange("email", code)}
+                        />
+                    ) : null}
                 </TableCell>
             </TableRow>
         );
     };
 
     handleChange = (domain, code) => evt => {
-        let notif = this.state.notifs.find(n => n.code === code);
-        notif[domain] = !notif[domain];
+        let notif = this.state.notifs.find(
+            n => n.code === code && n.domain == domain
+        );
+        notif.value = !notif.value;
         this.setState(this.state, () => this.save().catch(console.error));
     };
 }
@@ -136,5 +135,9 @@ const NOTIFICATION_NAMES = {
     claim_updated: "Claim Updated",
     claim_approved: "Claim Approved",
 };
+
+function unique(item, pos, arr) {
+    return arr.indexOf(item) === pos;
+}
 
 export default withStyles(styles, { withTheme: true })(Notifications);
