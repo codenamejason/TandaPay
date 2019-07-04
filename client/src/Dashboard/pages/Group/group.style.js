@@ -1,4 +1,4 @@
-const styles = (theme) => ({
+const styles = theme => ({
     toolbar: {
         display: "flex",
         alignItems: "center",
@@ -9,24 +9,6 @@ const styles = (theme) => ({
     content: {
         flexGrow: 1,
         padding: theme.spacing(3),
-    },
-    standing: {
-        fontWeight: "bold",
-        border: "1px solid",
-        padding: "2px 2px 1px 2px",
-        margin: "0px 2px",
-    },
-    good: {
-        color: "#2ECC40",
-        borderColor: "#2ECC40",
-    },
-    okay: {
-        color: "#FFDC00",
-        borderColor: "#FFDC00",
-    },
-    bad: {
-        color: "#FF4136",
-        borderColor: "#FF4136",
     },
 });
 

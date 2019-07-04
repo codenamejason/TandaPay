@@ -1,5 +1,5 @@
-import axios from "axios";
-import { FETCH_CLAIMS, FETCH_GROUP } from "./types";
+// import axios from "axios";
+import { FETCH_CLAIMS } from "./types";
 
 import claimsData from "../data/claims.json";
 
@@ -28,7 +28,4 @@ export {
     updateWallet,
 } from "./user";
 
-export {
-    fetchGroup,
-    createGroup,
-} from "./group";
+export { fetchGroup, createGroup } from "./group";
