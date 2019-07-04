@@ -37,7 +37,7 @@ router.patch(
         const token = req.token;
         res.cookie("x-auth", token, {
             maxAge: 9000000000,
-            httpOnly: true,
+            httpOnly: false,
             secure: false,
         });
 
@@ -77,7 +77,7 @@ router.patch(
         res.cookie("x-auth", token, {
             maxAge: 9000000000,
             secure: false,
-            httpOnly: true,
+            httpOnly: false,
         });
         res.status(200).send(req.user);
     }
