@@ -6,8 +6,14 @@ let cors = require("cors");
 app.use(cors({ allowedHeaders: ["Content-Type", "Authorization"] }));
 app.use(require("cookie-parser")());
 app.use(bodyParser.json());
-app.get("/version", (req, res) => {
-    res.send(require("../package.json").version);
+app.get("/version", async (req, res) => {
+    let { version } = require("../package.json");
+    let commit = await new Promise((res, rej) =>
+        require("child_process").exec("git rev-parse HEAD", (err, stdout) =>
+            err ? rej(err) : res(stdout.trim())
+        )
+    );
+    res.send({ version, commit });
 });
 
 app.use("/claims", require("./claims"));
