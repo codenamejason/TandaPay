@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import * as actions from "../../../../actions/index";
 import styles from "../claims.style";
 import { RecentClaims, ClaimTable } from "../components/";
-import PageHeader from "../../../components/PageHeader";
+import { PageHeader } from "../../../components/";
 
 class Claims extends React.Component {
     constructor(props) {
@@ -42,7 +42,7 @@ class Claims extends React.Component {
                 <Typography variant="h4">{headerText}</Typography>
                 <RecentClaims claims={topClaims} />
 
-                <ClaimTable claims={claims} />
+                <ClaimTable data={claims} />
             </React.Fragment>
         );
     }

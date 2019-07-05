@@ -32,13 +32,13 @@
         "cookie-parser": "^1.4.4",
         "express": "^4.17.1",
         "jsonwebtoken": "^8.5.1",
-        "mongoose": "^5.6.2",
+        "mongoose": "^5.6.3",
         "morgan": "^1.9.1",
         "passport": "^0.4.0",
         "passport-facebook": "^3.0.0",
         "passport-google-oauth20": "^2.0.0",
         "react-final-form": "^6.3.0",
-        "validator": "^11.0.0"
+        "validator": "^11.1.0"
     },
     "devDependencies": {
         "concurrently": "^4.1.1",

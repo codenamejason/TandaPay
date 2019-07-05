@@ -20,7 +20,7 @@ import { getSorting, stableSort } from "./utils";
 import styles from "./table.style";
 
 function EnhancedTable(props) {
-	const { classes, claims } = props;
+	const { classes, data } = props;
 	const [order, setOrder] = React.useState("asc");
 	const [orderBy, setOrderBy] = React.useState("date");
 	const [page, setPage] = React.useState(0);
@@ -44,7 +44,7 @@ function EnhancedTable(props) {
 	}
 
 	const emptyRows =
-		rowsPerPage - Math.min(rowsPerPage, claims.length - page * rowsPerPage);
+		rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
 	return (
 		<Grid container className={classes.root}>
@@ -60,16 +60,16 @@ function EnhancedTable(props) {
 							order={order}
 							orderBy={orderBy}
 							onRequestSort={handleRequestSort}
-							rowCount={claims.length}
+							rowCount={data.length}
 						/>
 						<TableBody>
-							{stableSort(claims, getSorting(order, orderBy))
+							{stableSort(data, getSorting(order, orderBy))
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-								.map((claim, index) => {
+								.map((data, index) => {
 									const labelId = `enhanced-table-checkbox-${index}`;
 
 									return (
-										<TableRow hover tabIndex={-1} key={claim.name}>
+										<TableRow hover tabIndex={-1} key={data.name}>
 											<TableCell padding="checkbox" />
 											<TableCell
 												component="th"
@@ -78,33 +78,33 @@ function EnhancedTable(props) {
 												padding="none"
 											>
 												<Typography className={classes.name}>
-													{claim.name}
+													{data.name}
 												</Typography>
 											</TableCell>
-											<TableCell align="left">{claim.subgroup}</TableCell>
+											<TableCell align="left">{data.subgroup}</TableCell>
 											<TableCell align="left">
 												<Typography
 													className={clsx(classes.status, {
-														[classes.pending]: claim.status === "pending",
-														[classes.denied]: claim.status === "denied",
-														[classes.approved]: claim.status === "approved"
+														[classes.pending]: data.status === "pending",
+														[classes.denied]: data.status === "denied",
+														[classes.approved]: data.status === "approved"
 													})}
 												>
-													{claim.status.toUpperCase()}
+													{data.status.toUpperCase()}
 												</Typography>
 											</TableCell>
 											<TableCell align="left">
-												{moment(claim.createdAt).format("MM/DD/YYYY")}
+												{moment(data.createdAt).format("MM/DD/YYYY")}
 											</TableCell>
 											<TableCell align="left">
 												<Typography className={classes.amount}>
-													$ {claim.amount}
+													$ {data.amount}
 												</Typography>
 											</TableCell>
 											<TableCell align="left">
 												<Button
 													variant="contained"
-													to={`/admin/claims/${claim.objectID}`}
+													to={`/admin/claims/${data.objectID}`}
 													component={RegLink}
 													className={classes.button}
 												>
@@ -125,7 +125,7 @@ function EnhancedTable(props) {
 				<TablePagination
 					rowsPerPageOptions={[5, 10, 25]}
 					component="div"
-					count={claims.length}
+					count={data.length}
 					rowsPerPage={rowsPerPage}
 					page={page}
 					backIconButtonProps={{
