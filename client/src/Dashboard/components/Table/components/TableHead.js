@@ -6,42 +6,9 @@ import {
     TableSortLabel,
 } from "@material-ui/core";
 import PropTypes from "prop-types";
-const headRows = [
-    {
-        id: "name",
-        numeric: false,
-        disablePadding: true,
-        label: "Name (Claim Creator)",
-    },
-    { id: "subgroup", numeric: true, disablePadding: false, label: "Subgroup" },
-    {
-        id: "status",
-        numeric: true,
-        disablePadding: false,
-        label: "Claim Status",
-    },
-    {
-        id: "date",
-        numeric: true,
-        disablePadding: false,
-        label: "Creation Date",
-    },
-    {
-        id: "amount",
-        numeric: true,
-        disablePadding: false,
-        label: "Claim Disbursement",
-    },
-    {
-        id: "action",
-        numeric: false,
-        disablePadding: false,
-        label: "Actions",
-    },
-];
 
 function EnhancedTableHead(props) {
-    const { order, orderBy, onRequestSort } = props;
+    const { order, orderBy, onRequestSort, headRows } = props;
     const createSortHandler = property => event => {
         onRequestSort(event, property);
     };

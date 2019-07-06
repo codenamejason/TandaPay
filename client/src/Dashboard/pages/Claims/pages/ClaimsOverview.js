@@ -4,9 +4,9 @@ import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import * as actions from "../../../../actions/index";
 import styles from "../claims.style";
-import { RecentClaims, ClaimTable } from "../components/";
-import { PageHeader } from "../../../components/";
-
+import { RecentClaims } from "../components/";
+import { PageHeader, Table as ClaimTable } from "../../../components/";
+import { headRows } from "./data";
 class Claims extends React.Component {
     constructor(props) {
         super(props);
@@ -42,7 +42,12 @@ class Claims extends React.Component {
                 <Typography variant="h4">{headerText}</Typography>
                 <RecentClaims claims={topClaims} />
 
-                <ClaimTable data={claims} />
+                <ClaimTable
+                    data={claims}
+                    headRows={headRows}
+                    title="All Claims"
+                    type="claims"
+                />
             </React.Fragment>
         );
     }

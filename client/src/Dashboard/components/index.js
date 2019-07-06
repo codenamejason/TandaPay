@@ -1,3 +1,3 @@
 import PageHeader from "./PageHeader/PageHeader";
-
-export { PageHeader };
+import Table from "./Table/Table";
+export { PageHeader, Table };

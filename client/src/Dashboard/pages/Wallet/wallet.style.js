@@ -1,8 +1,8 @@
-import { darken } from "@material-ui/core/styles";
 const styles = theme => ({
     container: {
         display: "flex",
-        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
     },
     toolbar: {
         display: "flex",
