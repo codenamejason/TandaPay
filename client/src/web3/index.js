@@ -48,6 +48,7 @@ const connectToFortmatic = async () => {
     window.web3 = new Web3(fm.getProvider());
 
     try {
+        console.log(window.web3.currentProvider);
         const accounts = await window.web3.currentProvider.enable();
         console.log("Fortmatic Web3 Function: ", accounts);
         return [accounts, null];
@@ -62,7 +63,8 @@ const connectToFortmatic = async () => {
  * @global
  */
 const currentProvider = () => {
-    const currentProvider = window.web3.currentProvider;
+    try {
+      const currentProvider = window.web3.currentProvider;
     let wallet = "";
     if (currentProvider.isFortmatic) {
         wallet = "fortmatic";
@@ -71,6 +73,19 @@ const currentProvider = () => {
     }
 
     return wallet;
+    } catch(error) {
+      return ""
+    }
+    
+};
+
+/**
+ * @summary - Queries the contract deployed by DAI to determine the amount of DAI the current user currently has
+ * @global
+ *
+ */
+const getDAIBalance = () => {
+    //
 };
 
 export {
@@ -78,4 +93,5 @@ export {
     connectToFortmatic,
     currentProvider,
     attemptConnection,
+    getDAIBalance,
 };

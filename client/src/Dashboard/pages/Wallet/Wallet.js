@@ -1,5 +1,5 @@
 import React from "react";
-import { withStyles, Card, Button, Typography } from "@material-ui/core/";
+import { withStyles } from "@material-ui/core/";
 import styles from "./wallet.style";
 import { PageHeader } from "../../components/";
 import { WalletCard } from "./components/";
