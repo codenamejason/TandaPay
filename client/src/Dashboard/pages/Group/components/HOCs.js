@@ -10,7 +10,7 @@ export const withGroup = WrappedComponent => {
 
         if (user.groupID) {
             if (group == null) {
-                return <GroupLoader />
+                return <GroupLoader id={user.groupID} />
             }
 
             return <WrappedComponent {...props} />;
@@ -40,6 +40,6 @@ const GroupLoader = connect(
     null,
     actions
 )(props => {
-    props.fetchGroup();
+    props.fetchGroup(props.id);
     return <span>Loading...</span>;
 });
