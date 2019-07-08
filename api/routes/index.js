@@ -3,7 +3,17 @@ let bodyParser = require("body-parser");
 let cors = require("cors");
 
 //middleware
-app.use(cors({ allowedHeaders: ["Content-Type", "Authorization"] }));
+app.use(
+    cors({
+        origin: [
+            "https://backend-app-dot-peerless-dahlia-229121.appspot.com",
+            "http://backend-app-dot-peerless-dahlia-229121.appspot.com",
+            "http://localhost:3000",
+            "http://127.0.0.1:3000",
+        ],
+        allowedHeaders: ["Content-Type", "Authorization"],
+    })
+);
 app.use(require("cookie-parser")());
 app.use(bodyParser.json());
 app.get("/version", async (req, res) => {
