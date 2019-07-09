@@ -3,4 +3,5 @@ dev.js
 .DS_Store
 keyfile.json
 env.js
+api
 *.tar.gz
