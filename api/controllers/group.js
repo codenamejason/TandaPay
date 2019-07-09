@@ -116,7 +116,8 @@ async function inviteToGroupController(req, res, next) {
     let html = invitationTemplate({
         group: group.groupName,
         secretary: secretary.name,
-        url: "http://tandapay.com/accept?code=" + group.accessCode,
+        url: "http://backend-app-dot-peerless-dahlia-229121.appspot.com/",
+        code: group.accessCode,
     });
 
     await sendEmail(
