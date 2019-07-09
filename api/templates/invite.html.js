@@ -7,14 +7,18 @@ module.exports = ({ secretary, group, url, code }) => `
       body {
         color: #333;
         font-family: Sans-Serif;
-        margin: 50px;
+        width: 100%;
       }
       a {
         color: #303090;
       }
       #container {
-        padding: 25px;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+      #box {
         border: 1px solid #ddd;
+        padding: 15px;
       }
       #cta {
         color: #fff;
@@ -40,14 +44,16 @@ module.exports = ({ secretary, group, url, code }) => `
     </style>
   </head>
   <body>
-    <h1>TandaPay</h1>
     <div id="container">
-      <h2>You've been invited to a group on TandaPay!</h2>
-      <p>${secretary} has invited you to the group <a href="#">${group}</a>.
-         You can accept this invitation by clicking the link below.
-         Your access code is <span id="code">${code}</span>.
-      </p>
-      <p class="center"><a id="cta" style="text-decoration: none" href="${url}">Accept Invitation</a></p>
+      <h1>TandaPay</h1>
+      <div id="box">
+        <h2>You've been invited to a group on TandaPay!</h2>
+        <p>${secretary} has invited you to the group <a href="#">${group}</a>.
+           You can accept this invitation by clicking the link below.
+           Your access code is <span id="code">${code}</span>.
+        </p>
+        <p class="center"><a id="cta" style="text-decoration: none" href="${url}">Accept Invitation</a></p>
+      </div>
     </div>
   </body>
 </html>
