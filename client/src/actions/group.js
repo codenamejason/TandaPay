@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FETCH_GROUP } from "./types";
+import { FETCH_GROUP, INVITE_MEMBER } from "./types";
 
 const API_BASE = process.env.REACT_APP_API_BASE;
 
@@ -51,4 +51,12 @@ export const createGroup = ({ name, premium }) => async dispatch => {
     } catch (err) {
         console.error(JSON.stringify(err));
     }
+};
+
+/**
+ * @summary Redux action creator to invite a member
+ */
+export const inviteMember = email => async dispatch => {
+    debugger;
+    dispatch({ type: INVITE_MEMBER, payload: null });
 };
