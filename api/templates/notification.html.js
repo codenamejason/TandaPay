@@ -7,22 +7,28 @@ module.exports = ({ heading, text }) => `
       body {
         color: #333;
         font-family: Sans-Serif;
-        margin: 50px;
+        width: 100%;
       }
       a {
         color: #303090;
       }
       #container {
-        padding: 25px;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+      #box {
         border: 1px solid #ddd;
+        padding: 15px;
       }
     </style>
   </head>
   <body>
-    <h1>TandaPay</h1>
     <div id="container">
-      <h2>${heading}</h2>
-      <p>${text}</p>
+      <h1>TandaPay</h1>
+      <div id="box">
+        <h2>${heading}</h2>
+        <p>${text}</p>
+      </div>
     </div>
   </body>
 </html>
