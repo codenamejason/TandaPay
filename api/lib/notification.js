@@ -1,6 +1,7 @@
 let mongoose = require("mongoose");
 let assert = require("assert");
 let { sendEmail, sendSMS } = require("./twilio");
+let notificationTemplate = require("../templates/notification.html.js");
 
 let User = mongoose.model("users");
 let Group = mongoose.model("groups");
@@ -45,7 +46,9 @@ class Notification {
         if (!this.delivered) this.delivered = true;
         else throw new Error("this notification has already been delivered");
 
-        let userIDs = (await Group.findById(this.groupID)).members.map(m => m.id);
+        let userIDs = (await Group.findById(this.groupID)).members.map(
+            m => m.id
+        );
         let users = await Promise.all(userIDs.map(id => User.findById(id)));
 
         for (let user of users) {
@@ -59,10 +62,23 @@ class Notification {
                 await sendEmail(
                     user.email,
                     await this.renderSubject(),
-                    await this.render()
+                    await this.renderHTML()
                 );
             }
         }
+    }
+
+    /**
+     * @summary: Wraps a plaintext notification into an HTML email
+     * @returns: html text
+     */
+    async renderHTML() {
+        let [heading, text] = await Promise.all([
+            this.renderSubject(),
+            this.render(),
+        ]);
+
+        return notificationTemplate({ heading, text });
     }
 }
 

@@ -169,3 +169,9 @@ test.serial("notification middleware delivers notifications", async t => {
     // check that the it sends the right kind of notification
     t.regex(fake.sendSMS.getCall(0).args[1], /claim approved/i);
 });
+
+test.serial("email notifications use html email", async t => {
+    let notif = new Notification({ groupID: data.group._id });
+    await notif.deliver();
+    t.regex(fake.sendEmail.getCall(0).args[2], /html/);
+});
