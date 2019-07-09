@@ -12,11 +12,6 @@
     "test:verbose": "ava --verbose",
     "test:debug": "node inspect node_modules/ava/profile.js"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "precise-commits"
-    }
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LuisOsta/TandaPay.git"
@@ -46,10 +41,8 @@
     "validator": "^11.0.0"
   },
   "devDependencies": {
-    "husky": "^2.3.0",
     "mongo-in-memory": "0.0.5",
     "nodemon": "^1.19.1",
-    "precise-commits": "^1.0.2",
     "prettier": "^1.17.1",
     "sinon": "^7.3.2"
   },
