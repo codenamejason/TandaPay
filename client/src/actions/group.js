@@ -1,6 +1,7 @@
 import axios from "axios";
 import { FETCH_GROUP } from "./types";
-import { API_BASE } from "../config.json";
+
+const API_BASE = process.env.REACT_APP_API_BASE;
 
 /**
  * @summary generates the options to use with a request. this is a function
@@ -8,10 +9,10 @@ import { API_BASE } from "../config.json";
  */
 function config() {
     return {
-        baseURL: "http://localhost:8080",
+        baseURL: API_BASE,
         headers: {
             Authorization:
-                "Bearer " + document.cookie.match(/x-auth=(\S+);/)[1],
+                "Bearer " + document.cookie.match(/x-auth=(\S+)/)[1],
         },
     };
 }

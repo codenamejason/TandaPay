@@ -14,7 +14,8 @@ import {
 import axios from "axios";
 
 import styles from "./notifications.style";
-import { API_BASE } from "../config.json";
+
+const API_BASE = process.env.REACT_APP_API_BASE;
 
 class Notifications extends React.Component {
     constructor(props) {
@@ -24,7 +25,7 @@ class Notifications extends React.Component {
             baseURL: API_BASE,
             headers: {
                 Authorization:
-                    "Bearer " + document.cookie.match(/x-auth=(\S+);/)[1],
+                    "Bearer " + document.cookie.match(/x-auth=(\S+);?/)[1],
             },
         });
 
