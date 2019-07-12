@@ -1,7 +1,7 @@
 // import axios from "axios";
 import { FETCH_GROUP } from "./types";
 
-import group from "../data/group.json";
+import group from "../data/group.json"
 
 /**
  * @summary Redux action creator to fetch the user's group

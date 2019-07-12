@@ -15,15 +15,17 @@ import axios from "axios";
 
 import styles from "./notifications.style";
 
+const API_BASE = process.env.REACT_APP_API_BASE;
+
 class Notifications extends React.Component {
     constructor(props) {
         super(props);
 
         this.api = axios.create({
-            baseURL: "http://localhost:8080",
+            baseURL: API_BASE,
             headers: {
                 Authorization:
-                    "Bearer " + document.cookie.replace("x-auth=", ""),
+                    "Bearer " + document.cookie.match(/x-auth=(\S+);?/)[1],
             },
         });
 
