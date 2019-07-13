@@ -6,8 +6,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { attemptConnection } from "../web3";
 import styles from "./dashboard.style";
 import Navigation from "../Navigation/Navigation";
-import { Main, Profile, Group, Wallet, Claims, Help } from "./pages";
-
+import { Payments, Profile, Group, Wallet, Claims, Help } from "./pages";
 const Dashboard = props => {
     const { classes, user } = props;
     attemptConnection(user);
@@ -16,10 +15,10 @@ const Dashboard = props => {
             <CssBaseline />
             <Navigation />
             <Switch>
-                <Route exact path="/admin/" component={Main} />
+                <Route path="/admin/payments" component={Payments} />
                 <Route path="/admin/profile" component={Profile} />
                 <Route path="/admin/groups" component={Group} />
-                <Route exact path="/admin/wallet" component={Wallet} />
+                <Route path="/admin/wallet" component={Wallet} />
                 <Route path="/admin/claims" component={Claims} />
                 <Route exact path="/admin/help" component={Help} />
             </Switch>

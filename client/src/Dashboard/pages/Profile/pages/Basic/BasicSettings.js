@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid, withStyles } from "@material-ui/core";
-import PageHeader from "../../../../components/PageHeader";
+import { PageHeader } from "../../../../components/";
 import styles from "./basic.style";
 import SettingsForm from "./components/SettingsForm";
 import ProfileCard from "./components/ProfileCard";

@@ -1,14 +1,7 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
-import {
-    Button,
-    TextField,
-    Typography,
-    FormGroup,
-    FormControlLabel,
-    Checkbox,
-} from "@material-ui/core";
-import PageHeader from "../../../../components/PageHeader";
+import { Button, TextField, Typography } from "@material-ui/core";
+import { PageHeader } from "../../../../components/";
 import { connect } from "react-redux";
 
 import styles from "./GroupCreator.style.js";
@@ -17,18 +10,7 @@ import * as actions from "../../../../../actions";
 class GroupCreator extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            name: "",
-            premium: "",
-            files: [],
-            confirm: {
-                premium_cost: false,
-                coverage: false,
-                claim_requirements: false,
-                member_qualifications: false,
-                dispute_guidelines: false,
-            },
-        };
+        this.state = { name: "", premium: "", files: [] };
     }
 
     handleFieldChange = evt => {
@@ -45,21 +27,11 @@ class GroupCreator extends React.Component {
         this.state.name &&
         !isNaN(this.state.premium) &&
         this.state.premium > 0 &&
-        this.state.files.length > 0 &&
-        this.hasConfirmedAll();
-
-    hasConfirmedAll = () =>
-        Object.values(this.state.confirm).reduce((c, a) => c && a, true);
+        this.state.files.length > 0;
 
     handleSubmit = evt => {
         if (!this.isSubmittable) return;
         this.props.createGroup(this.state);
-    };
-
-    handleConfirm = evt => {
-        let { confirm } = this.state;
-        confirm[evt.target.value] = !confirm[evt.target.value];
-        this.setState({ confirm });
     };
 
     render() {
@@ -103,9 +75,6 @@ class GroupCreator extends React.Component {
                             onChange={this.handleUpload}
                         />
                     </div>
-                    {this.state.files.length > 0
-                        ? this.renderConfirmation()
-                        : null}
                     <br />
                     <Button
                         variant="contained"
@@ -122,68 +91,6 @@ class GroupCreator extends React.Component {
                     </Button>
                 </div>
             </div>
-        );
-    }
-
-    renderConfirmation() {
-        let { confirm } = this.state;
-
-        return (
-            <FormGroup style={{ marginTop: 15 }}>
-                <div style={{ fontWeight: "bold" }}>
-                    The group charter documents contain:
-                </div>
-                <FormControlLabel
-                    label="What determines the cost of a premium"
-                    control={
-                        <Checkbox
-                            onChange={this.handleConfirm}
-                            checked={confirm.premium_cost}
-                            value="premium_cost"
-                        />
-                    }
-                />
-                <FormControlLabel
-                    label="What kind of coverage is provided"
-                    control={
-                        <Checkbox
-                            onChange={this.handleConfirm}
-                            checked={confirm.coverage}
-                            value="coverage"
-                        />
-                    }
-                />
-                <FormControlLabel
-                    label="The requirements for a valid claim"
-                    control={
-                        <Checkbox
-                            onChange={this.handleConfirm}
-                            checked={confirm.claim_requirements}
-                            value="claim_requirements"
-                        />
-                    }
-                />
-                <FormControlLabel
-                    label="Qualifications to join the group"
-                    control={
-                        <Checkbox
-                            onChange={this.handleConfirm}
-                            checked={confirm.member_qualifications}
-                            value="member_qualifications"
-                        />
-                    }
-                />
-                <FormControlLabel
-                    label="What guidelines do communities use to resolve disputes"
-                    control={
-                        <Checkbox
-                            onChange={this.handleConfirm}
-                            checked={confirm.disupte_guidelines}
-                            value="dispute_guidelines"
-                        />
-                    }
-                />
-            </FormGroup>
         );
     }
 }

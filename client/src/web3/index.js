@@ -1,6 +1,7 @@
 import Web3 from "web3";
 import Fortmatic from "fortmatic";
-const fm = new Fortmatic("pk_test_B9292FFD792747D9");
+import DaiContract from "./contracts/DaiContract.json";
+const fm = new Fortmatic(process.env.REACT_APP_FORTMATIC_ID);
 
 /**
  * @summary
@@ -22,6 +23,7 @@ const attemptConnection = async user => {
  */
 const connectToMetamask = async () => {
     if (window.ethereum) {
+        console.log(Web3);
         window.web3 = new Web3(window.ethereum);
         try {
             const accounts = await window.ethereum.enable();
@@ -49,7 +51,6 @@ const connectToFortmatic = async () => {
 
     try {
         const accounts = await window.web3.currentProvider.enable();
-        console.log("Fortmatic Web3 Function: ", accounts);
         return [accounts, null];
     } catch (error) {
         console.log(error);
@@ -62,15 +63,44 @@ const connectToFortmatic = async () => {
  * @global
  */
 const currentProvider = () => {
-    const currentProvider = window.web3.currentProvider;
-    let wallet = "";
-    if (currentProvider.isFortmatic) {
-        wallet = "fortmatic";
-    } else if (currentProvider.host === "metamask") {
-        wallet = "metamask";
+    //if web3 in the window isn't defined
+    if (!window.web3) {
+        return "";
     }
+    try {
+        const currentProvider = window.web3.currentProvider;
+        let wallet = "";
+        if (currentProvider.isFortmatic) {
+            wallet = "fortmatic";
+        } else if (currentProvider.host === "metamask") {
+            wallet = "metamask";
+        }
 
-    return wallet;
+        return wallet;
+    } catch (error) {
+        return "";
+    }
+};
+
+/**
+ * @summary - Queries the contract deployed by DAI to determine the amount of DAI the current user currently has
+ * @global
+ *
+ */
+const getDAIBalance = async () => {
+    //
+    try {
+        const web3 = window.web3;
+        const instance = new web3.eth.Contract(
+            DaiContract.abi,
+            process.env.REACT_APP_DAI_ADDRESS
+        );
+        const accounts = await web3.eth.getAccounts();
+        const balance = await instance.methods.balanceOf(accounts[0]).call();
+        return [balance, null];
+    } catch (e) {
+        return [null, e];
+    }
 };
 
 export {
@@ -78,4 +108,5 @@ export {
     connectToFortmatic,
     currentProvider,
     attemptConnection,
+    getDAIBalance,
 };
