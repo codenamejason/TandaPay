@@ -2,19 +2,20 @@ const express = require("express");
 const passport = require("passport");
 
 const {
-	authenticated,
-	checkSignature
+    authenticated,
+    checkSignature,
+    checkWhiteList,
 } = require("../middleware/authenticated");
 
 const {
-	oauthController,
-	generateToken,
-	sendCookie,
-	checkCredentials,
-	createUser,
-	logOut,
-	userDoesExist,
-	userDoesNotExist
+    oauthController,
+    generateToken,
+    sendCookie,
+    checkCredentials,
+    createUser,
+    logOut,
+    userDoesExist,
+    userDoesNotExist,
 } = require("../controller/authController");
 let router = express.Router();
 
@@ -22,11 +23,11 @@ let router = express.Router();
  * @summary - PassportJS base route for 0auth 2.0 Google Login
  */
 router.get(
-	"/google",
-	passport.authenticate("google", {
-		session: false,
-		scope: ["profile", "email"]
-	})
+    "/google",
+    passport.authenticate("google", {
+        session: false,
+        scope: ["profile", "email"],
+    })
 );
 
 /**
@@ -36,33 +37,33 @@ router.get(
  * @returns the cookie with the token and redirects the user back to the application
  */
 router.get(
-	"/google/callback",
-	passport.authenticate("google", { session: false, failureRedirect: "/" }),
-	oauthController,
-	sendCookie
+    "/google/callback",
+    passport.authenticate("google", { session: false, failureRedirect: "/" }),
+    oauthController,
+    sendCookie
 );
 /**
  * @summary - PassportJS base route for 0auth 2.0 Facebook Login
  */
 router.get(
-	"/facebook",
-	passport.authenticate("facebook", {
-		session: false,
-		scope: ["email"]
-	})
+    "/facebook",
+    passport.authenticate("facebook", {
+        session: false,
+        scope: ["email"],
+    })
 );
 
 /**
  * @summary PassportJS callback for 0uth 2.0 Facebook Login
  */
 router.get(
-	"/facebook/callback",
-	passport.authenticate("facebook", {
-		session: false,
-		failureRedirect: "/"
-	}),
-	oauthController,
-	sendCookie
+    "/facebook/callback",
+    passport.authenticate("facebook", {
+        session: false,
+        failureRedirect: "/",
+    }),
+    oauthController,
+    sendCookie
 );
 
 /**
@@ -71,12 +72,12 @@ router.get(
  * Finally, it will set the auth token as a cookie to the header and respond with the user object
  */
 router.post(
-	"/signup",
-	checkCredentials,
-	userDoesNotExist,
-	createUser,
-	generateToken,
-	sendCookie
+    "/signup",
+    checkCredentials,
+    userDoesNotExist,
+    createUser,
+    generateToken,
+    sendCookie
 );
 
 /**
@@ -85,11 +86,11 @@ router.post(
  * Finally, it will generate a new auth token, set as a cookie header and respond with the user object.
  */
 router.post(
-	"/login",
-	checkCredentials,
-	userDoesExist,
-	generateToken,
-	sendCookie
+    "/login",
+    checkCredentials,
+    userDoesExist,
+    generateToken,
+    sendCookie
 );
 
 /**
@@ -106,9 +107,9 @@ router.post("/logout", checkSignature, authenticated, logOut);
  * @param {Object} user - the decoded user information from the token
  */
 
-router.get("/me", checkSignature, (req, res) => {
-	const user = req.body;
-	res.status(200).send(user);
+router.get("/me", checkSignature, checkWhiteList, (req, res) => {
+    const user = req.user;
+    res.status(200).send(user);
 });
 
 module.exports = router;
