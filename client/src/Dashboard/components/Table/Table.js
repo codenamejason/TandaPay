@@ -22,7 +22,7 @@ import styles from "./table.style";
  * @param {Object} props
  */
 function EnhancedTable(props) {
-    const { classes, data, headRows, title, type } = props;
+    const { classes, data, headRows, title, type, buttons } = props;
     const [order, setOrder] = React.useState("asc");
     const [orderBy, setOrderBy] = React.useState("date");
     const [page, setPage] = React.useState(0);
@@ -48,7 +48,7 @@ function EnhancedTable(props) {
     return (
         <Grid container className={classes.root}>
             <Paper className={classes.paper}>
-                <EnhancedTableToolbar title={title} />
+                <EnhancedTableToolbar title={title} buttons={buttons} />
                 <div className={classes.tableWrapper}>
                     <Table
                         className={classes.table}

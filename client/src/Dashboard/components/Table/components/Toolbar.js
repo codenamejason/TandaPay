@@ -1,10 +1,16 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import clsx from "clsx";
-import { Typography, Toolbar, Tooltip, IconButton } from "@material-ui/core";
-import { lighten, makeStyles } from "@material-ui/core/styles";
+import {
+    Typography,
+    Toolbar,
+    Tooltip,
+    IconButton,
+    Button,
+} from "@material-ui/core";
+import { lighten, makeStyles, darken } from "@material-ui/core/styles";
 
-import DeleteIcon from "@material-ui/icons/Delete";
-import FilterListIcon from "@material-ui/icons/FilterList";
+import { FilterList as FilterListIcon } from "@material-ui/icons/";
 const useToolbarStyles = makeStyles(theme => ({
     root: {
         paddingLeft: theme.spacing(2),
@@ -20,21 +26,46 @@ const useToolbarStyles = makeStyles(theme => ({
                   color: theme.palette.text.primary,
                   backgroundColor: theme.palette.secondary.dark,
               },
-    spacer: {
-        flex: "1 1 100%",
-    },
     actions: {
         color: theme.palette.text.secondary,
     },
     title: {
         flex: "0 0 auto",
+        flexGrow: "1",
+    },
+    button: {
+        minWidth: theme.spacing(20),
+        backgroundColor: theme.palette.button.main,
+        color: "white",
+        borderRadius: "0",
+        [theme.breakpoints.down("xs")]: {
+            marginTop: theme.spacing(3),
+        },
+    },
+    green: {
+        backgroundColor: theme.palette.button.main,
+        "&:hover": {
+            backgroundColor: darken(theme.palette.button.main, 0.1),
+        },
+    },
+    red: {
+        backgroundColor: theme.palette.error.main,
+        "&:hover": {
+            backgroundColor: darken(theme.palette.error.main, 0.1),
+        },
+    },
+    blue: {
+        backgroundColor: theme.palette.primary.main,
+        "&:hover": {
+            backgroundColor: darken(theme.palette.primary.main, 0.1),
+        },
     },
 }));
 
 const EnhancedTableToolbar = props => {
     const classes = useToolbarStyles();
-    const { numSelected, title } = props;
-
+    const { numSelected, title, buttons } = props;
+    console.log(buttons);
     return (
         <Toolbar
             className={clsx(classes.root, {
@@ -52,24 +83,37 @@ const EnhancedTableToolbar = props => {
                     </Typography>
                 )}
             </div>
-            <div className={classes.spacer} />
             <div className={classes.actions}>
-                {numSelected > 0 ? (
-                    <Tooltip title="Delete">
-                        <IconButton aria-label="Delete">
-                            <DeleteIcon />
-                        </IconButton>
-                    </Tooltip>
-                ) : (
-                    <Tooltip title="Filter list">
-                        <IconButton aria-label="Filter list">
-                            <FilterListIcon />
-                        </IconButton>
-                    </Tooltip>
-                )}
+                <Tooltip title="Filter list">
+                    <IconButton aria-label="Filter list">
+                        <FilterListIcon />
+                    </IconButton>
+                </Tooltip>
+                {buttons &&
+                    buttons.map((button, index) => {
+                        return (
+                            <Button
+                                variant="contained"
+                                key={index}
+                                to={button.url}
+                                component={RegLink}
+                                className={clsx({
+                                    [classes.button]: true,
+                                    [classes.red]: button.type === "red",
+                                    [classes.blue]: button.type === "blue",
+                                    [classes.green]: button.type === "green",
+                                })}
+                            >
+                                {button.text}
+                            </Button>
+                        );
+                    })}
             </div>
         </Toolbar>
     );
 };
 
+const RegLink = React.forwardRef((props, ref) => (
+    <Link innerRef={ref} {...props} />
+));
 export default EnhancedTableToolbar;
