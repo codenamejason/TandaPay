@@ -18,7 +18,7 @@ const headRows = [
         label: "Transfer Status",
     },
     {
-        id: "date",
+        id: "createdAt",
         numeric: true,
         disablePadding: false,
         label: "Transfer Date",
