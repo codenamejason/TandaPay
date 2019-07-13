@@ -24,7 +24,6 @@ const PaymentOverview = props => {
 const getPaymentHistory = () => {
     //axios call
     const payments = paymentData.payments;
-    console.log(payments);
     return payments;
 };
 function mapStateToProps({ user }) {

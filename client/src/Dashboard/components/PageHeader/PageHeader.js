@@ -16,7 +16,7 @@ const PageHeader = props => {
     return (
         <React.Fragment>
             <Grid container>
-                <Grid item xs={12} sm={titleSize}>
+                <Grid item xs={12} md={titleSize}>
                     <Typography variant="h3" className={classes.title}>
                         {title}
                     </Typography>
@@ -25,7 +25,7 @@ const PageHeader = props => {
                     <Grid
                         item
                         xs={12}
-                        sm={buttonSize}
+                        md={buttonSize}
                         className={classes.buttonContainer}
                     >
                         {buttons.map((button, index) => {
