@@ -17,6 +17,10 @@ import {
 import { getSorting, stableSort } from "./utils";
 import styles from "./table.style";
 
+/**
+ *
+ * @param {Object} props
+ */
 function EnhancedTable(props) {
     const { classes, data, headRows, title, type } = props;
     const [order, setOrder] = React.useState("asc");
@@ -65,15 +69,16 @@ function EnhancedTable(props) {
                                     page * rowsPerPage,
                                     page * rowsPerPage + rowsPerPage
                                 )
-                                .map((data, index) => {
+                                .map((row, index) => {
                                     const labelId = `enhanced-table-checkbox-${index}`;
-
+                                    console.log(row);
                                     return (
                                         <EnhancedTableRow
-                                            data={data}
+                                            data={row}
                                             type={type}
                                             key={index}
                                             labelId={labelId}
+                                            headRows={headRows}
                                         />
                                     );
                                 })}

@@ -17,14 +17,17 @@ import styles from "../table.style";
  * @pure - Uses no state or hooks
  */
 const EnhancedTableRow = props => {
-    const { classes, data, type, labelId } = props;
+    const { classes, data, type, labelId, headRows } = props;
+    console.log(headRows);
     return (
         <TableRow hover tabIndex={-1}>
             <TableCell padding="checkbox" />
             <TableCell component="th" id={labelId} scope="row" padding="none">
-                <Typography className={classes.name}>{data.name}</Typography>
+                <Typography className={classes.name}>
+                    {data[headRows[0].id]}
+                </Typography>
             </TableCell>
-            <TableCell align="left">{data.subgroup}</TableCell>
+            <TableCell align="left">{data[headRows[1].id]}</TableCell>
             <TableCell align="left">
                 <Typography
                     className={clsx(classes.status, {
@@ -33,15 +36,15 @@ const EnhancedTableRow = props => {
                         [classes.approved]: data.status === "approved",
                     })}
                 >
-                    {data.status.toUpperCase()}
+                    {data[headRows[2].id].toUpperCase()}
                 </Typography>
             </TableCell>
             <TableCell align="left">
-                {moment(data.createdAt).format("MM/DD/YYYY")}
+                {moment(data[headRows[3].id]).format("MM/DD/YYYY")}
             </TableCell>
             <TableCell align="left">
                 <Typography className={classes.amount}>
-                    $ {data.amount}
+                    $ {data[headRows[4].id]}
                 </Typography>
             </TableCell>
             <TableCell align="left">
