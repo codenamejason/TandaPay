@@ -4,3 +4,5 @@ dev.js
 keyfile.json
 env.js
 *.tar.gz
+build
+contracts

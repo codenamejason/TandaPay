@@ -12,8 +12,9 @@
         "start": "export NODE_ENV=production || SET \"NODE_ENV=production\" && node index.js",
         "server": "nodemon index.js",
         "client": "npm run start --prefix client",
-        "dev": "concurrently \"npm run server\" \"npm run client\"",
-        "build": "npm install --only-prod --prefix client && npm run build --prefix client"
+        "dev": "npm run truffle-build && concurrently \"npm run server\" \"npm run client\"",
+        "build": "npm install --only-prod --prefix client && npm run truffle-build && npm run build --prefix client",
+        "truffle-build": "truffle build && mv build/contracts client/src/web3/"
     },
     "repository": {
         "type": "git",
