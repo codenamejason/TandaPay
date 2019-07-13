@@ -22,6 +22,7 @@ const attemptConnection = async user => {
  */
 const connectToMetamask = async () => {
     if (window.ethereum) {
+        console.log(Web3);
         window.web3 = new Web3(window.ethereum);
         try {
             const accounts = await window.ethereum.enable();
@@ -50,7 +51,6 @@ const connectToFortmatic = async () => {
     try {
         console.log(window.web3.currentProvider);
         const accounts = await window.web3.currentProvider.enable();
-        console.log("Fortmatic Web3 Function: ", accounts);
         return [accounts, null];
     } catch (error) {
         console.log(error);
@@ -63,20 +63,23 @@ const connectToFortmatic = async () => {
  * @global
  */
 const currentProvider = () => {
+    //if web3 in the window isn't defined
+    if (!window.web3) {
+        return "";
+    }
     try {
-      const currentProvider = window.web3.currentProvider;
-    let wallet = "";
-    if (currentProvider.isFortmatic) {
-        wallet = "fortmatic";
-    } else if (currentProvider.host === "metamask") {
-        wallet = "metamask";
-    }
+        const currentProvider = window.web3.currentProvider;
+        let wallet = "";
+        if (currentProvider.isFortmatic) {
+            wallet = "fortmatic";
+        } else if (currentProvider.host === "metamask") {
+            wallet = "metamask";
+        }
 
-    return wallet;
-    } catch(error) {
-      return ""
+        return wallet;
+    } catch (error) {
+        return "";
     }
-    
 };
 
 /**
