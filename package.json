@@ -14,7 +14,7 @@
         "client": "npm run start --prefix client",
         "dev": "npm run truffle-build && concurrently \"npm run server\" \"npm run client\"",
         "build": "npm install --only-prod --prefix client && npm run truffle-build && npm run build --prefix client",
-        "truffle-build": "truffle build && mv build/contracts client/src/web3/"
+        "truffle-build": "truffle build && rm -rf client/src/web3/contracts && mv build/contracts client/src/web3/"
     },
     "repository": {
         "type": "git",
@@ -39,6 +39,7 @@
         "passport": "^0.4.0",
         "passport-facebook": "^3.0.0",
         "passport-google-oauth20": "^2.0.0",
+        "truffle-hdwallet-provider": "^1.0.14",
         "validator": "^11.1.0"
     },
     "devDependencies": {

@@ -3,7 +3,7 @@ const styles = theme => ({
         top: "30%",
         left: "40%",
         position: "absolute",
-        width: 400,
+        minWidth: 400,
         backgroundColor: theme.palette.background.paper,
         border: "2px solid #000",
         boxShadow: theme.shadows[5],

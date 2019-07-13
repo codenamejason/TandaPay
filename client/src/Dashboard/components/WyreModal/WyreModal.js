@@ -14,6 +14,7 @@ class WyreModal extends React.Component {
     }
     render() {
         const accountID = process.env.REACT_APP_WYRE_ID;
+        console.log(accountID)
         const { open } = this.state;
         return (
             <Wyre

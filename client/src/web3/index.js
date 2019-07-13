@@ -1,6 +1,7 @@
 import Web3 from "web3";
 import Fortmatic from "fortmatic";
-const fm = new Fortmatic("pk_test_B9292FFD792747D9");
+import DaiContract from "./contracts/DaiContract.json";
+const fm = new Fortmatic(process.env.REACT_APP_FORTMATIC_ID);
 
 /**
  * @summary
@@ -90,8 +91,12 @@ const getDAIBalance = async () => {
     //
     try {
         const web3 = window.web3;
+        const instance = new web3.eth.Contract(
+            DaiContract.abi,
+            process.env.REACT_APP_DAI_ADDRESS
+        );
         const accounts = await web3.eth.getAccounts();
-        const balance = await web3.eth.getBalance(accounts[0]);
+        const balance = await instance.methods.balanceOf(accounts[0]).call();
         return [balance, null];
     } catch (e) {
         return [null, e];
