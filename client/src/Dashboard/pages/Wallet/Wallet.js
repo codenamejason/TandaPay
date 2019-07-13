@@ -5,9 +5,9 @@ import { PageHeader } from "../../components/";
 import { WalletCard } from "./components/";
 import { Table as WalletTable } from "../../components";
 import { headRows } from "./data";
+import transferData from "../../../data/transfers.json";
 //consts
 const headerText = "Wallet Balance";
-
 /**
  *
  * @param {Object} props
@@ -38,7 +38,8 @@ const Wallet = props => {
  */
 const getTransferHistory = () => {
     //axios call
-    return [];
+    const transfers = transferData.transfers;
+    return transfers;
 };
 
 export default withStyles(styles, { withTheme: true })(Wallet);

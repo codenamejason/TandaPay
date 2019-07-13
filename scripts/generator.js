@@ -14,6 +14,34 @@ const generateClaims = amount => {
     const jsonObj = JSON.stringify(object);
     fs.writeFileSync("client/src/data/claims.json", jsonObj);
 };
+
+const generateTransfers = amount => {
+    const transfers = [];
+    for (var x = 0; x < amount; x++) {
+        transfers.push(createTransfer());
+    }
+    const object = {
+        transfers: transfers,
+    };
+    const jsonObj = JSON.stringify(object);
+    fs.writeFileSync("client/src/data/transfers.json", jsonObj);
+};
+
+const createTransfer = () => {
+    const type = Math.floor(Math.random() * Math.floor(3));
+    const transferType = type === 0 ? "sell" : type === 1 ? "send" : "buy";
+    const status = type === 0 ? "pending" : type === 1 ? "approved" : "denied";
+
+    let transfer = {
+        objectID: faker.random.uuid(),
+        type: transferType,
+        recipient: faker.name.findName(),
+        status: status,
+        createdAt: faker.date.past(),
+        amount: faker.finance.amount(),
+    };
+    return transfer;
+};
 const createClaim = (groupID, groupName) => {
     const type = Math.floor(Math.random() * Math.floor(3));
     const status = type === 0 ? "pending" : type === 1 ? "approved" : "denied";
@@ -36,4 +64,5 @@ const createClaim = (groupID, groupName) => {
 
 module.exports = {
     generateClaims,
+    generateTransfers,
 };
