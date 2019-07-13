@@ -71,7 +71,6 @@ function EnhancedTable(props) {
                                 )
                                 .map((row, index) => {
                                     const labelId = `enhanced-table-checkbox-${index}`;
-                                    console.log(row);
                                     return (
                                         <EnhancedTableRow
                                             data={row}

@@ -2,8 +2,9 @@ import React from "react";
 import clsx from "clsx";
 import { withStyles, Card, Typography, Button } from "@material-ui/core";
 import styles from "./card.style";
-import Wyre from "react-wyre";
 import WalletModal from "../WalletModal/WalletModal";
+
+import { getDAIBalance } from "../../../../../web3";
 /**
  * @summary
  * @param {Object} props
@@ -14,9 +15,18 @@ class WalletCard extends React.Component {
         this.state = {
             open: false,
             type: "",
+            balance: 0,
         };
     }
 
+    async componentDidMount() {
+        const [balance, error] = await getDAIBalance();
+        if (!error) {
+            this.setState({
+                balance,
+            });
+        }
+    }
     /**
      * @summary Function generator that takes in the type of modal that it will open.
      * It uses the arrow functions to automatically bind the returned functions.
@@ -67,13 +77,13 @@ class WalletCard extends React.Component {
     };
     render() {
         const { classes } = this.props;
-        const { open, type } = this.state;
+        const { open, type, balance } = this.state;
         return (
             <Card className={classes.walletCard}>
                 <Typography variant="h6">DAI Stablecoin</Typography>
                 <div className={classes.balance}>
                     <Typography variant="body1">Balance</Typography>
-                    <Typography variant="body1">Balance Amount</Typography>
+                    <Typography variant="body1">{balance} DAI</Typography>
                 </div>
                 <WalletModal
                     open={open}

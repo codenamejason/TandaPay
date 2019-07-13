@@ -18,7 +18,6 @@ import styles from "../table.style";
  */
 const EnhancedTableRow = props => {
     const { classes, data, type, labelId, headRows } = props;
-    console.log(headRows);
     return (
         <TableRow hover tabIndex={-1}>
             <TableCell padding="checkbox" />
