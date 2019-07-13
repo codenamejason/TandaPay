@@ -49,7 +49,6 @@ const connectToFortmatic = async () => {
     window.web3 = new Web3(fm.getProvider());
 
     try {
-        console.log(window.web3.currentProvider);
         const accounts = await window.web3.currentProvider.enable();
         return [accounts, null];
     } catch (error) {
@@ -87,8 +86,16 @@ const currentProvider = () => {
  * @global
  *
  */
-const getDAIBalance = () => {
+const getDAIBalance = async () => {
     //
+    try {
+        const web3 = window.web3;
+        const accounts = await web3.eth.getAccounts();
+        const balance = await web3.eth.getBalance(accounts[0]);
+        return [balance, null];
+    } catch (e) {
+        return [null, e];
+    }
 };
 
 export {
