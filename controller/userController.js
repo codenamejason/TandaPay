@@ -52,6 +52,16 @@ let saveUpdates = async (req, res, next) => {
     user.walletProvider = walletProvider;
     user.ethereumAddress = ethAddress;
     user.accountCompleted = true;
+    user.settings = [
+        { code: "premium_paid", domain: "email", value: false },
+        { code: "premium_paid", domain: "sms", value: false },
+        { code: "claim_created", domain: "email", value: true },
+        { code: "claim_created", domain: "sms", value: false },
+        { code: "claim_updated", domain: "email", value: true },
+        { code: "claim_updated", domain: "sms", value: false },
+        { code: "claim_approved", domain: "email", value: true },
+        { code: "claim_approved", domain: "sms", value: true },
+    ];
     await user.save();
     req.user = user;
     next();
