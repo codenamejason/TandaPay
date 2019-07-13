@@ -18,13 +18,13 @@ const Main = props => {
                 />
                 <Route
                     exact
-                    path="/admin/payments/:id"
-                    component={PaymentReview}
+                    path="/admin/payments/new"
+                    component={PaymentNew}
                 />
                 <Route
                     exact
-                    path="/admin/payments/new"
-                    component={PaymentNew}
+                    path="/admin/payments/:id"
+                    component={PaymentReview}
                 />
             </Switch>
         </main>
