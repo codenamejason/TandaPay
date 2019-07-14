@@ -48,6 +48,12 @@ const styles = theme => ({
     color: theme.palette.money.main,
     fontWeight: "bold",
   },
+  pagination: {
+    height: "auto",
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "center",
+  },
 });
 
 export default styles;
