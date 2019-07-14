@@ -3,6 +3,7 @@ const passport = require("passport");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
+const helmet = require("helmet");
 const cookieParser = require("cookie-parser");
 const app = express();
 
@@ -12,29 +13,43 @@ require("./models/User");
 require("./services/passport");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
+
+//adds security, parser and auth middleware in order
+app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: [
+        "'self'",
+        "https://backend-api-dot-peerless-dahlia-229121.appspot.com/",
+      ],
+      styleSrc: ["'self'"],
+    },
+  })
+);
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(passport.initialize());
 mongoose.connect(keys.mongoURI, {
-    useNewUrlParser: true,
+  useNewUrlParser: true,
 });
 
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
 if (process.env.NODE_ENV === "production") {
-    app.use(express.static('client/build'));
-    app.use(morgan("combined"));
-    const path = require("path");
-    app.get("*", (req, res) => {
-        res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-    });
+  app.use(express.static("client/build"));
+  app.use(morgan("combined"));
+  const path = require("path");
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
 }
 
 let server = app.listen(PORT, () => {
-    console.log(`Listening on port ${PORT}`);
+  console.log(`Listening on port ${PORT}`);
 });
 
 module.exports = {
-    server,
-    app,
+  server,
+  app,
 };
