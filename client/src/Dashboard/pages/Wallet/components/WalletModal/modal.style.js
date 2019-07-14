@@ -11,7 +11,7 @@ const styles = theme => ({
     outline: "none",
     [theme.breakpoints.up("md")]: {
       left: "30%",
-      minWidth: 400,
+      minWidth: theme.spacing(30),
       margin: 0,
     },
   },
