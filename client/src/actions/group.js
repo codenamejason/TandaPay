@@ -20,11 +20,17 @@ function config() {
 /**
  * @summary Redux action creator to fetch the user's group
  */
-export const fetchGroup = groupID => async dispatch => {
+export const fetchGroup = () => async dispatch => {
     try {
-        const response = await axios.get("/groups/" + groupID, config());
+        const profile = await axios.get("/user/profile", config());
+        let { groupID } = profile.data;
 
-        dispatch({ type: FETCH_GROUP, payload: response.data });
+        if (!groupID) {
+            dispatch({ type: FETCH_GROUP, payload: { _id: null } })
+        }
+
+        const group = await axios.get("/groups/" + groupID, config());
+        dispatch({ type: FETCH_GROUP, payload: group.data });
     } catch (err) {
         console.error(err);
     }
