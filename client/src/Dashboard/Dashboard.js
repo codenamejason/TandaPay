@@ -7,6 +7,7 @@ import { attemptConnection } from "../web3";
 import styles from "./dashboard.style";
 import Navigation from "../Navigation/Navigation";
 import { Payments, Profile, Group, Wallet, Claims, Help } from "./pages";
+
 const Dashboard = props => {
     const { classes, user } = props;
     attemptConnection(user);

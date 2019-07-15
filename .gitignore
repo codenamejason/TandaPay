@@ -3,6 +3,7 @@ dev.js
 .DS_Store
 keyfile.json
 env.js
+api
 build
 contracts
 *.tar.gz

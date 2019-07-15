@@ -6,28 +6,38 @@ import { PageHeader } from "../../../../components/";
 import * as actions from "../../../../../actions";
 
 const GroupDashboard = connect(
-  mapStateToProps,
-  actions
+    mapStateToProps,
+    actions
 )(props => {
-  let { group } = props;
+    let { group } = props;
 
-  if (!group) {
-    props.fetchGroup();
-    return "Loading...";
-  }
+    if (!group) {
+        props.fetchGroup();
+        return "Loading...";
+    }
 
-  return (
-    <React.Fragment>
-      <PageHeader title={group.groupName + " Members"} />
-      <Myself />
-      <Subgroup />
-      <Members />
-    </React.Fragment>
-  );
+    return (
+        <React.Fragment>
+            <PageHeader
+                title={group.groupName + " Members"}
+                buttons={[
+                    {
+                        text: "Invite Member",
+                        role: "secretary",
+                        type: "blue",
+                        url: "/admin/groups/invite"
+                    }
+                ]}
+            />
+            <Myself />
+            <Subgroup />
+            <Members />
+        </React.Fragment>
+    );
 });
 
 function mapStateToProps({ group }) {
-  return { group };
+    return { group };
 }
 
 export default GroupDashboard;
