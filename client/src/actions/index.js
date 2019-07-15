@@ -28,4 +28,4 @@ export {
     updateWallet,
 } from "./user";
 
-export { fetchGroup, createGroup } from "./group";
+export { fetchGroup, createGroup, inviteMember } from "./group";

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FETCH_GROUP } from "./types";
+import { FETCH_GROUP, INVITE_MEMBER } from "./types";
 
 const API_BASE = process.env.REACT_APP_API_BASE;
 
@@ -11,9 +11,8 @@ function config() {
     return {
         baseURL: API_BASE,
         headers: {
-            Authorization:
-                "Bearer " + document.cookie.match(/x-auth=(\S+)/)[1],
-        },
+            Authorization: "Bearer " + document.cookie.match(/x-auth=(\S+)/)[1]
+        }
     };
 }
 
@@ -49,6 +48,19 @@ export const createGroup = ({ name, premium }) => async dispatch => {
 
         dispatch({ type: FETCH_GROUP, payload: response.data });
     } catch (err) {
-        console.error(JSON.stringify(err));
+        console.error(err);
+    }
+};
+
+/**
+ * @summary Redux action creator to invite a member
+ */
+export const inviteMember = (email) => async (dispatch, store) => {
+    try {
+        let groupID = store().group._id;
+        await axios.post(`/groups/${groupID}/invite`, { email }, config());
+        dispatch({ type: INVITE_MEMBER, payload: null });
+    } catch (err) {
+        console.error(err);
     }
 };
