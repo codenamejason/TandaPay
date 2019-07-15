@@ -26,7 +26,7 @@ app.use(
       styleSrc: ["'self'", "'unsafe-inline'"],
       fontSrc: ["data:"],
       scriptSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["data:", "https://source.unsplash.com/random"],
+      imgSrc: ["data:", "https://source.unsplash.com/random", "'self'"],
     },
   })
 );
