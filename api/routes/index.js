@@ -6,8 +6,8 @@ let cors = require("cors");
 app.use(
     cors({
         origin: [
-            "https://backend-app-dot-peerless-dahlia-229121.appspot.com",
-            "http://backend-app-dot-peerless-dahlia-229121.appspot.com",
+            "https://peerless-dahlia-229121.appspot.com",
+            "http://peerless-dahlia-229121.appspot.com",
             "http://localhost:3000",
             "http://127.0.0.1:3000",
         ],
