@@ -22,11 +22,10 @@ app.use(
       defaultSrc: [
         "'self'",
         "'https://backend-api-dot-peerless-dahlia-229121.appspot.com/'",
-        "'unsafe-inline'",
       ],
-      styleSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
       fontSrc: ["data:"],
-      scriptSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
     },
   })
 );
