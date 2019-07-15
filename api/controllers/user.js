@@ -69,6 +69,7 @@ const sendProfile = (req, res) => {
         phone,
         ethereumAddress,
         settings,
+        groupID,
     } = user;
     return res.send({
         token,
@@ -82,6 +83,7 @@ const sendProfile = (req, res) => {
         phone,
         ethereumAddress,
         settings,
+        groupID,
     });
 };
 module.exports = {
