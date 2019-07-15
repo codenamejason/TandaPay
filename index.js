@@ -21,13 +21,13 @@ app.use(
     directives: {
       defaultSrc: [
         "'self'",
-        "https://backend-api-dot-peerless-dahlia-229121.appspot.com/",
+        "'https://backend-api-dot-peerless-dahlia-229121.appspot.com/'",
       ],
       styleSrc: ["'self'"],
       fontSrc: ["data:"],
       scriptSrc: [
         "'self'",
-        "sha256-5As4+3YpY62+l38PsxCEkjB1R4YtyktBtRScTJ3fyLU=",
+        "'sha256-5As4+3YpY62+l38PsxCEkjB1R4YtyktBtRScTJ3fyLU='",
       ],
     },
   })
