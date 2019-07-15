@@ -122,62 +122,6 @@ class Notifications extends React.Component {
         );
     };
 
-    componentDidMount() {
-        this.load().catch(console.error);
-    }
-
-    async load() {
-        let notifs = (await this.api.get("/user/settings")).data;
-        this.setState({ notifs });
-    }
-
-    async save() {
-        this.setState({ saving: true });
-        await this.api.put("/user/settings", this.state.notifs);
-        this.setState({ saving: "done" });
-    }
-
-    render() {
-        let { classes } = this.props;
-        let { notifs, saving } = this.state;
-
-        return (
-            <Grid item xs={12} md={7} className={classes.container}>
-                <Paper>
-                    <div className={classes.spaceBetween}>
-                        <Typography className={classes.heading} variant="h5">
-                            Notifications
-                        </Typography>
-                        <Typography
-                            className={
-                                classes.heading + " " + classes.saveStatus
-                            }
-                            variant="body2"
-                        >
-                            {saving === true ? "Saving..." : null}
-                            {saving === "done" ? "Saved" : null}
-                        </Typography>
-                    </div>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Notification</TableCell>
-                                <TableCell>SMS</TableCell>
-                                <TableCell>Email</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {notifs
-                                .map(n => n.code)
-                                .filter(unique)
-                                .map(this.renderRow)}
-                        </TableBody>
-                    </Table>
-                </Paper>
-            </Grid>
-        );
-    }
-
     renderRow = code => {
         let sms = this.state.notifs.find(
             n => n.code === code && n.domain === "sms"
