@@ -25,7 +25,7 @@ app.use(
       ],
       styleSrc: ["'self'"],
       fontSrc: ["data:"],
-      scriptSrc: ["'self'", "'unsafe-line'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
     },
   })
 );
