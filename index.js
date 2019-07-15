@@ -21,11 +21,12 @@ app.use(
     directives: {
       defaultSrc: [
         "'self'",
-        "'https://backend-api-dot-peerless-dahlia-229121.appspot.com/'",
+        "https://backend-api-dot-peerless-dahlia-229121.appspot.com/",
       ],
       styleSrc: ["'self'", "'unsafe-inline'"],
       fontSrc: ["data:"],
       scriptSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["data:", "https://source.unsplash.com/random"],
     },
   })
 );
