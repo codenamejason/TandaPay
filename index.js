@@ -26,7 +26,7 @@ app.use(
       styleSrc: ["'self'"],
       fontSrc: ["data:"],
       scriptSrc: [
-        "self",
+        "'self'",
         "sha256-5As4+3YpY62+l38PsxCEkjB1R4YtyktBtRScTJ3fyLU=",
       ],
     },
