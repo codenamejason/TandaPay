@@ -25,7 +25,7 @@ export const fetchGroup = () => async dispatch => {
         let { groupID } = profile.data;
 
         if (!groupID) {
-            dispatch({ type: FETCH_GROUP, payload: { _id: null } });
+            return dispatch({ type: FETCH_GROUP, payload: { _id: null } })
         }
 
         const group = await axios.get("/groups/" + groupID, config());
