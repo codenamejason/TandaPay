@@ -1,6 +1,12 @@
-pragma solidity >=0.4.22 <0.6.0;
+pragma solidity >= 0.4.0 < 0.7.0;
 
-import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/ERC20Mintable.sol";
-import "../node_modules/openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "openzeppelin-solidity/contracts/token/ERC20/ERC20Mintable.sol";
 
-contract DaiContract is ERC20Mintable, Ownable {}
+/**
+ * @author blOX Consulting LLC.
+ * Date: 6.20.19
+ * Mock Dai mintable ERC20 Contract
+ **/
+contract DaiContract is ERC20Mintable {
+
+}

@@ -13,41 +13,74 @@ const User = mongoose.model("users");
  * @todo add WWWW-Authenticate Header as specified by the RFC
  */
 const authenticated = (req, res, next) => {
-	const token = req.cookies["x-auth"];
-	if (!token) {
-		return res.status(401).send({
-			error: "User must be logged in"
-		});
-	}
-	User.findByToken(token)
-		.then((user) => {
-			if (!user) {
-				return Promise.reject();
-			}
-			req.user = user;
-			req.token = token;
-			next();
-		})
-		.catch((e) => {
-			return res.status(401).send({
-				error: "Invalid credentials provided. Acquire new credentials."
-			});
-		});
+    const token = req.cookies["x-auth"];
+    if (!token) {
+        return res.status(401).send({
+            error: "User must be logged in",
+        });
+    }
+    User.findByToken(token)
+        .then(user => {
+            if (!user) {
+                return Promise.reject();
+            }
+            req.user = user;
+            req.token = token;
+            next();
+        })
+        .catch(e => {
+            return res.status(401).send({
+                error: "Invalid credentials provided. Acquire new credentials.",
+            });
+        });
 };
 
+/**
+ *
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ */
 const checkSignature = (req, res, next) => {
-	const token = req.cookies["x-auth"];
-	try {
-		const decoded = jwt.verify(token, keys.jwtSecret);
-		req.body = decoded;
-		next();
-	} catch (error) {
-		res.cookie("x-auth", "", { maxAge: Date.now() });
-		return res.status(401).send({ error: "Invalid auth token" });
-	}
+    const token = req.cookies["x-auth"];
+    try {
+        const decoded = jwt.verify(token, keys.jwtSecret);
+        req.body = decoded;
+        req.token = token;
+        next();
+    } catch (error) {
+        res.cookie("x-auth", "", { maxAge: Date.now() });
+        return res.status(401).send({ error: "Invalid auth token" });
+    }
+};
+
+/**
+ *
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ */
+const checkWhiteList = (req, res, next) => {
+    const token = req.token;
+    User.findByToken(token)
+        .then(user => {
+            if (!user) {
+                res.cookie("x-auth", "", { maxAge: Date.now() });
+                return Promise.reject();
+            }
+            req.user = user;
+            next();
+        })
+        .catch(e => {
+            res.cookie("x-auth", "", { maxAge: Date.now() });
+            return res.status(401).send({
+                error: "Invalid credentials provided. Acquire new credentials.",
+            });
+        });
 };
 
 module.exports = {
-	authenticated,
-	checkSignature
+    authenticated,
+    checkSignature,
+    checkWhiteList,
 };
