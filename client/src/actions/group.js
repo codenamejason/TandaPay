@@ -11,9 +11,8 @@ function config() {
     return {
         baseURL: API_BASE,
         headers: {
-            Authorization:
-                "Bearer " + document.cookie.match(/x-auth=(\S+)/)[1],
-        },
+            Authorization: "Bearer " + document.cookie.match(/x-auth=(\S+)/)[1]
+        }
     };
 }
 
@@ -26,7 +25,7 @@ export const fetchGroup = () => async dispatch => {
         let { groupID } = profile.data;
 
         if (!groupID) {
-            dispatch({ type: FETCH_GROUP, payload: { _id: null } })
+            dispatch({ type: FETCH_GROUP, payload: { _id: null } });
         }
 
         const group = await axios.get("/groups/" + groupID, config());
@@ -49,14 +48,19 @@ export const createGroup = ({ name, premium }) => async dispatch => {
 
         dispatch({ type: FETCH_GROUP, payload: response.data });
     } catch (err) {
-        console.error(JSON.stringify(err));
+        console.error(err);
     }
 };
 
 /**
  * @summary Redux action creator to invite a member
  */
-export const inviteMember = email => async dispatch => {
-    debugger;
-    dispatch({ type: INVITE_MEMBER, payload: null });
+export const inviteMember = (email) => async (dispatch, store) => {
+    try {
+        let groupID = store().group._id;
+        await axios.post(`/groups/${groupID}/invite`, { email }, config());
+        dispatch({ type: INVITE_MEMBER, payload: null });
+    } catch (err) {
+        console.error(err);
+    }
 };
