@@ -1,4 +1,5 @@
 let mongoose = require("mongoose");
+let crypto = require("crypto");
 let Group = mongoose.model("groups");
 let { sendEmail } = require("../lib/twilio");
 let invitationTemplate = require("../templates/invite.html.js");
@@ -66,6 +67,7 @@ async function newGroupController(req, res, next) {
             premium,
             groupStanding: "okay",
             subgroups: [],
+            accessCode: generateAccessCode()
         });
 
         await group.save();
@@ -127,6 +129,14 @@ async function inviteToGroupController(req, res, next) {
     );
 
     res.status(200).send({ success: true });
+}
+
+/**
+ * @summary generates an access code
+ * this can generate 4,294,967,296 unique access codes
+ */
+function generateAccessCode() {
+    return crypto.randomBytes(4).toString('hex');
 }
 
 module.exports = {
