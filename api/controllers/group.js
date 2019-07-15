@@ -69,8 +69,10 @@ async function newGroupController(req, res, next) {
             subgroups: [],
             accessCode: generateAccessCode()
         });
-
         await group.save();
+
+        secretary.groupID = group._id;
+        await secretary.save();
 
         res.status(200).send(group);
     } catch (e) {
