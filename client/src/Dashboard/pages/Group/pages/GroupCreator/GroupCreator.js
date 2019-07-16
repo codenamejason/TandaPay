@@ -7,7 +7,7 @@ import {
     Typography,
     FormGroup,
     FormControlLabel,
-    Checkbox,
+    Checkbox
 } from "@material-ui/core";
 import { connect } from "react-redux";
 
@@ -28,8 +28,8 @@ class GroupCreator extends React.Component {
                 coverage: false,
                 claim_requirements: false,
                 member_qualifications: false,
-                dispute_guidelines: false,
-            },
+                dispute_guidelines: false
+            }
         };
     }
 
@@ -69,10 +69,11 @@ class GroupCreator extends React.Component {
     };
 
     render() {
+        let { hasReadInstructions } = this.state;
         return (
-            <div>
+            <div >
                 <PageHeader title="Create a Group" />
-                {this.state.hasReadInstructions
+                {hasReadInstructions
                     ? this.renderForm()
                     : this.renderInstructions()}
             </div>
@@ -83,7 +84,7 @@ class GroupCreator extends React.Component {
         let { groupName, premium } = this.state;
 
         return (
-            <React.Fragment>
+            <div className={this.props.classes.spaceAround}>
                 <div className={this.props.classes.form}>
                     <Typography variant="h4">Group Properties</Typography>
                     <TextField
@@ -104,20 +105,37 @@ class GroupCreator extends React.Component {
                         variant="outlined"
                         className={this.props.classes.formItem}
                     />
-                    <Typography variant="h4">Group Charter</Typography>
-                    <div
-                        className={
-                            this.props.classes.formItem +
-                            " " +
-                            this.props.classes.files
-                        }
-                    >
-                        <input
-                            id="files"
-                            multiple
-                            type="file"
-                            onChange={this.handleUpload}
-                        />
+                    <div>
+                        <Typography style={{ marginTop: 20 }} variant="h4">
+                            Group Charter
+                        </Typography>
+                        <div
+                            className={
+                                this.props.classes.formItem +
+                                " " +
+                                this.props.classes.files
+                            }
+                        >
+                            <input
+                                id="files"
+                                multiple
+                                type="file"
+                                onChange={this.handleUpload}
+                            />
+                        </div>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={this.handleSubmit}
+                            disabled={!this.isSubmittable()}
+                            className={
+                                this.props.classes.formItem +
+                                " " +
+                                this.props.classes.button
+                            }
+                        >
+                            Create
+                        </Button>
                     </div>
                     {this.state.files.length > 0
                         ? this.renderConfirmation()
@@ -137,7 +155,7 @@ class GroupCreator extends React.Component {
                         Create
                     </Button>
                 </div>
-            </React.Fragment>
+            </div>
         );
     }
 
