@@ -28,8 +28,9 @@ app.use(
         "https://source.unsplash.com/random",
         "'self'",
         "https://lorempixel.com/",
+        "https://images.unsplash.com",
       ],
-      connectSrc: ["https://x2.fortmatic.com/"],
+      connectSrc: ["https://x2.fortmatic.com/", "'self'"],
     },
   })
 );
