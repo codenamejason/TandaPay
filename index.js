@@ -22,13 +22,14 @@ app.use(
       defaultSrc: ["'self'"],
       styleSrc: ["'self'", "'unsafe-inline'"],
       fontSrc: ["data:"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "https://x2.fortmatic.com/"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
       imgSrc: [
         "data:",
         "https://source.unsplash.com/random",
         "'self'",
         "https://lorempixel.com/",
       ],
+      connectSrc: ["https://x2.fortmatic.com/"],
     },
   })
 );
