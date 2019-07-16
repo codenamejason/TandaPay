@@ -30,7 +30,11 @@ app.use(
         "https://lorempixel.com/",
         "https://images.unsplash.com",
       ],
-      connectSrc: ["https://x2.fortmatic.com/", "'self'"],
+      connectSrc: [
+        "https://x2.fortmatic.com/",
+        "'self'",
+        "https://backend-api-dot-peerless-dahlia-229121.appspot.com/",
+      ],
     },
   })
 );
