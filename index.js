@@ -19,14 +19,16 @@ app.use(helmet());
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
-      defaultSrc: [
-        "'self'",
-        "https://backend-api-dot-peerless-dahlia-229121.appspot.com/",
-      ],
+      defaultSrc: ["'self'"],
       styleSrc: ["'self'", "'unsafe-inline'"],
       fontSrc: ["data:"],
-      scriptSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["data:", "https://source.unsplash.com/random", "'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "https://x2.fortmatic.com/"],
+      imgSrc: [
+        "data:",
+        "https://source.unsplash.com/random",
+        "'self'",
+        "https://lorempixel.com/",
+      ],
     },
   })
 );
