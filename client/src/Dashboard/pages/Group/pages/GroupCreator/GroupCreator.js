@@ -6,16 +6,26 @@ import { connect } from "react-redux";
 
 import styles from "./GroupCreator.style.js";
 import * as actions from "../../../../../actions";
+import Instructions from "./components/Instructions";
 
 class GroupCreator extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { name: "", premium: "", files: [] };
+        this.state = {
+            name: "",
+            premium: "",
+            files: [],
+            hasReadInstructions: false
+        };
     }
+
+    handleRead = evt => {
+        this.setState({ hasReadInstructions: true });
+    };
 
     handleFieldChange = evt => {
         this.setState({
-            [evt.target.id]: evt.target.value,
+            [evt.target.id]: evt.target.value
         });
     };
 
@@ -35,11 +45,21 @@ class GroupCreator extends React.Component {
     };
 
     render() {
-        let { groupName, premium } = this.state;
-
         return (
             <div>
                 <PageHeader title="Create a Group" />
+                {this.state.hasReadInstructions
+                    ? this.renderForm()
+                    : this.renderInstructions()}
+            </div>
+        );
+    }
+
+    renderForm() {
+        let { groupName, premium } = this.state;
+
+        return (
+            <React.Fragment>
                 <div className={this.props.classes.form}>
                     <Typography variant="h4">Group Properties</Typography>
                     <TextField
@@ -90,7 +110,22 @@ class GroupCreator extends React.Component {
                         Create
                     </Button>
                 </div>
-            </div>
+            </React.Fragment>
+        );
+    }
+
+    renderInstructions() {
+        return (
+            <React.Fragment>
+                <Instructions />
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={this.handleRead}
+                >
+                    I Understand
+                </Button>
+            </React.Fragment>
         );
     }
 }
