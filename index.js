@@ -35,6 +35,7 @@ app.use(
         "'self'",
         "https://backend-api-dot-peerless-dahlia-229121.appspot.com/",
       ],
+      frameSrc: ["https://x2.fortmatic.com/"],
     },
   })
 );
