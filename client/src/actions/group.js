@@ -19,11 +19,9 @@ function config() {
 /**
  * @summary Redux action creator to fetch the user's group
  */
-export const fetchGroup = () => async dispatch => {
+export const fetchGroup = () => async (dispatch, store) => {
     try {
-        const profile = await axios.get("/user/profile", config());
-        let { groupID } = profile.data;
-
+        let { groupID } = store().user;
         if (!groupID) {
             return dispatch({ type: FETCH_GROUP, payload: { _id: null } })
         }
@@ -57,7 +55,7 @@ export const createGroup = ({ name, premium }) => async dispatch => {
  */
 export const inviteMember = (email) => async (dispatch, store) => {
     try {
-        let groupID = store().group._id;
+        let { groupID } = store().user;
         await axios.post(`/groups/${groupID}/invite`, { email }, config());
         dispatch({ type: INVITE_MEMBER, payload: null });
     } catch (err) {
