@@ -2,7 +2,7 @@ import React from "react";
 import { Typography } from "@material-ui/core";
 
 export default () => (
-    <React.Fragment>
+    <div>
         <Typography variant="h4">Group Requirements</Typography>
         <p>
             <b>
@@ -169,5 +169,5 @@ export default () => (
                 </li>
             </ul>
         </p>
-    </React.Fragment>
+    </div>
 );
