@@ -20,7 +20,7 @@ class Members extends React.Component {
     render() {
         let { group, classes } = this.props;
         let { filter } = this.state;
-        let filterExp = RegExp(filter, 'i');
+        let filterExp = RegExp(filter, "i");
 
         return (
             <div id="members">
@@ -40,7 +40,7 @@ class Members extends React.Component {
                     {group.members
                         .filter(m => filterExp.test(m.name))
                         .map(m => (
-                            <Grid key={m.name} item sm="3">
+                            <Grid key={m.name} item sm={3}>
                                 <MemberCard member={m} classes={classes} />
                             </Grid>
                         ))}

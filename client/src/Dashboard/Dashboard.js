@@ -8,24 +8,31 @@ import styles from "./dashboard.style";
 import Navigation from "../Navigation/Navigation";
 import { Payments, Profile, Group, Wallet, Claims, Help } from "./pages";
 
-const Dashboard = props => {
-    const { classes, user } = props;
-    attemptConnection(user);
-    return (
-        <div className={classes.root}>
-            <CssBaseline />
-            <Navigation />
-            <Switch>
-                <Route path="/admin/payments" component={Payments} />
-                <Route path="/admin/profile" component={Profile} />
-                <Route path="/admin/groups" component={Group} />
-                <Route path="/admin/wallet" component={Wallet} />
-                <Route path="/admin/claims" component={Claims} />
-                <Route exact path="/admin/help" component={Help} />
-            </Switch>
-        </div>
-    );
-};
+class Dashboard extends React.Component {
+    constructor(props) {
+        super(props);
+        const { user } = props;
+        attemptConnection(user);
+    }
+
+    render() {
+        const { classes } = this.props;
+        return (
+            <div className={classes.root}>
+                <CssBaseline />
+                <Navigation />
+                <Switch>
+                    <Route path="/admin/payments" component={Payments} />
+                    <Route path="/admin/profile" component={Profile} />
+                    <Route path="/admin/groups" component={Group} />
+                    <Route path="/admin/wallet" component={Wallet} />
+                    <Route path="/admin/claims" component={Claims} />
+                    <Route exact path="/admin/help" component={Help} />
+                </Switch>
+            </div>
+        );
+    }
+}
 
 function mapStateToProps({ user }) {
     return { user };
