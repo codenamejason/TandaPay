@@ -4,3 +4,4 @@ node_modules/
 mockuser.json
 dev.js
 keyfile.json
+env.js
