@@ -10,7 +10,7 @@ const styles = theme => ({
       marginTop: theme.spacing(3),
     },
     [theme.breakpoints.down("xs")]: {
-      maxWidth: theme.spacing(40),
+      maxWidth: theme.spacing(35),
     },
   },
   paper: {
