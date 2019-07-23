@@ -32,7 +32,12 @@ const EnhancedForm = props => {
               <PhoneField />
             </Grid>
             <Grid item xs={12} className={classes.buttonGroup}>
-              <Button variant="outlined" color="primary" onClick={handleSubmit}>
+              <Button
+                variant="outlined"
+                color="primary"
+                type="submit"
+                onClick={handleSubmit}
+              >
                 Update
               </Button>
             </Grid>

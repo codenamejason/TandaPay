@@ -29,7 +29,13 @@ const SettingsForm = props => {
     if (name === user.name && email === user.email && phone === user.phone) {
       return enqueueSnackbar("No changes have been made.", { variant: "info" });
     }
-    const [, error] = await updateSettings({ name, email, phone, password });
+    const [, error] = await updateSettings({
+      name,
+      email,
+      phone,
+      password,
+      user
+    });
     if (error) {
       return enqueueSnackbar("Error occurred updating your profile", {
         variant: "error"

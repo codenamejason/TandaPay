@@ -45,16 +45,31 @@ export const logOut = () => async dispatch => {
   } catch (error) {}
 };
 
+// * USER ROUTES!!!
+
+const API_BASE = process.env.REACT_APP_API_BASE;
+
+/**
+ * @summary generates the options to use with a request. this is a function
+ *          and not a const because the document.cookie may change
+ */
+function config() {
+  return {
+    baseURL: API_BASE,
+    headers: {
+      Authorization: "Bearer " + document.cookie.match(/x-auth=(\S+)/)[1]
+    }
+  };
+}
+
 /**
  * @summary
  */
 export const cancelAccount = () => async dispatch => {
   try {
-    const response = await axios.delete("/user/delete", {
-      withCredentials: true
-    });
+    await axios.delete("/user/delete", config());
 
-    dispatch({ type: FETCH_USER, payload: response.data });
+    dispatch({ type: FETCH_USER, payload: null });
   } catch (e) {}
 };
 
@@ -64,9 +79,7 @@ export const cancelAccount = () => async dispatch => {
  */
 export const completeAccount = body => async dispatch => {
   try {
-    const response = await axios.patch("/user/complete", body, {
-      withCredentials: true
-    });
+    const response = await axios.patch("/user/complete", body, config());
     dispatch({ type: FETCH_USER, payload: response.data });
   } catch (e) {
     console.log(e.response);
@@ -78,9 +91,9 @@ export const completeAccount = body => async dispatch => {
  * @param {Object} body
  */
 export const updateWallet = body => async dispatch => {
-  const { provider, user, ethAddress } = body;
+  const { provider, ethAddress } = body;
   try {
-    const url = `/user/${user.sub}/wallet`;
+    const url = `/user/wallet`;
     const response = await axios.patch(
       url,
       { provider, ethAddress },
@@ -100,9 +113,16 @@ export const updateWallet = body => async dispatch => {
  */
 export const updateSettings = body => async dispatch => {
   try {
-    console.log(body);
-    throw new Error("new error");
+    const { name, email, password, phone } = body;
+    const url = `/user/profile`;
+    const response = await axios.patch(
+      url,
+      { name, email, password, phone },
+      { withCredentials: true }
+    );
+    dispatch({ type: FETCH_USER, payload: response.data });
   } catch (error) {
+    console.log(error.response);
     return [null, error];
   }
 };
