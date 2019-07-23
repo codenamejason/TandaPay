@@ -5,6 +5,7 @@ const {
     saveUpdates,
     generateUpdatedToken,
     sendProfile,
+    updateWallet,
 } = require("../controllers/user");
 const {
     authenticated,
@@ -36,7 +37,7 @@ router.patch(
         const token = req.token;
         res.cookie("x-auth", token, {
             maxAge: 9000000000,
-            httpOnly: true,
+            httpOnly: false,
             secure: false,
         });
 
@@ -49,6 +50,9 @@ router.patch(
     }
 );
 
+/**
+ * @todo Add :id to route
+ */
 router.delete("/delete", authenticated, async (req, res) => {
     const user = req.user;
     try {
@@ -59,6 +63,25 @@ router.delete("/delete", authenticated, async (req, res) => {
         res.status(400).send(e);
     }
 });
+
+/**
+ *
+ */
+router.patch(
+    "/:id/wallet",
+    authenticated,
+    updateWallet,
+    generateUpdatedToken,
+    (req, res) => {
+        const token = req.token;
+        res.cookie("x-auth", token, {
+            maxAge: 9000000000,
+            secure: false,
+            httpOnly: false,
+        });
+        res.status(200).send(req.user);
+    }
+);
 
 router.get("/settings", authenticated, (req, res) => {
     res.status(200).send(req.user.settings);
