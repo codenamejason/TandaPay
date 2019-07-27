@@ -4,7 +4,7 @@ import styles from "../../form.style";
 export default withStyles(styles, { withTheme: true })(
   ({
     classes,
-    input: { name, onChange, value, ...restInput },
+    input: { name, onChange, value, type, InputProps, ...restInput },
     meta,
     ...rest
   }) => (
@@ -12,14 +12,15 @@ export default withStyles(styles, { withTheme: true })(
       color="primary"
       {...rest}
       name={name}
+      type={type}
       variant={"outlined"}
       helperText={meta.touched ? meta.error : undefined}
       error={meta.error && meta.touched}
       onChange={onChange}
       value={value}
-      // InputProps={restInput}
       fullWidth
       margin="normal"
+      inputProps={restInput}
     />
   )
 );

@@ -101,11 +101,11 @@ export const updateWallet = body => async dispatch => {
  */
 export const updateSettings = body => async dispatch => {
   try {
-    const { name, email, password, phone } = body;
+    const { name, email, oldPassword, newPassword, phone } = body;
     const url = `/user/profile`;
     const response = await axios.patch(
       url,
-      { name, email, password, phone },
+      { name, email, oldPassword, newPassword, phone },
       {
         withCredentials: true
       }
@@ -113,6 +113,7 @@ export const updateSettings = body => async dispatch => {
     dispatch({ type: FETCH_USER, payload: response.data });
     return [response, null];
   } catch (error) {
+    console.log(error.response.data);
     return [null, error];
   }
 };

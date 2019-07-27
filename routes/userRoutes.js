@@ -8,7 +8,8 @@ const {
   updateWallet,
   completeProfile,
   deleteProfile,
-  updateProfile
+  updateProfile,
+  checkUpdateSettings
 } = require("../controller/userController");
 const {
   authenticated,
@@ -49,5 +50,11 @@ router.patch(
   sendProfile
 );
 
-router.patch("/profile", authenticated, updateProfile, sendProfile);
+router.patch(
+  "/profile",
+  authenticated,
+  checkUpdateSettings,
+  updateProfile,
+  sendProfile
+);
 module.exports = router;

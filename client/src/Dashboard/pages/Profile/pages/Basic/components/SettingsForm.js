@@ -3,7 +3,7 @@ import { Grid, Card, withStyles, Typography, Divider } from "@material-ui/core";
 import { connect } from "react-redux";
 import { useSnackbar } from "notistack";
 import * as actions from "../../../../../../actions";
-
+import { haveSettingsChanged } from "./settings.util";
 import styles from "./form.style";
 import Form from "./Form/Form";
 
@@ -25,15 +25,39 @@ const SettingsForm = props => {
    * It will create a snackbar depending on the aforementioned results
    * @param {Object} body - it will contain the name, email, phone and password submitted by the form. These inputs may have not been changed.
    */
-  const onSubmit = async ({ name, email, phone, password }) => {
-    if (name === user.name && email === user.email && phone === user.phone) {
+  const onSubmit = async body => {
+    const {
+      name,
+      email,
+      phone,
+      oldPassword,
+      newPassword,
+      confirmPassword
+    } = body;
+    const hasChanged = haveSettingsChanged(body, user);
+    if (!hasChanged) {
       return enqueueSnackbar("No changes have been made.", { variant: "info" });
+    }
+
+    if (oldPassword && !newPassword && !confirmPassword) {
+      return enqueueSnackbar(
+        "To change your password, provide a new one and confirm it",
+        { variant: "warning" }
+      );
+    }
+    //new password and confirmed must match
+    if (newPassword !== confirmPassword) {
+      return enqueueSnackbar(
+        "Your new password does not match the confirmed one",
+        { variant: "error" }
+      );
     }
     const [, error] = await updateSettings({
       name,
       email,
       phone,
-      password
+      oldPassword,
+      newPassword
     });
     if (error) {
       return enqueueSnackbar("Error occurred updating your profile", {

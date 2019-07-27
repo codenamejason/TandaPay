@@ -1,5 +1,7 @@
 let Group = require("../models/Group");
 const { isMobilePhone, isEmail } = require("validator");
+const bcrypt = require("bcryptjs");
+
 let checkSetupSettings = async (req, res, next) => {
   const { role, accessCode, walletProvider, ethAddress } = req.body;
 
@@ -101,19 +103,14 @@ const updateWallet = async (req, res, next) => {
  */
 const updateProfile = async (req, res, next) => {
   const user = req.user;
-  const { name, email, phone } = req.body;
-  //if the email has been provided, check that it is valid
-  if ((email && !isEmail(email)) || (phone && !isMobilePhone(phone))) {
-    return res.status(400).send({
-      error: "Invalid update values"
-    });
-  }
+  const { name, email, phone, newPassword } = req.body;
 
   //if the profile info was provided and its different than the current definition, then update the user profile
   try {
     user.email = email && user.email !== email ? email : user.email;
     user.name = name && user.name !== name ? name : user.name;
     user.phone = phone && user.phone !== phone ? phone : user.phone;
+    user.password = newPassword ? newPassword : user.password;
     const newUser = await user.save();
     req.user = newUser;
     next();
@@ -121,6 +118,43 @@ const updateProfile = async (req, res, next) => {
     console.log(e);
     res.status(400).send(e);
   }
+};
+
+/**
+ * @summary
+ * @param {Express.Request} req
+ * @param {Express.Response} res
+ * @param {Function} next
+ */
+const checkUpdateSettings = async (req, res, next) => {
+  const user = req.user;
+  const { name, email, phone, oldPassword, newPassword } = req.body;
+
+  //if the email has been provided, check that it is valid
+  if ((email && !isEmail(email)) || (phone && !isMobilePhone(phone))) {
+    return res.status(400).send({
+      error: "Invalid update values"
+    });
+  }
+
+  if (oldPassword && !newPassword) {
+    return res.status(400).send({
+      error: "To update password, a new one must be provided"
+    });
+  }
+
+  if (oldPassword && newPassword) {
+    const result = await bcrypt.compare(oldPassword, user.password);
+    if (result) {
+      next();
+    } else {
+      return res.status(400).send({
+        error: "Password does not match current one"
+      });
+    }
+  }
+
+  next();
 };
 
 /**
@@ -207,5 +241,6 @@ module.exports = {
   sendProfile,
   completeProfile,
   deleteProfile,
-  updateProfile
+  updateProfile,
+  checkUpdateSettings
 };
