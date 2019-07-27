@@ -9,7 +9,7 @@ const validate = value => {
     return "Invalid Email";
   }
 };
-function EmailField() {
+function EmailField(props) {
   return (
     <Field
       name="email"
@@ -18,6 +18,7 @@ function EmailField() {
       id="email-field"
       component={TextField}
       validate={validate}
+      disabled={props.disabled}
     />
   );
 }

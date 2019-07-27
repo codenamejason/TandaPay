@@ -26,7 +26,7 @@ const EnhancedForm = props => {
               <Divider />
             </Grid>
             <Grid item xs={12}>
-              <EmailField />
+              <EmailField disabled={usedOauth} />
             </Grid>
             <Grid item xs={12}>
               <PhoneField />

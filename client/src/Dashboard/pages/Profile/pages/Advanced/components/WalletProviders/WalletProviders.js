@@ -3,7 +3,7 @@ import { Grid, Typography, Card, Divider } from "@material-ui/core";
 import {
   currentProvider,
   connectToMetamask,
-  connectToFortmatic,
+  connectToFortmatic
 } from "../../../../../../../web3";
 import { connect } from "react-redux";
 import * as actions from "../../../../../../../actions";
@@ -29,7 +29,7 @@ class WalletProviders extends React.Component {
     super(props);
     this.state = {
       selected: currentProvider(),
-      loading: false,
+      loading: false
     };
   }
   render() {
@@ -37,13 +37,13 @@ class WalletProviders extends React.Component {
       {
         name: "Metamask",
         IconSrc: MetamaskIcon,
-        handleClick: this.handleMetamaskClick,
+        handleClick: this.handleMetamaskClick
       },
       {
         name: "Fortmatic",
         IconSrc: FortmaticIcon,
-        handleClick: this.handleFortmaticClick,
-      },
+        handleClick: this.handleFortmaticClick
+      }
     ];
     const { classes } = this.props;
     const { selected, loading } = this.state;
@@ -80,18 +80,18 @@ class WalletProviders extends React.Component {
     const selected = "metamask";
     this.setState({
       selected,
-      loading: true,
+      loading: true
     });
     const [result, error] = await connectToMetamask();
     const ethAddress = result[0];
     if (error) {
       this.setState({
         selected: "",
-        loading: false,
+        loading: false
       });
     } else {
       this.setState({
-        loading: false,
+        loading: false
       });
 
       updateWallet({ user, provider: selected, ethAddress });
@@ -110,7 +110,7 @@ class WalletProviders extends React.Component {
     const selected = "fortmatic";
     this.setState({
       selected,
-      loading: true,
+      loading: true
     });
 
     const [result, error] = await connectToFortmatic();
@@ -118,11 +118,11 @@ class WalletProviders extends React.Component {
     if (error) {
       this.setState({
         selected: "",
-        loading: false,
+        loading: false
       });
     } else {
       this.setState({
-        loading: false,
+        loading: false
       });
       updateWallet({ user, provider: selected, ethAddress });
     }
