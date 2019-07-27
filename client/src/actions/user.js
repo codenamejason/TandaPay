@@ -42,32 +42,18 @@ export const logOut = () => async dispatch => {
     });
 
     dispatch({ type: FETCH_USER, payload: undefined });
-  } catch (error) {}
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 // * USER ROUTES!!!
-
-const API_BASE = process.env.REACT_APP_API_BASE;
-
-/**
- * @summary generates the options to use with a request. this is a function
- *          and not a const because the document.cookie may change
- */
-function config() {
-  return {
-    baseURL: API_BASE,
-    headers: {
-      Authorization: "Bearer " + document.cookie.match(/x-auth=(\S+)/)[1]
-    }
-  };
-}
-
 /**
  * @summary
  */
 export const cancelAccount = () => async dispatch => {
   try {
-    await axios.delete("/user/delete", config());
+    await axios.delete("/user/delete", { withCredentials: true });
 
     dispatch({ type: FETCH_USER, payload: null });
   } catch (e) {}
@@ -79,7 +65,9 @@ export const cancelAccount = () => async dispatch => {
  */
 export const completeAccount = body => async dispatch => {
   try {
-    const response = await axios.patch("/user/complete", body, config());
+    const response = await axios.patch("/user/complete", body, {
+      withCredentials: true
+    });
     dispatch({ type: FETCH_USER, payload: response.data });
   } catch (e) {
     console.log(e.response);
@@ -118,11 +106,13 @@ export const updateSettings = body => async dispatch => {
     const response = await axios.patch(
       url,
       { name, email, password, phone },
-      { withCredentials: true }
+      {
+        withCredentials: true
+      }
     );
     dispatch({ type: FETCH_USER, payload: response.data });
+    return [response, null];
   } catch (error) {
-    console.log(error.response);
     return [null, error];
   }
 };

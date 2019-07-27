@@ -1,8 +1,22 @@
 import React from "react";
-import { Popper, Typography, Paper, Fade } from "@material-ui/core";
+import { Popper, Typography, Paper, Fade, withStyles } from "@material-ui/core";
 
+const styles = theme => ({
+  root: {
+    zIndex: "1"
+  },
+  paper: {
+    maxWidth: "50%",
+    padding: theme.spacing(2)
+  }
+});
+const values = {
+  disabled: "Cannot edit your password",
+  able: "Password must be at least 8 characters long"
+};
 const FieldPopper = props => {
-  const { id, open, anchorEl } = props;
+  const { id, open, anchorEl, classes, disabled } = props;
+  const text = disabled ? values["disabled"] : values["able"];
   return (
     <Popper
       id={id}
@@ -10,11 +24,12 @@ const FieldPopper = props => {
       anchorEl={anchorEl}
       transition
       disablePortal={true}
+      className={classes.root}
     >
       {({ TransitionProps }) => (
         <Fade {...TransitionProps} timeout={350}>
-          <Paper>
-            <Typography variant="body1">This is a popper</Typography>
+          <Paper className={classes.paper}>
+            <Typography variant="body1">{text}</Typography>
           </Paper>
         </Fade>
       )}
@@ -22,4 +37,4 @@ const FieldPopper = props => {
   );
 };
 
-export default FieldPopper;
+export default withStyles(styles, { withTheme: true })(FieldPopper);

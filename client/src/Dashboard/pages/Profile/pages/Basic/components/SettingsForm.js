@@ -33,8 +33,7 @@ const SettingsForm = props => {
       name,
       email,
       phone,
-      password,
-      user
+      password
     });
     if (error) {
       return enqueueSnackbar("Error occurred updating your profile", {

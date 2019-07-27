@@ -7,7 +7,6 @@ import FieldPopper from "./FieldPopper";
 
 const validate = value => {
   const valid = value !== undefined && value.length >= 8;
-
   if (value === undefined) {
     return undefined;
   } else if (valid) {
@@ -42,7 +41,12 @@ function PasswordField(props) {
           endAdornment: <FieldAdornment handleAdorn={handleAdorn} />
         }}
       />
-      <FieldPopper anchorEl={anchorEl} id={id} open={open} />
+      <FieldPopper
+        anchorEl={anchorEl}
+        id={id}
+        open={open}
+        disabled={props.disabled}
+      />
     </React.Fragment>
   );
 }
@@ -51,11 +55,7 @@ const FieldAdornment = props => {
   const { handleAdorn } = props;
   return (
     <InputAdornment position="end">
-      <IconButton
-        onClick={handleAdorn}
-        onMouseEnter={handleAdorn}
-        onMouseLeave={handleAdorn}
-      >
+      <IconButton onMouseEnter={handleAdorn} onMouseLeave={handleAdorn}>
         <InfoOutlined />
       </IconButton>
     </InputAdornment>
