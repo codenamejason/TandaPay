@@ -15,9 +15,6 @@ import { LockOpenOutlined } from "@material-ui/icons";
 import { EmailField, PasswordField } from "../components/Fields";
 
 import styles from "../styles/form.style";
-const RegLink = React.forwardRef((props, ref) => (
-  <Link innerRef={ref} {...props} />
-));
 
 class Login extends React.Component {
   onSubmit = values => {

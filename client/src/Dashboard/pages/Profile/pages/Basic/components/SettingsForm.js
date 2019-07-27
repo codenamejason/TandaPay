@@ -60,7 +60,7 @@ const SettingsForm = props => {
       newPassword
     });
     if (error) {
-      return enqueueSnackbar("Error occurred updating your profile", {
+      return enqueueSnackbar(`Error occurred updating your profile: ${error}`, {
         variant: "error"
       });
     } else {

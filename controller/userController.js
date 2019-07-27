@@ -115,7 +115,6 @@ const updateProfile = async (req, res, next) => {
     req.user = newUser;
     next();
   } catch (e) {
-    console.log(e);
     res.status(400).send(e);
   }
 };
@@ -149,7 +148,7 @@ const checkUpdateSettings = async (req, res, next) => {
       next();
     } else {
       return res.status(400).send({
-        error: "Password does not match current one"
+        error: "Old password is incorrect"
       });
     }
   }

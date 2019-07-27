@@ -113,7 +113,6 @@ export const updateSettings = body => async dispatch => {
     dispatch({ type: FETCH_USER, payload: response.data });
     return [response, null];
   } catch (error) {
-    console.log(error.response.data);
-    return [null, error];
+    return [null, error.response.data.error];
   }
 };
