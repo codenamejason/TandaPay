@@ -1,4 +1,6 @@
-let Group = require("../models/Group");
+const mongoose = require("mongoose");
+const User = mongoose.model("users");
+const Group = require("../models/Group");
 const { isMobilePhone, isEmail } = require("validator");
 const bcrypt = require("bcryptjs");
 
@@ -25,7 +27,7 @@ let checkSetupSettings = async (req, res, next) => {
 };
 
 /**
- *
+ * @summary
  * @param {Express.Request} req
  * @param {Express.Request} res
  * @param {Function} next
@@ -134,6 +136,18 @@ const checkUpdateSettings = async (req, res, next) => {
     return res.status(400).send({
       error: "Invalid update values"
     });
+  }
+
+  //if the new email the user is providing is already taken by someone else
+  if (email !== user.email) {
+    const existingUser = await User.findOne({
+      email: email
+    });
+    if (existingUser) {
+      return res.status(400).send({
+        error: "That email is already taken"
+      });
+    }
   }
 
   if (oldPassword && !newPassword) {

@@ -116,12 +116,11 @@ const generateToken = async (req, res, next) => {
  *
  */
 const oauthController = async (req, res, next) => {
-  const { googleID, facebookID } = req.user;
+  const { email } = req.user;
   //checks if the user exists depending on which provider they used
-  const existingUser =
-    googleID === undefined
-      ? await User.findOne({ facebookID: facebookID })
-      : await User.findOne({ googleID: googleID });
+  const existingUser = await User.findOne({
+    email: email
+  });
   try {
     if (existingUser) {
       const token = await existingUser.generateAuthToken("user");
