@@ -68,7 +68,7 @@ router.delete("/delete", authenticated, async (req, res) => {
  *
  */
 router.patch(
-    "/:id/wallet",
+    "/wallet",
     authenticated,
     updateWallet,
     generateUpdatedToken,
@@ -83,6 +83,10 @@ router.patch(
     }
 );
 
+router.patch("/profile", (req, res) => {
+    console.log(req.body);
+    res.status(400).send({ error: "Route incomplete" });
+});
 router.get("/settings", authenticated, (req, res) => {
     res.status(200).send(req.user.settings);
 });
