@@ -3,9 +3,10 @@ import { connect } from "react-redux";
 import { PageHeader, Table as PaymentTable } from "../../../../components";
 import { headRows } from "./data";
 import paymentData from "../../../../../data/payments.json";
+import UserStats from "./components/UserStats";
 
 const tableButtons = [
-  { text: "MAKE PAYMENT", type: "green", url: "/admin/payments/new" },
+  { text: "MAKE PAYMENT", type: "green", url: "/admin/payments/new" }
 ];
 const PaymentOverview = props => {
   const { user } = props;
@@ -14,7 +15,7 @@ const PaymentOverview = props => {
   return (
     <React.Fragment>
       <PageHeader title={`Welcome, ${title}`} />
-      <h1>Payment Overview</h1>
+      <UserStats />
       <PaymentTable
         data={payments}
         headRows={headRows}
