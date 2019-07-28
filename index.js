@@ -28,7 +28,8 @@ app.use(
         "https://source.unsplash.com/random",
         "'self'",
         "https://lorempixel.com/",
-        "https://images.unsplash.com"
+        "https://images.unsplash.com",
+        "https://lh3.googleusercontent.com/"
       ],
       connectSrc: [
         "https://x2.fortmatic.com/",
