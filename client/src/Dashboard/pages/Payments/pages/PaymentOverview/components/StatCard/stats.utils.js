@@ -23,7 +23,7 @@ const getStats = async (type, data) => {
     }
     case "wallet": {
       const [amount, extra] = await getWalletStat();
-      return [amount, extra];
+      return [`~ ${amount}`, extra];
     }
     default: {
       const val = 0;
@@ -37,7 +37,6 @@ const getStats = async (type, data) => {
  */
 const getWalletStat = async () => {
   const [amount, error] = await getDAIBalance();
-  console.log(error);
   if (error) {
     return ["N/A", "ERROR GETTING BALANCE"];
   } else {

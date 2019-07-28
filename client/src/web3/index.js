@@ -5,14 +5,14 @@ const fm = new Fortmatic(process.env.REACT_APP_FORTMATIC_ID);
 
 /**
  * @summary
- * @param {*} user
+ * @param {Object} user
  * @global
  */
 const attemptConnection = async user => {
   const { walletProvider } = user;
-  console.log(user);
   if (walletProvider === "metamask") {
     connectToMetamask();
+    console.log("finished connecting");
   } else {
     connectToFortmatic();
   }
