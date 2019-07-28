@@ -40,9 +40,14 @@ const useStyles = makeStyles(theme => ({
     fontSize: "3em"
   },
   amountText: {
-    color: theme.palette.money.main,
     margin: theme.spacing(2, 0, 0, 0),
     fontWeight: "bold"
+  },
+  moneyText: {
+    color: theme.palette.money.main
+  },
+  infoText: {
+    color: theme.palette.primary.light
   }
 }));
 

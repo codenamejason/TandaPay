@@ -1,33 +1,49 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
+import { connect } from "react-redux";
 import StatCard from "./StatCard";
 import useStyles from "./stats.style";
+
 const stats = [
   {
     title: "Wallet Funds",
     type: "wallet",
-    amount: "675.00"
+    format: "$"
   },
   {
     title: "Upcoming Payment",
     type: "payment",
-    amount: "125.00"
+    format: "$"
   },
   {
     title: "Group Claims",
     type: "claims",
-    amount: "8.00"
+    format: "#"
   }
 ];
 const UserStats = props => {
   const classes = useStyles(props);
+  const { claims, group } = props;
   return (
     <Grid container className={classes.container} spacing={6}>
       {stats.map((stat, index) => {
-        return <StatCard stat={stat} key={index} />;
+        const data =
+          stat.type === "wallet"
+            ? null
+            : stat.type === "payment"
+            ? group
+            : claims;
+        return <StatCard stat={stat} key={index} data={data} />;
       })}
     </Grid>
   );
 };
 
-export default UserStats;
+function mapStateToProps({ claims, group }) {
+  return { claims, group };
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(UserStats);
