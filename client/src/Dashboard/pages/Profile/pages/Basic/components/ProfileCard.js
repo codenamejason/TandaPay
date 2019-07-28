@@ -7,7 +7,7 @@ import styles from "./profile.style";
 const ProfileCard = props => {
   const { classes } = props;
   const user = useSelector(state => state.user);
-  const { name, subgroup, standing, picture } = user;
+  const { name, subgroup, standing = "", picture } = user;
   return (
     <Grid item xs={12} sm={6} className={classes.cardContainer}>
       <Grid container component={Card} className={classes.overview}>

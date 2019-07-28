@@ -8,11 +8,13 @@ import { attemptConnection } from "../web3";
 import styles from "./dashboard.style";
 import Navigation from "../Navigation/Navigation";
 import { Payments, Profile, Group, Wallet, Claims, Help } from "./pages";
-
+import * as actions from "../actions";
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     const { user } = props;
+    this.props.fetchClaims();
+    this.props.fetchGroup();
     attemptConnection(user);
   }
 
@@ -42,5 +44,5 @@ function mapStateToProps({ user }) {
 }
 export default connect(
   mapStateToProps,
-  null
+  actions
 )(withStyles(styles, { withTheme: true })(Dashboard));
