@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
 import { connect } from "react-redux";
-import StatCard from "./StatCard";
+import StatCard from "./StatCard/StatCard";
 import useStyles from "./stats.style";
 
 const stats = [

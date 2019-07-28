@@ -41,7 +41,8 @@
 		"passport-facebook": "^3.0.0",
 		"passport-google-oauth20": "^2.0.0",
 		"truffle-hdwallet-provider": "^1.0.14",
-		"validator": "^11.1.0"
+		"validator": "^11.1.0",
+		"web3": "^1.2.0"
 	},
 	"devDependencies": {
 		"concurrently": "^4.1.1",
