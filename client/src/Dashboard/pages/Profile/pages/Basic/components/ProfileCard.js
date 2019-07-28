@@ -19,7 +19,7 @@ const ProfileCard = props => {
             </div>
             <div>
               <Typography variant="body1" className={classes.subgroup}>
-                {subgroup ? subgroup.toUpperCase() : "NONE JOINED"}
+                {subgroup ? subgroup.toUpperCase() : "NO SUBGROUP JOINED"}
               </Typography>
               <Typography variant="body1" className={classes.standing}>
                 {standing.toUpperCase()} STANDING
