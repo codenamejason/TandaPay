@@ -1,8 +1,9 @@
 /**
- * @summary
- * @param {Object} body
- * @param {Object} user
- * @returns {Boolean}
+ * @summary It will receive the possibly updated values, and the authenticated user object.
+ * Then it will compare the two to determine whether the user object has beenc hanged.
+ * @param {Object} body - the values passed to the onSubmit function called by React Final Form. It will have the information that could be changed
+ * @param {Object} user - the information associated with the currently authenticated user
+ * @returns {Boolean} whether the user profile setttings have been changed from the current user
  */
 function haveSettingsChanged(body, user) {
   const {
