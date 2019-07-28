@@ -3,7 +3,7 @@ import { Popper, Typography, Paper, Fade, withStyles } from "@material-ui/core";
 
 const styles = theme => ({
   root: {
-    zIndex: "1"
+    zIndex: "2"
   },
   paper: {
     maxWidth: "50%",
