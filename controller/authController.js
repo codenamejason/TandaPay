@@ -8,14 +8,14 @@ const User = mongoose.model("users");
  * @param next - Express callback function that will forward the route to the next controller
  */
 const checkCredentials = async (req, res, next) => {
-	const { email, password } = req.body;
-	if (!email || !password) {
-		return res.status(400).send({
-			error: "User did not provide all appropriate credentials"
-		});
-	} else {
-		return next();
-	}
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).send({
+      error: "User did not provide all appropriate credentials"
+    });
+  } else {
+    return next();
+  }
 };
 
 /**
@@ -26,21 +26,21 @@ const checkCredentials = async (req, res, next) => {
  * @todo Move the function to the controller folder
  */
 const userDoesNotExist = async (req, res, next) => {
-	const { email } = req.body;
+  const { email } = req.body;
 
-	//checks for existing user
-	const existingUser = await User.findOne({
-		email
-	});
-	if (existingUser) {
-		return res.status(409).send({
-			errors: {
-				email: "Email already in use."
-			}
-		});
-	}
+  //checks for existing user
+  const existingUser = await User.findOne({
+    email
+  });
+  if (existingUser) {
+    return res.status(409).send({
+      errors: {
+        email: "Email already in use."
+      }
+    });
+  }
 
-	next();
+  next();
 };
 
 /**
@@ -50,18 +50,18 @@ const userDoesNotExist = async (req, res, next) => {
  * @param next - Express callback function that will forward the route to the next controller
  */
 const userDoesExist = async (req, res, next) => {
-	const { email, password } = req.body;
+  const { email, password } = req.body;
 
-	const existingUser = await User.findByCredentials(email, password);
-	if (!existingUser) {
-		return res.status(409).send({
-			error: "User with given credentials not found"
-		});
-	}
-	const { name } = existingUser;
-	req.body = { email, password, name };
-	req.user = existingUser;
-	next();
+  const existingUser = await User.findByCredentials(email, password);
+  if (!existingUser) {
+    return res.status(409).send({
+      error: "User with given credentials not found"
+    });
+  }
+  const { name } = existingUser;
+  req.body = { email, password, name };
+  req.user = existingUser;
+  next();
 };
 
 /**
@@ -72,19 +72,19 @@ const userDoesExist = async (req, res, next) => {
  * @param next - Express callback function that will forward the route to the next controller
  */
 const createUser = async (req, res, next) => {
-	const { name, email, password } = req.body;
-	try {
-		const user = new User({
-			name,
-			email,
-			password
-		});
-		await user.save();
-		req.user = user;
-		next();
-	} catch (error) {
-		res.status(400).send(error);
-	}
+  const { name, email, password } = req.body;
+  try {
+    const user = new User({
+      name,
+      email,
+      password
+    });
+    await user.save();
+    req.user = user;
+    next();
+  } catch (error) {
+    res.status(400).send(error);
+  }
 };
 
 /**
@@ -95,19 +95,20 @@ const createUser = async (req, res, next) => {
  * @param next - Express callback function that will forward the route to the next controller
  */
 const generateToken = async (req, res, next) => {
-	const user = req.user;
-	try {
-		const token = await user.generateAuthToken();
-		req.token = token;
-		req.user = user;
-		next();
-	} catch (e) {
-		res.status(400).send(e);
-	}
+  const user = req.user;
+  try {
+    const token = await user.generateAuthToken();
+    req.token = token;
+    req.user = user;
+    next();
+  } catch (e) {
+    res.status(400).send(e);
+  }
 };
 /**
  * @summary - It will receive the response from the Oauth Provider Passportjs Strategy, with the user json provided as part of the request.
- * It will then either log the user in or sign them up depending on whether they're a preexisting user or not. If an error occurs it will respond with a 400 error
+ * It will check to see if the user currently exists based on the received googleID or facebookID (depending on the provider)
+ * It will then either log the user in or sign them up depending on whether they're a preexisting user or not. If an error occurs it will respond with a 400 error.
  * @param {user: {email, name, oauthID, ...}}  req - the req parameter will have the user's name, email and oauthID.
  * It may optionally provide other relevant user data depending on the Oauth Provider
  * @param res - The res parameter will remain unchanged if the Oauth 2.0 authentication attempt is successful
@@ -115,24 +116,28 @@ const generateToken = async (req, res, next) => {
  *
  */
 const oauthController = async (req, res, next) => {
-	const existingUser = await User.findOne({ email: req.user.email });
-	try {
-		if (existingUser) {
-			const token = await existingUser.generateAuthToken("user");
-			req.token = token;
-			req.oauth = true;
-			next();
-		} else {
-			const user = new User(req.user);
-			const token = await user.generateAuthToken("user");
-			await user.save();
-			req.token = token;
-			req.oauth = true;
-			next();
-		}
-	} catch (e) {
-		res.status(400).send(e);
-	}
+  const { email } = req.user;
+  //checks if the user exists depending on which provider they used
+  const existingUser = await User.findOne({
+    email: email
+  });
+  try {
+    if (existingUser) {
+      const token = await existingUser.generateAuthToken("user");
+      req.token = token;
+      req.oauth = true;
+      next();
+    } else {
+      const user = new User(req.user);
+      const token = await user.generateAuthToken("user");
+      await user.save();
+      req.token = token;
+      req.oauth = true;
+      next();
+    }
+  } catch (e) {
+    res.status(400).send(e);
+  }
 };
 
 /**
@@ -144,21 +149,21 @@ const oauthController = async (req, res, next) => {
  * @todo Add oauth boolean value to req parameter to include in oauth provider auth flow.
  */
 const sendCookie = async (req, res) => {
-	const token = req.token;
-	res.cookie("x-auth", token, {
-		maxAge: 9000000000,
-		httpOnly: false,
-		secure: false
-	});
-	if (req.oauth === true) {
-		return res.redirect("/");
-	}
-	if (req.user) {
-		const { email, name, status, accountCompleted, role } = req.user;
-		return res.send({ token, email, name, status, accountCompleted, role });
-	} else {
-		return res.send();
-	}
+  const token = req.token;
+  res.cookie("x-auth", token, {
+    maxAge: 9000000000,
+    httpOnly: false,
+    secure: false
+  });
+  if (req.oauth === true) {
+    return res.redirect("/");
+  }
+  if (req.user) {
+    const { email, name, status, accountCompleted, role } = req.user;
+    return res.send({ token, email, name, status, accountCompleted, role });
+  } else {
+    return res.send();
+  }
 };
 
 /**
@@ -169,24 +174,24 @@ const sendCookie = async (req, res) => {
  * If there is an issue removing the token and/or the cookie.
  */
 const logOut = async (req, res) => {
-	const user = req.user;
-	const token = req.token;
-	try {
-		await user.removeToken(token);
-		res.cookie("x-auth", "", { maxAge: Date.now() });
-		res.status(200).send({ success: "You have been logged out successfully" });
-	} catch (e) {
-		res.status(400).send(e);
-	}
+  const user = req.user;
+  const token = req.token;
+  try {
+    await user.removeToken(token);
+    res.cookie("x-auth", "", { maxAge: Date.now() });
+    res.status(200).send({ success: "You have been logged out successfully" });
+  } catch (e) {
+    res.status(400).send(e);
+  }
 };
 
 module.exports = {
-	oauthController,
-	sendCookie,
-	generateToken,
-	checkCredentials,
-	createUser,
-	logOut,
-	userDoesExist,
-	userDoesNotExist
+  oauthController,
+  sendCookie,
+  generateToken,
+  checkCredentials,
+  createUser,
+  logOut,
+  userDoesExist,
+  userDoesNotExist
 };

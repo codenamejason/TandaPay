@@ -21,7 +21,7 @@ const WalletModal = props => {
         </Typography>
         <Form onSubmit={onSubmit}>
           {({ handleSubmit }) => (
-            <form>
+            <form onSubmit={handleSubmit}>
               <Grid container>
                 <Grid item xs={12} className={classes.container}>
                   <AmountField />

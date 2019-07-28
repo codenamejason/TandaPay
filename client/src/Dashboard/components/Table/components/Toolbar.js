@@ -6,7 +6,7 @@ import {
   Toolbar,
   Tooltip,
   IconButton,
-  Button,
+  Button
 } from "@material-ui/core";
 import { lighten, makeStyles, darken } from "@material-ui/core/styles";
 
@@ -15,51 +15,56 @@ const useToolbarStyles = makeStyles(theme => ({
   root: {
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(1),
+    display: "flex",
+    [theme.breakpoints.down("xs")]: {
+      flexDirection: "column"
+    }
   },
   highlight:
     theme.palette.type === "light"
       ? {
           color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+          backgroundColor: lighten(theme.palette.secondary.light, 0.85)
         }
       : {
           color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
+          backgroundColor: theme.palette.secondary.dark
         },
   actions: {
     color: theme.palette.text.secondary,
+    display: "flex",
+    [theme.breakpoints.down("xs")]: {
+      flexDirection: "column"
+    }
   },
   title: {
     flex: "0 0 auto",
-    flexGrow: "1",
+    flexGrow: "1"
   },
   button: {
     minWidth: theme.spacing(20),
     backgroundColor: theme.palette.button.main,
     color: "white",
-    borderRadius: "0",
-    [theme.breakpoints.down("xs")]: {
-      marginTop: theme.spacing(3),
-    },
+    borderRadius: "0"
   },
   green: {
     backgroundColor: theme.palette.button.main,
     "&:hover": {
-      backgroundColor: darken(theme.palette.button.main, 0.1),
-    },
+      backgroundColor: darken(theme.palette.button.main, 0.1)
+    }
   },
   red: {
     backgroundColor: theme.palette.error.main,
     "&:hover": {
-      backgroundColor: darken(theme.palette.error.main, 0.1),
-    },
+      backgroundColor: darken(theme.palette.error.main, 0.1)
+    }
   },
   blue: {
     backgroundColor: theme.palette.primary.main,
     "&:hover": {
-      backgroundColor: darken(theme.palette.primary.main, 0.1),
-    },
-  },
+      backgroundColor: darken(theme.palette.primary.main, 0.1)
+    }
+  }
 }));
 
 const EnhancedTableToolbar = props => {
@@ -68,7 +73,7 @@ const EnhancedTableToolbar = props => {
   return (
     <Toolbar
       className={clsx(classes.root, {
-        [classes.highlight]: numSelected > 0,
+        [classes.highlight]: numSelected > 0
       })}
     >
       <div className={classes.title}>
@@ -100,7 +105,7 @@ const EnhancedTableToolbar = props => {
                   [classes.button]: true,
                   [classes.red]: button.type === "red",
                   [classes.blue]: button.type === "blue",
-                  [classes.green]: button.type === "green",
+                  [classes.green]: button.type === "green"
                 })}
               >
                 {button.text}
