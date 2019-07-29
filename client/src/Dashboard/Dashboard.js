@@ -9,6 +9,7 @@ import styles from "./dashboard.style";
 import Navigation from "../Navigation/Navigation";
 import { Payments, Profile, Group, Wallet, Claims, Help } from "./pages";
 import * as actions from "../actions";
+import Loader from "../components/Loader";
 class Dashboard extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -41,7 +42,7 @@ class Dashboard extends React.PureComponent {
         <div className={classes.root}>
           <CssBaseline />
           <Navigation />
-          <h1>Loading...</h1>
+          <Loader />
         </div>
       );
     }

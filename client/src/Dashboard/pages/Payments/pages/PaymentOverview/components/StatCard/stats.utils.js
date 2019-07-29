@@ -53,7 +53,7 @@ const getGroupStat = group => {
   const extra =
     group._id === null ? "GROUP MUST BE CREATED" : group.paymentDate;
 
-  return [amount, extra];
+  return [amount, `DUE ${extra}`];
 };
 
 /**
