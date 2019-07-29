@@ -9,17 +9,42 @@ import styles from "./dashboard.style";
 import Navigation from "../Navigation/Navigation";
 import { Payments, Profile, Group, Wallet, Claims, Help } from "./pages";
 import * as actions from "../actions";
-class Dashboard extends React.Component {
+class Dashboard extends React.PureComponent {
   constructor(props) {
     super(props);
     const { user } = props;
+    this.state = {
+      loading: true
+    };
     this.props.fetchClaims();
     this.props.fetchGroup();
     attemptConnection(user);
   }
 
+  async componentDidMount() {
+    try {
+      await this.props.fetchClaims();
+      await this.props.fetchGroup();
+      this.setState({
+        loading: false
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   render() {
     const { classes } = this.props;
+
+    if (this.state.loading) {
+      return (
+        <div className={classes.root}>
+          <CssBaseline />
+          <Navigation />
+          <h1>Loading...</h1>
+        </div>
+      );
+    }
     return (
       <SnackbarProvider maxSnack={3}>
         <div className={classes.root}>

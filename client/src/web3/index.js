@@ -10,6 +10,7 @@ const fm = new Fortmatic(process.env.REACT_APP_FORTMATIC_ID);
  */
 const attemptConnection = async user => {
   const { walletProvider } = user;
+  console.log(window.web3.version);
   if (walletProvider === "metamask") {
     connectToMetamask();
     console.log("finished connecting");
