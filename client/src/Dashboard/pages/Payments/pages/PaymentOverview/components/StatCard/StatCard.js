@@ -17,7 +17,11 @@ import styles from "./card.style";
 import { getStats } from "./stats.utils";
 
 /**
- * @summary
+ * @summary The Stat Card component receives a data source and stat type, which it will use to determine the exact information
+ * and format it will use to display the relevant statistics.
+ * In the event that it receives new props, it will recalculate the statistics that it needs to display. In order to allow the wallet balance to be shown,
+ * the getStats function, and the lifecycle methods that use it must be async/await.
+ * @type {React.Component}
  * ! @note - this should be refactored into a Hooks in the future if possible
  */
 class StatCard extends React.Component {
@@ -30,7 +34,9 @@ class StatCard extends React.Component {
   }
 
   /**
-   * @summary
+   * @summary the componentDidmount method will retrieve the stat and data objects received via props
+   * and calculate the 'amount' and 'extra' properties that need to be shown to the user
+   * It will then update state accordingly. It has to be async in order to be compatible with getting the DAI balance of the user
    */
   async componentDidMount() {
     const { stat, data } = this.props;
@@ -42,7 +48,9 @@ class StatCard extends React.Component {
   }
 
   /**
-   * @summary
+   * @summary the componentDidUpdate works the same as the componentDidMount except
+   * that in addition to retrieving the data it must allow do a basic check of the props
+   * in order to determine whether it needs to actually re-calculate the properties.
    */
   async componentDidUpdate(prevProps) {
     const { stat, data } = this.props;
