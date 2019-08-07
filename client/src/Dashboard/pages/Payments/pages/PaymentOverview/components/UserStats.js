@@ -24,7 +24,6 @@ const stats = [
 const UserStats = props => {
   const classes = useStyles(props);
   const { claims, group } = props;
-  console.log(group);
   return (
     <Grid container className={classes.container} spacing={6}>
       {stats.map((stat, index) => {

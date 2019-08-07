@@ -15,23 +15,11 @@ class Dashboard extends React.PureComponent {
     super(props);
     const { user } = props;
     this.state = {
-      loading: true
+      loading: false
     };
-    this.props.fetchClaims();
     this.props.fetchGroup();
+    this.props.fetchClaims();
     attemptConnection(user);
-  }
-
-  async componentDidMount() {
-    try {
-      await this.props.fetchClaims();
-      await this.props.fetchGroup();
-      this.setState({
-        loading: false
-      });
-    } catch (e) {
-      console.log(e);
-    }
   }
 
   render() {

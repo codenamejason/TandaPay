@@ -18,6 +18,14 @@ export const createClaim = (summary, files) => async dispatch => {
   } catch (error) {}
 };
 
+export const connectWeb3 = () => async dispatch => {
+  try {
+    
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export {
   fetchUser,
   signUp,

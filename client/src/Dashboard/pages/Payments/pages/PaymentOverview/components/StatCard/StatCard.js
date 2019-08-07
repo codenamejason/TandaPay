@@ -15,6 +15,11 @@ import {
 import clsx from "clsx";
 import styles from "./card.style";
 import { getStats } from "./stats.utils";
+
+/**
+ * @summary
+ * ! @note - this should be refactored into a Hooks in the future if possible
+ */
 class StatCard extends React.Component {
   constructor(props) {
     super(props);
@@ -23,6 +28,10 @@ class StatCard extends React.Component {
       extra: ""
     };
   }
+
+  /**
+   * @summary
+   */
   async componentDidMount() {
     const { stat, data } = this.props;
     const [amount, extra] = await getStats(stat.type, data);
@@ -30,6 +39,20 @@ class StatCard extends React.Component {
       amount,
       extra
     });
+  }
+
+  /**
+   * @summary
+   */
+  async componentDidUpdate(prevProps) {
+    const { stat, data } = this.props;
+    if (data !== prevProps.data) {
+      const [amount, extra] = await getStats(stat.type, data);
+      this.setState({
+        amount,
+        extra
+      });
+    }
   }
   render() {
     const { stat, classes } = this.props;

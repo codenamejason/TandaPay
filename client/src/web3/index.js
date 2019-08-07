@@ -10,10 +10,8 @@ const fm = new Fortmatic(process.env.REACT_APP_FORTMATIC_ID);
  */
 const attemptConnection = async user => {
   const { walletProvider } = user;
-  console.log(window.web3.version);
   if (walletProvider === "metamask") {
     connectToMetamask();
-    console.log("finished connecting");
   } else {
     connectToFortmatic();
   }
@@ -25,7 +23,11 @@ const attemptConnection = async user => {
 const connectToMetamask = async () => {
   if (window.ethereum) {
     try {
-      const accounts = await window.ethereum.enable();
+      let accounts = [];
+      if (window.ethereum.selectedAddress === undefined) {
+        accounts = await window.ethereum.enable();
+      }
+      //try to set this before
       window.web3 = new Web3(window.ethereum);
       return [accounts, null];
     } catch (error) {
@@ -51,7 +53,6 @@ const connectToFortmatic = async () => {
     const accounts = await window.web3.currentProvider.enable();
     return [accounts, null];
   } catch (error) {
-    window.web3 = new Web3();
     console.log(error);
     return [null, error];
   }
@@ -84,7 +85,6 @@ const currentProvider = () => {
 /**
  * @summary - Queries the contract deployed by DAI to determine the amount of DAI the current user currently has
  * @global
- *
  */
 const getDAIBalance = async () => {
   //
