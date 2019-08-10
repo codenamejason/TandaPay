@@ -24,7 +24,7 @@ const getStats = async (type, data) => {
       return [amount, extra];
     }
     case "wallet": {
-      const [amount, extra] = await getWalletStat();
+      const [amount, extra] = await getWalletStat(data);
       return [`~ ${amount}`, extra];
     }
     default: {
@@ -37,10 +37,15 @@ const getStats = async (type, data) => {
 /**
  * @summary It will use the web3 function getDAIBalance which will return a null object
  * for amount and the error message if something goes wrong and vice versa in the case of a success
+ * @param {Object} ethereum
  * @returns {Array}
  */
-const getWalletStat = async () => {
-  const [amount, error] = await getDAIBalance();
+const getWalletStat = async ethereum => {
+  if (ethereum == null) {
+    return ["0", "LOADING BALANCE"];
+  }
+  const { web3, DAI } = ethereum;
+  const [amount, error] = await getDAIBalance(web3, DAI);
   if (error) {
     return ["N/A", "ERROR GETTING BALANCE"];
   } else {

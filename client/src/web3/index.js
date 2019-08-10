@@ -11,10 +11,12 @@ const fm = new Fortmatic(process.env.REACT_APP_FORTMATIC_ID);
 const attemptConnection = async user => {
   const { walletProvider } = user;
   if (walletProvider === "metamask") {
-    connectToMetamask();
+    await connectToMetamask();
   } else {
-    connectToFortmatic();
+    await connectToFortmatic();
   }
+
+  return window.web3;
 };
 /**
  * @summary
@@ -86,25 +88,27 @@ const currentProvider = () => {
  * @summary - Queries the contract deployed by DAI to determine the amount of DAI the current user currently has
  * @global
  */
-const getDAIBalance = async () => {
+const getDAIBalance = async (web3, DAI) => {
   //
   try {
-    const web3 = window.web3;
-
-    if (web3.version !== "1.0.0-beta.46") {
-      return [null, "LOADING WALLET"];
-    }
-
-    const instance = new web3.eth.Contract(
-      DaiContract.abi,
-      process.env.REACT_APP_DAI_ADDRESS
-    );
     const accounts = await web3.eth.getAccounts();
-    const balance = await instance.methods.balanceOf(accounts[0]).call();
+    const balance = await DAI.methods.balanceOf(accounts[0]).call();
     return [balance, null];
   } catch (e) {
     return [null, e];
   }
+};
+
+/**
+ * @summary
+ * @param {Object} web3
+ * @returns {Web3.Contract} returns a new instance of the DAI contract created with the provided web3 instance
+ */
+const createDAIContract = web3 => {
+  return new web3.eth.Contract(
+    DaiContract.abi,
+    process.env.REACT_APP_DAI_ADDRESS
+  );
 };
 
 export {
@@ -112,5 +116,6 @@ export {
   connectToFortmatic,
   currentProvider,
   attemptConnection,
-  getDAIBalance
+  getDAIBalance,
+  createDAIContract
 };
