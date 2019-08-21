@@ -86,9 +86,14 @@ export const cancelAccount = () => async dispatch => {
  */
 export const completeAccount = body => async dispatch => {
   try {
-    const response = await axios.patch("/user/complete", body, {
+    await axios.patch("/user/complete", body, {
       withCredentials: true
     });
+
+    const response = await axios.get("/auth/me", {
+      withCredentials: true
+    });
+
     dispatch({ type: FETCH_USER, payload: response.data });
   } catch (e) {
     console.log(e.response);
