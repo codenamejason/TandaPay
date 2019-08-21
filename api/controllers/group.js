@@ -35,7 +35,7 @@ async function getGroupByIDController(req, res, next) {
  */
 async function newGroupController(req, res, next) {
     let secretary = req.user;
-    let { groupName, premium } = req.body;
+    let { groupName, premium, charterID } = req.body;
 
     if (!groupName) {
         return res.status(400).send({ error: "groupName required" });
@@ -43,6 +43,11 @@ async function newGroupController(req, res, next) {
 
     if (!premium) {
         return res.status(400).send({ error: "premium required" });
+    }
+
+    if (!charterID) {
+        // TODO: also check that charterID is a valid id
+        return res.status(400).send({ error: "charter required" });
     }
 
     if (isNaN(premium) || premium < 0) {
@@ -65,6 +70,7 @@ async function newGroupController(req, res, next) {
             ],
             groupName,
             premium,
+            charterID,
             groupStanding: "okay",
             subgroups: [],
             accessCode: generateAccessCode()
