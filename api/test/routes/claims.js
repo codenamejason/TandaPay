@@ -9,6 +9,7 @@ let Claim = require("../../models/Claim");
 // [ ] all routes are authenticated
 // [ ] only policyholders can create claims
 // [ ] only secretaries can approve claims
+// [ ] only group members can see claims
 // [ ] claims can only be updated in the pending state
 // [ ] claim amount cannot be negative
 // [ ] only the claimant can update their claim
@@ -69,6 +70,7 @@ test("PATCH /claims/:id - updates claims", async t => {
     t.is(res.statusCode, 200);
     t.regex(res.header["content-type"], /json/);
 
+    // TODO: don't do another HTTP request, hit db directly
     res = await http()
         .get("/claims/" + data.claim._id)
         .set("Authorization", "Bearer " + data.bob.tokens[0].token);
@@ -78,4 +80,14 @@ test("PATCH /claims/:id - updates claims", async t => {
     t.deepEqual(res.body.documents, ["foo", "bar", "baz", "alpha", "beta", "gamma"]);
 });
 
+test("POST /claims/:id/approve - approves a claim", async t => {
+    let res = await http()
+        .post(`/claims/${data.claim._id}/approve`)
+        .set("Authorization", "Bearer " + data.alice.tokens[0].token);
 
+    t.is(res.statusCode, 200);
+    t.regex(res.header["content-type"], /json/);
+
+    let claim = await Claim.findById(data.claim._id);
+    t.is(claim.status, "approved");
+});

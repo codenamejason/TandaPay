@@ -41,9 +41,9 @@ router.get("/:claimID", authenticated, getClaimByID);
 router.patch("/:claimID", authenticated, updateClaimByID);
 
 /**
- * @alias POST /approve/:claimID
+ * @alias POST /:claimID/approve
  * @summary Approves a claim
  */
-router.post("/approve/:claimID", authenticated, secretaryOnly, approveClaimByID);
+router.post("/:claimID/approve", authenticated, secretaryOnly, approveClaimByID);
 
 module.exports = router;

@@ -151,16 +151,26 @@ async function updateClaimByID(req, res, next) {
 */
 async function approveClaimByID(req, res, next) {
     let { claimID } = req.params;
-
     if (!claimID) {
         return res.status(400).send({ error: "no :id" });
     }
 
-    let claim = await Claim.findById(id);
+    let claim;
+    try {
+        claim = await Claim.findById(claimID);
+    } catch (e) {}
+
     if (!claim) {
         return res.status(404).send({ error: "no such claim" });
     }
 
+    if (claim.groupID != req.user.groupID.toString() || req.user.role != "secretary") {
+        return res.status(403).send({ error: "you do not have permission" });
+    }
+
+    claim.status = "approved";
+    await claim.save();
+    res.status(200).send({ status: "ok" });
 }
 
 module.exports = {
