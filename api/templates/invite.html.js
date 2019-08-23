@@ -48,7 +48,7 @@ module.exports = ({ secretary, group, url, code }) => `
       <h1>TandaPay</h1>
       <div id="box">
         <h2>You've been invited to a group on TandaPay!</h2>
-        <p>${secretary} has invited you to the group <a href="#">${group}</a>.
+        <p>${secretary} has invited you to the group <b>${group}</b>.
            You can accept this invitation by clicking the link below.
            Your access code is <span id="code">${code}</span>.
         </p>
