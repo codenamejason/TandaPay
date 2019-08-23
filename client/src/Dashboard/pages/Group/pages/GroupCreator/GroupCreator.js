@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import { withStyles } from "@material-ui/core/styles";
 import { PageHeader } from "../../../../components/";
 import {
@@ -15,14 +16,17 @@ import styles from "./GroupCreator.style.js";
 import * as actions from "../../../../../actions";
 import Instructions from "./components/Instructions";
 
+const API_BASE = process.env.REACT_APP_API_BASE;
+
 class GroupCreator extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             name: "",
             premium: "",
-            files: [],
+            fileID: null,
             hasReadInstructions: false,
+            uploading: false,
             confirm: {
                 premium_cost: false,
                 coverage: false,
@@ -43,15 +47,28 @@ class GroupCreator extends React.Component {
         });
     };
 
-    handleUpload = evt => {
-        this.setState({ files: evt.target.files });
+    handleUpload = async evt => {
+        if (!evt.target.files[0]) return;
+        try {
+            this.setState({
+                uploading: true,
+                fileID: null
+            });
+            let id = await uploadFile(evt.target.files[0]);
+            this.setState({ uploading: false, fileID: id });
+        } catch(e) {
+            this.setState({ uploading: false });
+            console.error(e);
+            alert(e);
+        }
     };
 
     isSubmittable = () =>
         this.state.name &&
+        this.state.fileID &&
         !isNaN(this.state.premium) &&
         this.state.premium > 0 &&
-        this.state.files.length > 0 &&
+        !this.state.uploading &&
         this.hasConfirmedAll();
 
     hasConfirmedAll = () =>
@@ -109,6 +126,7 @@ class GroupCreator extends React.Component {
                         <Typography style={{ marginTop: 20 }} variant="h4">
                             Group Charter
                         </Typography>
+                        {this.state.uploading ? <b>Uploading...</b> : null}
                         <div
                             className={
                                 this.props.classes.formItem +
@@ -118,28 +136,13 @@ class GroupCreator extends React.Component {
                         >
                             <input
                                 id="files"
-                                multiple
                                 type="file"
+                                accept="application/pdf"
                                 onChange={this.handleUpload}
                             />
                         </div>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={this.handleSubmit}
-                            disabled={!this.isSubmittable()}
-                            className={
-                                this.props.classes.formItem +
-                                " " +
-                                this.props.classes.button
-                            }
-                        >
-                            Create
-                        </Button>
                     </div>
-                    {this.state.files.length > 0
-                        ? this.renderConfirmation()
-                        : null}
+                    {this.state.fileID ? this.renderConfirmation() : null}
                     <br />
                     <Button
                         variant="contained"
@@ -235,6 +238,21 @@ class GroupCreator extends React.Component {
             </FormGroup>
         );
     }
+}
+
+async function uploadFile(file) {
+    let { url, id } = (await axios.post('/upload', {}, {
+        baseURL: API_BASE,
+        headers: {
+            Authorization: "Bearer " + document.cookie.match(/x-auth=(\S+)/)[1]
+        }
+    })).data;
+
+    await new Promise(r => setTimeout(r, 1000))
+
+    await fetch(url, { method: 'PUT', body: file });
+
+    return id;
 }
 
 function mapStateToProps({ group }) {
