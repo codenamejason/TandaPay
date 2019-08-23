@@ -77,6 +77,10 @@ async function getClaimByID(req, res, next) {
         return res.status(404).send({ error: "no such claim" });
     }
 
+    if (claim.groupID.toString() != req.user.groupID) {
+        return res.status(403).send({ error: "this is not your groups claim" });
+    }
+
     res.status(200).send(claim);
 }
 

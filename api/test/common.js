@@ -113,7 +113,7 @@ async function seedMongo() {
     });
     await otherGroupsClaim.save();
 
-    return { alice, bob, group, claim };
+    return { alice, bob, group, claim, otherGroupsClaim };
 }
 
 function setupSinon() {

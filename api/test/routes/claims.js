@@ -9,7 +9,7 @@ let Claim = require("../../models/Claim");
 // [x] all routes are authenticated
 // [x] only policyholders can create claims
 // [x] only secretaries can approve claims
-// [ ] only group members can see claims
+// [x] only group members can see claims
 // [ ] claims can only be updated in the pending state
 // [ ] claim amount cannot be negative
 // [ ] only the claimant can update their claim
@@ -125,5 +125,19 @@ test("Policyholders cannot approve claims", async t => {
         .post(`/claims/${data.claim._id}/approve`)
         .set("Authorization", "Bearer " + data.bob.tokens[0].token);
 
+    t.is(res.statusCode, 403);
+});
+
+test("Users cannot see other groups' claims", async t => {
+    let res;
+
+    res = await http()
+        .get("/claims/" + data.otherGroupsClaim._id)
+        .set("Authorization", "Bearer " + data.alice.tokens[0].token);
+    t.is(res.statusCode, 403);
+
+    res = await http()
+        .get("/claims/" + data.otherGroupsClaim._id)
+        .set("Authorization", "Bearer " + data.bob.tokens[0].token);
     t.is(res.statusCode, 403);
 });
