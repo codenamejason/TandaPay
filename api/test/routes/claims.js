@@ -70,14 +70,10 @@ test("PATCH /claims/:id - updates claims", async t => {
     t.is(res.statusCode, 200);
     t.regex(res.header["content-type"], /json/);
 
-    // TODO: don't do another HTTP request, hit db directly
-    res = await http()
-        .get("/claims/" + data.claim._id)
-        .set("Authorization", "Bearer " + data.bob.tokens[0].token);
-
-    t.is(res.body.summary, "I would like money please thank you");
-    t.is(res.body.amount, 750);
-    t.deepEqual(res.body.documents, ["foo", "bar", "baz", "alpha", "beta", "gamma"]);
+    let claim = await Claim.findById(data.claim._id).lean();
+    t.is(claim.summary, "I would like money please thank you");
+    t.is(claim.amount, 750);
+    t.deepEqual(claim.documents, ["foo", "bar", "baz", "alpha", "beta", "gamma"]);
 });
 
 test("POST /claims/:id/approve - approves a claim", async t => {
