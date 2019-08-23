@@ -9,10 +9,13 @@ const Claim = mongoose.model("claims");
  * @returns: void
  */
 async function getAllClaims(req, res, next) {
-    const { _id, name } = req.user;
-    const claimsByGroup = await Claim.find({ groupID: testGroupID });
-    console.log(claimsByGroup);
-    res.send(claimsByGroup);
+    let { groupID } = req.user;
+    try {
+        let claims = await Claim.find({ groupID })
+        res.status(200).send(claims);
+    } catch(e) {
+        res.status(500).send({ error: 'internal error' });
+    }
 }
 
 /**
@@ -23,18 +26,32 @@ async function getAllClaims(req, res, next) {
  * @returns: void
  */
 async function createNewClaim(req, res, next) {
-    const { _id, name } = req.user;
-    const { summary, documents, amount } = req.body;
-    const claim = new Claim({
-        groupID: testGroupID,
-        creatorID: _id,
-        creatorName: name,
+    let { summary, documents, amount } = req.body;
+
+    if (summary.length < 10) {
+        return res.status(400).send({ error: 'summary too short' });
+    }
+
+    if (documents.length < 1) {
+        return res.status(400).send({ error: 'document(s) required' });
+    }
+
+    if (amount <= 0) {
+        return res.status(400).send({ error: 'amount too low' });
+    }
+
+    let claim = new Claim({
+        groupID: req.user.groupID,
+        claimantID: req.user.id,
+        claimantName: req.user.name,
+        status: "pending",
+
         summary,
         documents,
-        status: "pending",
-        claimAmount: amount,
+        amount,
     });
     await claim.save();
+
     res.status(200).send(claim);
 }
 
@@ -47,18 +64,20 @@ async function createNewClaim(req, res, next) {
  */
 async function getClaimByID(req, res, next) {
     let { claimID } = req.params;
-
     if (!claimID) {
         return res.status(400).send({ error: "no :id" });
     }
 
-    let claim = await Claim.findById(id);
+    let claim;
+    try {
+        claim = await Claim.findById(claimID);
+    } catch (e) {}
+
     if (!claim) {
         return res.status(404).send({ error: "no such claim" });
     }
 
     res.status(200).send(claim);
-    next();
 }
 
 /**

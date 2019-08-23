@@ -19,6 +19,7 @@ async function seedMongo() {
 
     let User = mongoose.model("users");
     let Group = mongoose.model("groups");
+    let Claim = mongoose.model("claims");
 
     let alice = new User({
         name: "Alice",
@@ -90,7 +91,29 @@ async function seedMongo() {
     await alice.save();
     await bob.save();
 
-    return { alice, bob, group };
+    let claim = new Claim({
+        groupID: group._id,
+        claimantID: bob._id,
+        claimantName: bob.name,
+        summary: "I need money please",
+        documents: ["123"],
+        status: "pending",
+        amount: 500,
+    });
+    await claim.save();
+
+    let otherGroupsClaim = new Claim({
+        groupID: mongoose.Types.ObjectId(),
+        claimantID: mongoose.Types.ObjectId(),
+        claimantName: 'Foo Bar',
+        summary: "I don\'t know",
+        documents: [],
+        status: "pending",
+        amount: 500
+    });
+    await otherGroupsClaim.save();
+
+    return { alice, bob, group, claim };
 }
 
 function setupSinon() {
