@@ -8,7 +8,7 @@ let Claim = require("../../models/Claim");
 // TODO: invariant tests
 // [x] all routes are authenticated
 // [x] only policyholders can create claims
-// [ ] only secretaries can approve claims
+// [x] only secretaries can approve claims
 // [ ] only group members can see claims
 // [ ] claims can only be updated in the pending state
 // [ ] claim amount cannot be negative
@@ -116,6 +116,14 @@ test("Secretaries cannot create claims", async t => {
             documents: ['foo', 'bar', 'baz'],
             amount: 500,
         });
+
+    t.is(res.statusCode, 403);
+});
+
+test("Policyholders cannot approve claims", async t => {
+    let res = await http()
+        .post(`/claims/${data.claim._id}/approve`)
+        .set("Authorization", "Bearer " + data.bob.tokens[0].token);
 
     t.is(res.statusCode, 403);
 });
