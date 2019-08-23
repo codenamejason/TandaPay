@@ -11,7 +11,7 @@ let Claim = require("../../models/Claim");
 // [x] only secretaries can approve claims
 // [x] only group members can see claims
 // [x] claims can only be updated in the pending state
-// [ ] claim amount cannot be negative
+// [x] claim amount cannot be negative
 // [ ] only the claimant can update their claim
 
 // TODO: group serial tests together
@@ -76,6 +76,22 @@ test.serial("PATCH /claims/:id - updates claims", async t => {
     t.is(claim.summary, "I would like money please thank you");
     t.is(claim.amount, 750);
     t.deepEqual(claim.documents, ["foo", "bar", "baz", "alpha", "beta", "gamma"]);
+});
+
+test.serial("Claim amounts must be >0", async t => {
+    let res;
+
+    res = await http()
+        .patch("/claims/" + data.claim._id)
+        .set("Authorization", "Bearer " + data.bob.tokens[0].token)
+        .send({ amount: -5 });
+    t.is(res.statusCode, 400);
+
+    res = await http()
+        .patch("/claims/" + data.claim._id)
+        .set("Authorization", "Bearer " + data.bob.tokens[0].token)
+        .send({ amount: 0 });
+    t.is(res.statusCode, 400);
 });
 
 test.serial("POST /claims/:id/approve - approves a claim", async t => {

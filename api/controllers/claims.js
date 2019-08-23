@@ -133,7 +133,7 @@ async function updateClaimByID(req, res, next) {
         claim.documents = documents;
     }
 
-    if (amount) {
+    if (amount !== undefined) {
         if (amount <= 0) {
             return res.status(400).send({ error: 'amount too low' });
         }
