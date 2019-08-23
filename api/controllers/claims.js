@@ -94,12 +94,52 @@ async function updateClaimByID(req, res, next) {
         return res.status(400).send({ error: "no :id" });
     }
 
-    let claim = await Claim.findById(id);
+    let claim;
+    try {
+        claim = await Claim.findById(claimID);
+    } catch (e) {}
+
     if (!claim) {
         return res.status(404).send({ error: "no such claim" });
     }
 
-    res.status(500).send({ error: "unimplemented" });
+    if (req.user._id.toString() != claim.claimantID) {
+        return res.status(403).send({ error: "you do not have permission" });
+    }
+
+    let { summary, documents, amount } = req.body;
+
+    if (summary) {
+        if (summary.length < 10) {
+            return res.status(400).send({ error: 'summary too short' });
+        }
+
+        claim.summary = summary;
+    }
+
+    if (documents) {
+        if (documents.length < 1) {
+            return res.status(400).send({ error: 'too few documents' });
+        }
+
+        claim.documents = documents;
+    }
+
+    if (amount) {
+        if (amount <= 0) {
+            return res.status(400).send({ error: 'amount too low' });
+        }
+
+        claim.amount = amount;
+    }
+
+    try {
+        await claim.save();
+    } catch(e) {
+        res.status(500).send({ error: "internal error" });
+    }
+
+    res.status(200).send({ status: "ok" });
 }
 
 /**

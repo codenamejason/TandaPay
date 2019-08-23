@@ -11,8 +11,9 @@ let Claim = require("../../models/Claim");
 // [ ] only secretaries can approve claims
 // [ ] claims can only be updated in the pending state
 // [ ] claim amount cannot be negative
+// [ ] only the claimant can update their claim
 
-test.serial("GET /claims/:id - gets a claim by ID", async t => {
+test("GET /claims/:id - gets a claim by ID", async t => {
     let res = await http()
         .get("/claims/" + data.claim._id)
         .set("Authorization", "Bearer " + data.bob.tokens[0].token);
@@ -53,6 +54,28 @@ test.serial("POST /claims - creates a new claim", async t => {
     t.truthy(res.body.claimantName);
     t.is(res.body.status, "pending");
     t.truthy(await Claim.findById(res.body._id));
+});
+
+test("PATCH /claims/:id - updates claims", async t => {
+    let res = await http()
+        .patch("/claims/" + data.claim._id)
+        .set("Authorization", "Bearer " + data.bob.tokens[0].token)
+        .send({
+            summary: "I would like money please thank you",
+            amount: 750,
+            documents: ["foo", "bar", "baz", "alpha", "beta", "gamma"],
+        });
+
+    t.is(res.statusCode, 200);
+    t.regex(res.header["content-type"], /json/);
+
+    res = await http()
+        .get("/claims/" + data.claim._id)
+        .set("Authorization", "Bearer " + data.bob.tokens[0].token);
+
+    t.is(res.body.summary, "I would like money please thank you");
+    t.is(res.body.amount, 750);
+    t.deepEqual(res.body.documents, ["foo", "bar", "baz", "alpha", "beta", "gamma"]);
 });
 
 
