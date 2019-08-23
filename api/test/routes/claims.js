@@ -5,20 +5,6 @@ let { fake, http, data } = setupAll(test);
 
 let Claim = require("../../models/Claim");
 
-// TODO: group serial tests together
-
-test("GET /claims/:id - gets a claim by ID", async t => {
-    let res = await http()
-        .get("/claims/" + data.claim._id)
-        .set("Authorization", "Bearer " + data.bob.tokens[0].token);
-
-    t.is(res.statusCode, 200);
-    t.regex(res.header["content-type"], /json/);
-    t.truthy(res.body.claimantID);
-    t.truthy(res.body.amount);
-    t.is(res.body._id, data.claim._id.toString());
-});
-
 test.serial("GET /claims - gets all claims for the user's group", async t => {
     let res = await http()
         .get("/claims")
@@ -107,6 +93,30 @@ test.serial("POST /claims/:id/approve - approves a claim", async t => {
     t.is(claim.status, "approved");
 });
 
+test.serial("Claims can only be updated in the pending state", async t => {
+    let res = await http()
+        .patch("/claims/" + data.claim._id)
+        .set("Authorization", "Bearer " + data.bob.tokens[0].token)
+        .send({
+            summary: "I would like money please thank you",
+            amount: 750,
+            documents: ["foo", "bar", "baz", "alpha", "beta", "gamma"],
+        });
+    t.is(res.statusCode, 403);
+});
+
+test("GET /claims/:id - gets a claim by ID", async t => {
+    let res = await http()
+        .get("/claims/" + data.claim._id)
+        .set("Authorization", "Bearer " + data.bob.tokens[0].token);
+
+    t.is(res.statusCode, 200);
+    t.regex(res.header["content-type"], /json/);
+    t.truthy(res.body.claimantID);
+    t.truthy(res.body.amount);
+    t.is(res.body._id, data.claim._id.toString());
+});
+
 test("Claim routes require authentication", async t => {
     let res;
 
@@ -158,17 +168,5 @@ test("Users cannot see other groups' claims", async t => {
     res = await http()
         .get("/claims/" + data.otherGroupsClaim._id)
         .set("Authorization", "Bearer " + data.bob.tokens[0].token);
-    t.is(res.statusCode, 403);
-});
-
-test.serial("Claims can only be updated in the pending state", async t => {
-    let res = await http()
-        .patch("/claims/" + data.claim._id)
-        .set("Authorization", "Bearer " + data.bob.tokens[0].token)
-        .send({
-            summary: "I would like money please thank you",
-            amount: 750,
-            documents: ["foo", "bar", "baz", "alpha", "beta", "gamma"],
-        });
     t.is(res.statusCode, 403);
 });
