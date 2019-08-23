@@ -12,7 +12,7 @@ let Claim = require("../../models/Claim");
 // [x] only group members can see claims
 // [x] claims can only be updated in the pending state
 // [x] claim amount cannot be negative
-// [ ] only the claimant can update their claim
+// [x] only the claimant can update their claim
 
 // TODO: group serial tests together
 
@@ -92,6 +92,16 @@ test.serial("Claim amounts must be >0", async t => {
         .set("Authorization", "Bearer " + data.bob.tokens[0].token)
         .send({ amount: 0 });
     t.is(res.statusCode, 400);
+});
+
+test.serial("Only the claimant may update their claim", async t => {
+    let res;
+
+    res = await http()
+        .patch("/claims/" + data.claim._id)
+        .set("Authorization", "Bearer " + data.eve.tokens[0].token)
+        .send({ summary: "I am attempting to maliciously update this claim" });
+    t.is(res.statusCode, 403);
 });
 
 test.serial("POST /claims/:id/approve - approves a claim", async t => {

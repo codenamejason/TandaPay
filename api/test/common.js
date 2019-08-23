@@ -49,11 +49,22 @@ async function seedMongo() {
         ],
     });
 
+    let eve = new User({
+        name: "Eve",
+        phone: "15551234567",
+        email: "bob@example.org",
+        role: "policyholder",
+        status: "approved",
+        settings: [],
+    });
+
     await alice.save();
     await bob.save();
+    await eve.save();
 
     await alice.generateAuthToken();
     await bob.generateAuthToken();
+    await eve.generateAuthToken();
 
     let group = new Group({
         secretary: {
@@ -74,6 +85,12 @@ async function seedMongo() {
                 profile: "thiswasneverdocumented",
                 standing: "good",
             },
+            {
+                id: eve._id,
+                name: eve.name,
+                profile: "thiswasneverdocumented",
+                standing: "good",
+            },
         ],
         groupName: "sally",
         premium: "20.00",
@@ -87,9 +104,11 @@ async function seedMongo() {
 
     alice.groupID = group._id;
     bob.groupID = group._id;
+    eve.groupID = group._id;
 
     await alice.save();
     await bob.save();
+    await eve.save();
 
     let claim = new Claim({
         groupID: group._id,
@@ -113,7 +132,7 @@ async function seedMongo() {
     });
     await otherGroupsClaim.save();
 
-    return { alice, bob, group, claim, otherGroupsClaim };
+    return { alice, bob, eve, group, claim, otherGroupsClaim };
 }
 
 function setupSinon() {
