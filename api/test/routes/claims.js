@@ -5,15 +5,6 @@ let { fake, http, data } = setupAll(test);
 
 let Claim = require("../../models/Claim");
 
-// TODO: invariant tests
-// [x] all routes are authenticated
-// [x] only policyholders can create claims
-// [x] only secretaries can approve claims
-// [x] only group members can see claims
-// [x] claims can only be updated in the pending state
-// [x] claim amount cannot be negative
-// [x] only the claimant can update their claim
-
 // TODO: group serial tests together
 
 test("GET /claims/:id - gets a claim by ID", async t => {
