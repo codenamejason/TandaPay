@@ -24,6 +24,7 @@ async function createUploadUrl(name) {
 
     let url = (await file.getSignedUrl({
         action: "write",
+        contentType: "application/pdf",
         expires: Date.now() + FIFTEEN_MINUTES,
     }))[0];
 

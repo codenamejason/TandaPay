@@ -20,7 +20,7 @@ test.serial("POST /groups/new - creates a new group", async t => {
     let res = await http()
         .post("/groups/new")
         .set("Authorization", "Bearer " + data.alice.tokens[0].token)
-        .send({ groupName: "test group", premium: "20.00" });
+        .send({ groupName: "test group", premium: "20.00", charterID: 'a' });
 
     t.is(res.statusCode, 200);
     t.regex(res.header["content-type"], /json/);

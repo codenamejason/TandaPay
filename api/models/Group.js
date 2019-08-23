@@ -39,6 +39,7 @@ const groupSchema = new Schema({
     groupStanding: String,
     subgroups: [subgroupSchema],
     accessCode: String,
+    charterID: String,
 });
 
 groupSchema.pre("save", next => {
