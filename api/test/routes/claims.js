@@ -6,7 +6,7 @@ let { fake, http, data } = setupAll(test);
 let Claim = require("../../models/Claim");
 
 // TODO: invariant tests
-// [ ] all routes are authenticated
+// [x] all routes are authenticated
 // [ ] only policyholders can create claims
 // [ ] only secretaries can approve claims
 // [ ] only group members can see claims
@@ -86,4 +86,23 @@ test("POST /claims/:id/approve - approves a claim", async t => {
 
     let claim = await Claim.findById(data.claim._id);
     t.is(claim.status, "approved");
+});
+
+test("Claim routes require authentication", async t => {
+    let res;
+
+    res = await http().get("/claims");
+    t.is(res.statusCode, 401);
+
+    res = await http().post("/claims");
+    t.is(res.statusCode, 401);
+
+    res = await http().get("/claims/" + data.claim._id);
+    t.is(res.statusCode, 401);
+
+    res = await http().patch("/claims/" + data.claim._id);
+    t.is(res.statusCode, 401);
+
+    res = await http().post("/claims/" + data.claim._id + "/approve");
+    t.is(res.statusCode, 401);
 });
