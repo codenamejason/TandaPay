@@ -111,6 +111,10 @@ async function updateClaimByID(req, res, next) {
         return res.status(403).send({ error: "you do not have permission" });
     }
 
+    if (claim.status != "pending") {
+        return res.status(403).send({ error: "this claim is not pending" });
+    }
+
     let { summary, documents, amount } = req.body;
 
     if (summary) {

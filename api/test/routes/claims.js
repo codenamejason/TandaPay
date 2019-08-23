@@ -10,9 +10,11 @@ let Claim = require("../../models/Claim");
 // [x] only policyholders can create claims
 // [x] only secretaries can approve claims
 // [x] only group members can see claims
-// [ ] claims can only be updated in the pending state
+// [x] claims can only be updated in the pending state
 // [ ] claim amount cannot be negative
 // [ ] only the claimant can update their claim
+
+// TODO: group serial tests together
 
 test("GET /claims/:id - gets a claim by ID", async t => {
     let res = await http()
@@ -57,7 +59,7 @@ test.serial("POST /claims - creates a new claim", async t => {
     t.truthy(await Claim.findById(res.body._id));
 });
 
-test("PATCH /claims/:id - updates claims", async t => {
+test.serial("PATCH /claims/:id - updates claims", async t => {
     let res = await http()
         .patch("/claims/" + data.claim._id)
         .set("Authorization", "Bearer " + data.bob.tokens[0].token)
@@ -76,7 +78,7 @@ test("PATCH /claims/:id - updates claims", async t => {
     t.deepEqual(claim.documents, ["foo", "bar", "baz", "alpha", "beta", "gamma"]);
 });
 
-test("POST /claims/:id/approve - approves a claim", async t => {
+test.serial("POST /claims/:id/approve - approves a claim", async t => {
     let res = await http()
         .post(`/claims/${data.claim._id}/approve`)
         .set("Authorization", "Bearer " + data.alice.tokens[0].token);
@@ -139,5 +141,17 @@ test("Users cannot see other groups' claims", async t => {
     res = await http()
         .get("/claims/" + data.otherGroupsClaim._id)
         .set("Authorization", "Bearer " + data.bob.tokens[0].token);
+    t.is(res.statusCode, 403);
+});
+
+test.serial("Claims can only be updated in the pending state", async t => {
+    let res = await http()
+        .patch("/claims/" + data.claim._id)
+        .set("Authorization", "Bearer " + data.bob.tokens[0].token)
+        .send({
+            summary: "I would like money please thank you",
+            amount: 750,
+            documents: ["foo", "bar", "baz", "alpha", "beta", "gamma"],
+        });
     t.is(res.statusCode, 403);
 });
