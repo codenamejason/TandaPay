@@ -13,6 +13,7 @@ let {
     getClaimByID,
     updateClaimByID,
     approveClaimByID,
+    denyClaimByID,
 } = require("../controllers/claims");
 
 /**
@@ -45,5 +46,11 @@ router.patch("/:claimID", authenticated, updateClaimByID);
  * @summary Approves a claim
  */
 router.post("/:claimID/approve", authenticated, secretaryOnly, approveClaimByID);
+
+/**
+ * @alias POST /:claimID/deny
+ * @summary Approves a claim
+ */
+router.post("/:claimID/deny", authenticated, secretaryOnly, denyClaimByID);
 
 module.exports = router;

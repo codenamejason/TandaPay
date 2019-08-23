@@ -93,6 +93,18 @@ test.serial("POST /claims/:id/approve - approves a claim", async t => {
     t.is(claim.status, "approved");
 });
 
+test.serial("POST /claims/:id/deny - denies a claim", async t => {
+    let res = await http()
+        .post(`/claims/${data.claim._id}/deny`)
+        .set("Authorization", "Bearer " + data.alice.tokens[0].token);
+
+    t.is(res.statusCode, 200);
+    t.regex(res.header["content-type"], /json/);
+
+    let claim = await Claim.findById(data.claim._id);
+    t.is(claim.status, "denied");
+});
+
 test.serial("Claims can only be updated in the pending state", async t => {
     let res = await http()
         .patch("/claims/" + data.claim._id)
@@ -134,6 +146,10 @@ test("Claim routes require authentication", async t => {
 
     res = await http().post("/claims/" + data.claim._id + "/approve");
     t.is(res.statusCode, 401);
+
+    res = await http().post("/claims/" + data.claim._id + "/deny");
+    t.is(res.statusCode, 401);
+
 });
 
 test("Secretaries cannot create claims", async t => {
@@ -152,6 +168,14 @@ test("Secretaries cannot create claims", async t => {
 test("Policyholders cannot approve claims", async t => {
     let res = await http()
         .post(`/claims/${data.claim._id}/approve`)
+        .set("Authorization", "Bearer " + data.bob.tokens[0].token);
+
+    t.is(res.statusCode, 403);
+});
+
+test("Policyholders cannot deny claims", async t => {
+    let res = await http()
+        .post(`/claims/${data.claim._id}/deny`)
         .set("Authorization", "Bearer " + data.bob.tokens[0].token);
 
     t.is(res.statusCode, 403);
