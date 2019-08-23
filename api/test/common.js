@@ -19,6 +19,7 @@ async function seedMongo() {
 
     let User = mongoose.model("users");
     let Group = mongoose.model("groups");
+    let Claim = mongoose.model("claims");
 
     let alice = new User({
         name: "Alice",
@@ -48,11 +49,22 @@ async function seedMongo() {
         ],
     });
 
+    let eve = new User({
+        name: "Eve",
+        phone: "15551234567",
+        email: "bob@example.org",
+        role: "policyholder",
+        status: "approved",
+        settings: [],
+    });
+
     await alice.save();
     await bob.save();
+    await eve.save();
 
     await alice.generateAuthToken();
     await bob.generateAuthToken();
+    await eve.generateAuthToken();
 
     let group = new Group({
         secretary: {
@@ -73,6 +85,12 @@ async function seedMongo() {
                 profile: "thiswasneverdocumented",
                 standing: "good",
             },
+            {
+                id: eve._id,
+                name: eve.name,
+                profile: "thiswasneverdocumented",
+                standing: "good",
+            },
         ],
         groupName: "sally",
         premium: "20.00",
@@ -86,11 +104,35 @@ async function seedMongo() {
 
     alice.groupID = group._id;
     bob.groupID = group._id;
+    eve.groupID = group._id;
 
     await alice.save();
     await bob.save();
+    await eve.save();
 
-    return { alice, bob, group };
+    let claim = new Claim({
+        groupID: group._id,
+        claimantID: bob._id,
+        claimantName: bob.name,
+        summary: "I need money please",
+        documents: ["123"],
+        status: "pending",
+        amount: 500,
+    });
+    await claim.save();
+
+    let otherGroupsClaim = new Claim({
+        groupID: mongoose.Types.ObjectId(),
+        claimantID: mongoose.Types.ObjectId(),
+        claimantName: 'Foo Bar',
+        summary: "I don\'t know",
+        documents: [],
+        status: "pending",
+        amount: 500
+    });
+    await otherGroupsClaim.save();
+
+    return { alice, bob, eve, group, claim, otherGroupsClaim };
 }
 
 function setupSinon() {

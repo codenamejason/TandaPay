@@ -1,5 +1,3 @@
-// NOTE: This is just a placeholder for now and will likely be rewritten soon
-
 const mongoose = require("mongoose");
 const validator = require("validator");
 
@@ -8,9 +6,10 @@ const { ObjectId } = Schema.Types;
 
 const claimSchema = new Schema({
     groupID: ObjectId,
-    creatorID: ObjectId,
-    creatorName: String,
+    claimantID: ObjectId,
+    claimantName: String,
     summary: String,
+    amount: Number,
     documents: [String],
     status: {
         type: String,
@@ -27,7 +26,6 @@ const claimSchema = new Schema({
             },
         ],
     },
-    claimAmount: Number,
 });
 
 module.exports = mongoose.model("claims", claimSchema);
