@@ -49,6 +49,14 @@ let saveUpdates = async (req, res, next) => {
       return res.status(400).send("Invalid access code");
     }
 
+    group.members.push({
+        id: user._id,
+        name: user.name,
+        profile: '',
+        standing: user.standing
+    });
+    await group.save();
+
     user.groupID = group._id;
   }
 
