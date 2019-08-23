@@ -5,7 +5,7 @@ let router = express.Router();
 
 let { authenticated } = require("../middleware/authenticated");
 let sendNotifications = require("../middleware/notification");
-let { secretaryOnly } = require("../middleware/roleCheck");
+let { secretaryOnly, policyholderOnly } = require("../middleware/roleCheck");
 
 let {
     getAllClaims,
@@ -26,7 +26,7 @@ router.get("/", authenticated, getAllClaims);
  * @alias POST /claims/
  * @summary Creates a new claim
  */
-router.post("/", authenticated, createNewClaim);
+router.post("/", authenticated, policyholderOnly, createNewClaim);
 
 /**
  * @alias GET /claims/:claimID

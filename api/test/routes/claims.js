@@ -7,7 +7,7 @@ let Claim = require("../../models/Claim");
 
 // TODO: invariant tests
 // [x] all routes are authenticated
-// [ ] only policyholders can create claims
+// [x] only policyholders can create claims
 // [ ] only secretaries can approve claims
 // [ ] only group members can see claims
 // [ ] claims can only be updated in the pending state
@@ -105,4 +105,17 @@ test("Claim routes require authentication", async t => {
 
     res = await http().post("/claims/" + data.claim._id + "/approve");
     t.is(res.statusCode, 401);
+});
+
+test("Secretaries cannot create claims", async t => {
+    let res = await http()
+        .post("/claims")
+        .set("Authorization", "Bearer " + data.alice.tokens[0].token)
+        .send({
+            summary: 'Money please',
+            documents: ['foo', 'bar', 'baz'],
+            amount: 500,
+        });
+
+    t.is(res.statusCode, 403);
 });
