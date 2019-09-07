@@ -16,8 +16,9 @@ import Registration from "./Registration/Registration";
 import Dashboard from "./Dashboard/Dashboard";
 import Setup from "./Setup/Setup";
 
+import Loader from "./components/Loader";
+
 import theme from "./theme";
-import { Typography } from "@material-ui/core";
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -38,11 +39,7 @@ class App extends React.Component {
   render() {
     const { loading } = this.state;
     if (loading) {
-      return (
-        <div>
-          <Typography variant="h1">Loading ...</Typography>
-        </div>
-      );
+      return <Loader />;
     }
     return (
       <ThemeProvider theme={theme}>
