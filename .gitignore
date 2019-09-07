@@ -5,5 +5,4 @@ keyfile.json
 env.js
 api
 build
-contracts
 *.tar.gz

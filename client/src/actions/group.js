@@ -36,13 +36,13 @@ export const fetchGroup = () => async (dispatch, store) => {
 /**
  * @summary Redux action creator to create a group
  */
-export const createGroup = ({ name, premium }) => async dispatch => {
-  try {
-    const response = await axios.post(
-      "/groups/new",
-      { groupName: name, premium },
-      config()
-    );
+export const createGroup = ({ name, premium, fileID }) => async dispatch => {
+    try {
+        const response = await axios.post(
+            "/groups/new",
+            { groupName: name, premium, charterID: fileID },
+            config()
+        );
 
     dispatch({ type: FETCH_GROUP, payload: response.data });
   } catch (err) {
