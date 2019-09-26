@@ -17,11 +17,31 @@ import { EmailField, PasswordField } from "../components/Fields";
 import styles from "../styles/form.style";
 
 class Login extends React.Component {
+  state = {
+    isLoading: false,
+    msg: null,
+    isError: false,
+  };
   onSubmit = values => {
+    this.setState({isLoading: true});
     const { email, password } = values;
     this.props.logIn({ email, password });
   };
-
+  componentDidUpdate(prevProps){
+  
+    const {error} = this.props;
+    if(error !==  prevProps.error){
+      // Check for registration error
+     
+      if(error.id == "AUTH_ERROR"){
+       
+        this.setState({msg: error.msg, isLoading: false, isError: true});
+      }else{
+        this.setState({msg: null, isLoading: false});
+      }
+     
+    }
+  }
   render() {
     const { classes } = this.props;
     return (
@@ -32,6 +52,7 @@ class Login extends React.Component {
         <Typography component="h1" variant="h5">
           Log In
         </Typography>
+        {this.state.isError ? (<p className={classes.error}>{this.state.msg}</p>) : null}
         <Form onSubmit={this.onSubmit}>
           {({ handleSubmit }) => (
             <form className={classes.formFix}>
@@ -42,6 +63,7 @@ class Login extends React.Component {
                 color="secondary"
                 className={classes.submit}
                 type="submit"
+                disabled={this.state.isLoading}
                 onClick={handleSubmit}
               >
                 LOG IN
@@ -71,8 +93,12 @@ class Login extends React.Component {
     );
   };
 }
-
+const mapStateToProps = state => ({
+  isAuthenticated: state.isAuthenticated,
+  error: state.error,
+  
+});
 export default connect(
-  null,
+  mapStateToProps,
   actions
 )(withStyles(styles, { withTheme: true })(Login));

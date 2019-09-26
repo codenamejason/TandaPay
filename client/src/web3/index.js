@@ -26,13 +26,25 @@ const connectToMetamask = async () => {
   if (window.ethereum) {
     try {
       let accounts = [];
-      if (window.ethereum.selectedAddress === undefined) {
+     
+    
+      if (window.ethereum.selectedAddress === null) {
+        
+       try {
         accounts = await window.ethereum.enable();
+       } catch (error) {
+        console.log(error);
+        
+       }
       }
       //try to set this before
       window.web3 = new Web3(window.ethereum);
+      console.log(accounts);
       return [accounts, null];
+     
     } catch (error) {
+      console.log(error);
+      
       //User rejected account access
       return [null, "There's been an error"];
     }

@@ -3,3 +3,18 @@ export const FETCH_CLAIMS = "fetch_claims";
 export const FETCH_GROUP = "fetch_group";
 export const INVITE_MEMBER = "invite_member";
 export const ENABLE_WEB3 = "enable_web3";
+
+//Adding types for error handling
+export const AUTH_ERROR  = "auth_error";
+export const USER_EXIST_ERROR  = "user_exist_error";
+export const INVALID_EMAIL  = "invalid_email";
+export const PASSWORD_LENGTH_ERROR  = "password_length_error";
+export const LOGIN_FAILED = "login_failed";
+export const LOGIN_SUCCESS = "login_success";
+export const REGISTRATION_FAILED = "registration_failed";
+export const REGISTRATION_SUCCESS = "registration_success";
+export const GET_ERRORS = "get_errors";
+export const CLEAR_ERRORS = "clear_errors";
+export const USER_LOADING = "user_loading";
+export const USER_LOADED = "user_loaded";
+export const LOGOUT_SUCCESS = "logout_success";

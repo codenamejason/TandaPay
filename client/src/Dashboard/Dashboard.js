@@ -46,6 +46,7 @@ class Dashboard extends React.PureComponent {
    * Since we don't need a callback to handle any side-effects, we send null;
    */
   componentWillUnmount() {
+    
     window.ethereum.removeListeners("accountsChanged", null);
   }
   /**

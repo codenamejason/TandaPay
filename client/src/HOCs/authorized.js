@@ -10,7 +10,8 @@ import { connect } from "react-redux";
 let withAuthorization = WrappedComponent => {
     class AuthorizedComponent extends Component {
         render() {
-            const { user } = this.props;
+            const { user } = this.props.user;
+            console.log(user);
             let userHasPemissions = user && user.accountCompleted;
             if (userHasPemissions) {
                 return (
@@ -44,9 +45,13 @@ let withAuthorization = WrappedComponent => {
 let withoutAuthorization = WrappedComponent => {
     class UnauthorizedComponent extends Component {
         render() {
-            const { user } = this.props;
-
+           
+            
+            const { user } = this.props.user;
+            console.log(user);
+            
             let userHasPemissions = user;
+          
             if (!userHasPemissions) {
                 // if the user doesn't exist
                 return <WrappedComponent {...this.props} />;
@@ -56,6 +61,7 @@ let withoutAuthorization = WrappedComponent => {
                 if (accountCompleted) {
                     return <Redirect to="/admin" />;
                 } else {
+                    
                     return <Redirect to="/setup" />;
                 }
             }
@@ -76,7 +82,8 @@ let withoutAuthorization = WrappedComponent => {
 let withIncompleteAuthorization = WrappedComponent => {
     class LimitedComponent extends Component {
         render() {
-            const { user } = this.props;
+            const { user } = this.props.user;
+            console.log(user);
             if (!user) {
                 return <Redirect to="/" />;
             } else if (user && user.accountCompleted) {

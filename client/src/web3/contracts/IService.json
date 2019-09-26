@@ -1,0 +1,2102 @@
+{
+  "contractName": "IService",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_approved",
+          "type": "address"
+        }
+      ],
+      "name": "AdminApproved",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_revoked",
+          "type": "address"
+        }
+      ],
+      "name": "AdminRevoked",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_group",
+          "type": "address"
+        }
+      ],
+      "name": "GroupCreated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_group",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_period",
+          "type": "uint256"
+        }
+      ],
+      "name": "Remitted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_group",
+          "type": "address"
+        }
+      ],
+      "name": "Loaned",
+      "type": "event"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_to",
+          "type": "address"
+        }
+      ],
+      "name": "addAdmin",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_from",
+          "type": "address"
+        }
+      ],
+      "name": "removeAdmin",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "name": "_volume",
+          "type": "uint256"
+        },
+        {
+          "name": "_payout",
+          "type": "uint256"
+        }
+      ],
+      "name": "createGroup",
+      "outputs": [
+        {
+          "name": "_group",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_group",
+          "type": "address"
+        }
+      ],
+      "name": "remitGroup",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_group",
+          "type": "address"
+        },
+        {
+          "name": "_months",
+          "type": "uint256"
+        }
+      ],
+      "name": "loan",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.5.8+commit.23d335f2\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":false,\"inputs\":[{\"name\":\"_from\",\"type\":\"address\"}],\"name\":\"removeAdmin\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_group\",\"type\":\"address\"},{\"name\":\"_months\",\"type\":\"uint256\"}],\"name\":\"loan\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_to\",\"type\":\"address\"},{\"name\":\"_volume\",\"type\":\"uint256\"},{\"name\":\"_payout\",\"type\":\"uint256\"}],\"name\":\"createGroup\",\"outputs\":[{\"name\":\"_group\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_to\",\"type\":\"address\"}],\"name\":\"addAdmin\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_group\",\"type\":\"address\"}],\"name\":\"remitGroup\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"_approved\",\"type\":\"address\"}],\"name\":\"AdminApproved\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"_revoked\",\"type\":\"address\"}],\"name\":\"AdminRevoked\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"_group\",\"type\":\"address\"}],\"name\":\"GroupCreated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"_group\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"_period\",\"type\":\"uint256\"}],\"name\":\"Remitted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"_group\",\"type\":\"address\"}],\"name\":\"Loaned\",\"type\":\"event\"}],\"devdoc\":{\"methods\":{\"addAdmin(address)\":{\"details\":\"modifier onlyAdmin\\r Add an admin\\r\",\"params\":{\"_to\":\"the address being whitelisted\\r*\"}},\"createGroup(address,uint256,uint256)\":{\"details\":\"modifier onlyAdmin\\r Approve a secretary and create a new group\\r\",\"params\":{\"_payout\":\"uint number of Dai paid per claim\\r\",\"_to\":\"the address being given a secretary role\\r\",\"_volume\":\"uint number of expected claims\\r\"},\"return\":\"_group the address of the Group contact\\r*\"},\"loan(address,uint256)\":{\"details\":\"modifier onlyAdmin\\rrequire sufficienct balance\\r Extend a loan, in Dai, to a Tanda Group\\r\",\"params\":{\"_group\":\"the group being given the loan\\r\",\"_months\":\"the length, in months (periods), the Group has to repay\\r\"}},\"remitGroup(address)\":{\"details\":\"modifier onlyAdmin\\rmodifier unlocked\\r Remit a single group assuming it is not timelocked\\r\",\"params\":{\"_group\":\"the address of the group being remitted\\r*\"}},\"removeAdmin(address)\":{\"details\":\"modifier onlyAdmin\\r Remove an admin\\r\",\"params\":{\"_from\":\"the address being blacklisted\\r*\"}}}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/C/Users/Coda/Desktop/TandaPay/contracts/IService.sol\":\"IService\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/Coda/Desktop/TandaPay/contracts/IService.sol\":{\"keccak256\":\"0x8b70b37f06d597f0cf67e17c245b859618372d6478e1ffa4a637cf88de826621\",\"urls\":[\"bzzr://81f9e56bd4e72bff3d458b53dd84d5c8a6acb49263743dd39cdb524bdb857911\"]},\"openzeppelin-solidity/contracts/math/SafeMath.sol\":{\"keccak256\":\"0x4ccf2d7b51873db1ccfd54ca2adae5eac3b184f9699911ed4490438419f1c690\",\"urls\":[\"bzzr://1604f5b6d6e916c154efd8c6720cda069e5ba32dfa0a9dedf2b42e5b02d07f89\"]},\"openzeppelin-solidity/contracts/token/ERC20/IERC20.sol\":{\"keccak256\":\"0x90e8c2521653bbb1768b05889c5760031e688d9cd361f167489b89215e201b95\",\"urls\":[\"bzzr://aa8b45b57edafc3d67bc5d916327ea16807fae33f753ca163ae0c4061b789766\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "pragma solidity >= 0.4.0 < 0.7.0;\r\n\r\nimport 'openzeppelin-solidity/contracts/math/SafeMath.sol';\r\nimport 'openzeppelin-solidity/contracts/token/ERC20/IERC20.sol';\r\n\r\ncontract IService {\r\n\r\n    using SafeMath for uint;\r\n\r\n    event AdminApproved(address _approved);\r\n    event AdminRevoked(address _revoked);\r\n    event GroupCreated(address _group);\r\n    event Remitted(address _group, uint _period);\r\n    event Loaned(address _group);\r\n\r\n    enum subperiod {LOBBY, PRE, ACTIVE, POST, ENDED}\r\n\r\n    mapping(address => bool) administrators;\r\n    mapping(address => uint) secretaries;\r\n    mapping(uint => address) groups;\r\n\r\n    IERC20 Dai;\r\n\r\n    uint groupCount;\r\n\r\n    /**\r\n     * @dev modifier onlyAdmin\r\n     * Add an admin\r\n     * @param _to the address being whitelisted\r\n     **/\r\n    function addAdmin(address _to) public;\r\n\r\n    /**\r\n     * @dev modifier onlyAdmin\r\n     * Remove an admin\r\n     * @param _from the address being blacklisted\r\n     **/\r\n    function removeAdmin(address _from) public;\r\n\r\n    /**\r\n     * @dev modifier onlyAdmin\r\n     * Approve a secretary and create a new group\r\n     * @param _to the address being given a secretary role\r\n     * @param _volume uint number of expected claims\r\n     * @param _payout uint number of Dai paid per claim\r\n     * @return _group the address of the Group contact\r\n     **/\r\n    function createGroup(address _to, uint _volume, uint _payout) public returns (address _group);\r\n\r\n    /**\r\n     * @dev modifier onlyAdmin\r\n     * @dev modifier unlocked\r\n     * Remit a single group assuming it is not timelocked\r\n     * @param _group the address of the group being remitted\r\n     **/\r\n    function remitGroup(address _group) public;\r\n\r\n    /**\r\n     * @dev modifier onlyAdmin\r\n     * @dev require sufficienct balance\r\n     * Extend a loan, in Dai, to a Tanda Group\r\n     * @param _group the group being given the loan\r\n     * @param _months the length, in months (periods), the Group has to repay\r\n     */\r\n    function loan(address _group, uint _months) public;\r\n\r\n}",
+  "sourcePath": "C:\\Users\\Coda\\Desktop\\TandaPay\\contracts\\IService.sol",
+  "ast": {
+    "absolutePath": "/C/Users/Coda/Desktop/TandaPay/contracts/IService.sol",
+    "exportedSymbols": {
+      "IService": [
+        2056
+      ]
+    },
+    "id": 2057,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1973,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.4",
+          ".0",
+          "<",
+          "0.7",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:33:3"
+      },
+      {
+        "absolutePath": "openzeppelin-solidity/contracts/math/SafeMath.sol",
+        "file": "openzeppelin-solidity/contracts/math/SafeMath.sol",
+        "id": 1974,
+        "nodeType": "ImportDirective",
+        "scope": 2057,
+        "sourceUnit": 2976,
+        "src": "37:59:3",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "openzeppelin-solidity/contracts/token/ERC20/IERC20.sol",
+        "file": "openzeppelin-solidity/contracts/token/ERC20/IERC20.sol",
+        "id": 1975,
+        "nodeType": "ImportDirective",
+        "scope": 2057,
+        "sourceUnit": 3537,
+        "src": "98:64:3",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 2056,
+        "linearizedBaseContracts": [
+          2056
+        ],
+        "name": "IService",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "id": 1978,
+            "libraryName": {
+              "contractScope": null,
+              "id": 1976,
+              "name": "SafeMath",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 2975,
+              "src": "199:8:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_SafeMath_$2975",
+                "typeString": "library SafeMath"
+              }
+            },
+            "nodeType": "UsingForDirective",
+            "src": "193:24:3",
+            "typeName": {
+              "id": 1977,
+              "name": "uint",
+              "nodeType": "ElementaryTypeName",
+              "src": "212:4:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            }
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1982,
+            "name": "AdminApproved",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1981,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1980,
+                  "indexed": false,
+                  "name": "_approved",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1982,
+                  "src": "245:17:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1979,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "245:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "244:19:3"
+            },
+            "src": "225:39:3"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1986,
+            "name": "AdminRevoked",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1985,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1984,
+                  "indexed": false,
+                  "name": "_revoked",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1986,
+                  "src": "289:16:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1983,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "289:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "288:18:3"
+            },
+            "src": "270:37:3"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1990,
+            "name": "GroupCreated",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1989,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1988,
+                  "indexed": false,
+                  "name": "_group",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1990,
+                  "src": "332:14:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1987,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "332:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "331:16:3"
+            },
+            "src": "313:35:3"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1996,
+            "name": "Remitted",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1995,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1992,
+                  "indexed": false,
+                  "name": "_group",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1996,
+                  "src": "369:14:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1991,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "369:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1994,
+                  "indexed": false,
+                  "name": "_period",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1996,
+                  "src": "385:12:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1993,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "385:4:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "368:30:3"
+            },
+            "src": "354:45:3"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 2000,
+            "name": "Loaned",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1999,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1998,
+                  "indexed": false,
+                  "name": "_group",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2000,
+                  "src": "418:14:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1997,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "418:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "417:16:3"
+            },
+            "src": "405:29:3"
+          },
+          {
+            "canonicalName": "IService.subperiod",
+            "id": 2006,
+            "members": [
+              {
+                "id": 2001,
+                "name": "LOBBY",
+                "nodeType": "EnumValue",
+                "src": "458:5:3"
+              },
+              {
+                "id": 2002,
+                "name": "PRE",
+                "nodeType": "EnumValue",
+                "src": "465:3:3"
+              },
+              {
+                "id": 2003,
+                "name": "ACTIVE",
+                "nodeType": "EnumValue",
+                "src": "470:6:3"
+              },
+              {
+                "id": 2004,
+                "name": "POST",
+                "nodeType": "EnumValue",
+                "src": "478:4:3"
+              },
+              {
+                "id": 2005,
+                "name": "ENDED",
+                "nodeType": "EnumValue",
+                "src": "484:5:3"
+              }
+            ],
+            "name": "subperiod",
+            "nodeType": "EnumDefinition",
+            "src": "442:48:3"
+          },
+          {
+            "constant": false,
+            "id": 2010,
+            "name": "administrators",
+            "nodeType": "VariableDeclaration",
+            "scope": 2056,
+            "src": "498:39:3",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_address_$_t_bool_$",
+              "typeString": "mapping(address => bool)"
+            },
+            "typeName": {
+              "id": 2009,
+              "keyType": {
+                "id": 2007,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "506:7:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "498:24:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_address_$_t_bool_$",
+                "typeString": "mapping(address => bool)"
+              },
+              "valueType": {
+                "id": 2008,
+                "name": "bool",
+                "nodeType": "ElementaryTypeName",
+                "src": "517:4:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bool",
+                  "typeString": "bool"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 2014,
+            "name": "secretaries",
+            "nodeType": "VariableDeclaration",
+            "scope": 2056,
+            "src": "544:36:3",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+              "typeString": "mapping(address => uint256)"
+            },
+            "typeName": {
+              "id": 2013,
+              "keyType": {
+                "id": 2011,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "552:7:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "544:24:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                "typeString": "mapping(address => uint256)"
+              },
+              "valueType": {
+                "id": 2012,
+                "name": "uint",
+                "nodeType": "ElementaryTypeName",
+                "src": "563:4:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 2018,
+            "name": "groups",
+            "nodeType": "VariableDeclaration",
+            "scope": 2056,
+            "src": "587:31:3",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_uint256_$_t_address_$",
+              "typeString": "mapping(uint256 => address)"
+            },
+            "typeName": {
+              "id": 2017,
+              "keyType": {
+                "id": 2015,
+                "name": "uint",
+                "nodeType": "ElementaryTypeName",
+                "src": "595:4:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "587:24:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_uint256_$_t_address_$",
+                "typeString": "mapping(uint256 => address)"
+              },
+              "valueType": {
+                "id": 2016,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "603:7:3",
+                "stateMutability": "nonpayable",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 2020,
+            "name": "Dai",
+            "nodeType": "VariableDeclaration",
+            "scope": 2056,
+            "src": "627:10:3",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_contract$_IERC20_$3536",
+              "typeString": "contract IERC20"
+            },
+            "typeName": {
+              "contractScope": null,
+              "id": 2019,
+              "name": "IERC20",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 3536,
+              "src": "627:6:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_IERC20_$3536",
+                "typeString": "contract IERC20"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 2022,
+            "name": "groupCount",
+            "nodeType": "VariableDeclaration",
+            "scope": 2056,
+            "src": "646:15:3",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 2021,
+              "name": "uint",
+              "nodeType": "ElementaryTypeName",
+              "src": "646:4:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "body": null,
+            "documentation": "@dev modifier onlyAdmin\r\nAdd an admin\r\n@param _to the address being whitelisted\r*",
+            "id": 2027,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "addAdmin",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2025,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2024,
+                  "name": "_to",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2027,
+                  "src": "809:11:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2023,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "809:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "808:13:3"
+            },
+            "returnParameters": {
+              "id": 2026,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "828:0:3"
+            },
+            "scope": 2056,
+            "src": "791:38:3",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": null,
+            "documentation": "@dev modifier onlyAdmin\r\nRemove an admin\r\n@param _from the address being blacklisted\r*",
+            "id": 2032,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "removeAdmin",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2030,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2029,
+                  "name": "_from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2032,
+                  "src": "984:13:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2028,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "984:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "983:15:3"
+            },
+            "returnParameters": {
+              "id": 2031,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1005:0:3"
+            },
+            "scope": 2056,
+            "src": "963:43:3",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": null,
+            "documentation": "@dev modifier onlyAdmin\r\nApprove a secretary and create a new group\r\n@param _to the address being given a secretary role\r\n@param _volume uint number of expected claims\r\n@param _payout uint number of Dai paid per claim\r\n@return _group the address of the Group contact\r*",
+            "id": 2043,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "createGroup",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2039,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2034,
+                  "name": "_to",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2043,
+                  "src": "1364:11:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2033,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1364:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2036,
+                  "name": "_volume",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2043,
+                  "src": "1377:12:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2035,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1377:4:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2038,
+                  "name": "_payout",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2043,
+                  "src": "1391:12:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2037,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1391:4:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1363:41:3"
+            },
+            "returnParameters": {
+              "id": 2042,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2041,
+                  "name": "_group",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2043,
+                  "src": "1421:14:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2040,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1421:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1420:16:3"
+            },
+            "scope": 2056,
+            "src": "1343:94:3",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": null,
+            "documentation": "@dev modifier onlyAdmin\r\n@dev modifier unlocked\r\nRemit a single group assuming it is not timelocked\r\n@param _group the address of the group being remitted\r*",
+            "id": 2048,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "remitGroup",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2046,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2045,
+                  "name": "_group",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2048,
+                  "src": "1668:14:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2044,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1668:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1667:16:3"
+            },
+            "returnParameters": {
+              "id": 2047,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1690:0:3"
+            },
+            "scope": 2056,
+            "src": "1648:43:3",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": null,
+            "documentation": "@dev modifier onlyAdmin\r\n@dev require sufficienct balance\r\nExtend a loan, in Dai, to a Tanda Group\r\n@param _group the group being given the loan\r\n@param _months the length, in months (periods), the Group has to repay\r",
+            "id": 2055,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "loan",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2053,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2050,
+                  "name": "_group",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2055,
+                  "src": "1984:14:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2049,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1984:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2052,
+                  "name": "_months",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2055,
+                  "src": "2000:12:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2051,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2000:4:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1983:30:3"
+            },
+            "returnParameters": {
+              "id": 2054,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2020:0:3"
+            },
+            "scope": 2056,
+            "src": "1970:51:3",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 2057,
+        "src": "166:1860:3"
+      }
+    ],
+    "src": "0:2026:3"
+  },
+  "legacyAST": {
+    "absolutePath": "/C/Users/Coda/Desktop/TandaPay/contracts/IService.sol",
+    "exportedSymbols": {
+      "IService": [
+        2056
+      ]
+    },
+    "id": 2057,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1973,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.4",
+          ".0",
+          "<",
+          "0.7",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:33:3"
+      },
+      {
+        "absolutePath": "openzeppelin-solidity/contracts/math/SafeMath.sol",
+        "file": "openzeppelin-solidity/contracts/math/SafeMath.sol",
+        "id": 1974,
+        "nodeType": "ImportDirective",
+        "scope": 2057,
+        "sourceUnit": 2976,
+        "src": "37:59:3",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "openzeppelin-solidity/contracts/token/ERC20/IERC20.sol",
+        "file": "openzeppelin-solidity/contracts/token/ERC20/IERC20.sol",
+        "id": 1975,
+        "nodeType": "ImportDirective",
+        "scope": 2057,
+        "sourceUnit": 3537,
+        "src": "98:64:3",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 2056,
+        "linearizedBaseContracts": [
+          2056
+        ],
+        "name": "IService",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "id": 1978,
+            "libraryName": {
+              "contractScope": null,
+              "id": 1976,
+              "name": "SafeMath",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 2975,
+              "src": "199:8:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_SafeMath_$2975",
+                "typeString": "library SafeMath"
+              }
+            },
+            "nodeType": "UsingForDirective",
+            "src": "193:24:3",
+            "typeName": {
+              "id": 1977,
+              "name": "uint",
+              "nodeType": "ElementaryTypeName",
+              "src": "212:4:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            }
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1982,
+            "name": "AdminApproved",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1981,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1980,
+                  "indexed": false,
+                  "name": "_approved",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1982,
+                  "src": "245:17:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1979,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "245:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "244:19:3"
+            },
+            "src": "225:39:3"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1986,
+            "name": "AdminRevoked",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1985,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1984,
+                  "indexed": false,
+                  "name": "_revoked",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1986,
+                  "src": "289:16:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1983,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "289:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "288:18:3"
+            },
+            "src": "270:37:3"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1990,
+            "name": "GroupCreated",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1989,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1988,
+                  "indexed": false,
+                  "name": "_group",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1990,
+                  "src": "332:14:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1987,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "332:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "331:16:3"
+            },
+            "src": "313:35:3"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 1996,
+            "name": "Remitted",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1995,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1992,
+                  "indexed": false,
+                  "name": "_group",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1996,
+                  "src": "369:14:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1991,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "369:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1994,
+                  "indexed": false,
+                  "name": "_period",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1996,
+                  "src": "385:12:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1993,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "385:4:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "368:30:3"
+            },
+            "src": "354:45:3"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 2000,
+            "name": "Loaned",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 1999,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1998,
+                  "indexed": false,
+                  "name": "_group",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2000,
+                  "src": "418:14:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1997,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "418:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "417:16:3"
+            },
+            "src": "405:29:3"
+          },
+          {
+            "canonicalName": "IService.subperiod",
+            "id": 2006,
+            "members": [
+              {
+                "id": 2001,
+                "name": "LOBBY",
+                "nodeType": "EnumValue",
+                "src": "458:5:3"
+              },
+              {
+                "id": 2002,
+                "name": "PRE",
+                "nodeType": "EnumValue",
+                "src": "465:3:3"
+              },
+              {
+                "id": 2003,
+                "name": "ACTIVE",
+                "nodeType": "EnumValue",
+                "src": "470:6:3"
+              },
+              {
+                "id": 2004,
+                "name": "POST",
+                "nodeType": "EnumValue",
+                "src": "478:4:3"
+              },
+              {
+                "id": 2005,
+                "name": "ENDED",
+                "nodeType": "EnumValue",
+                "src": "484:5:3"
+              }
+            ],
+            "name": "subperiod",
+            "nodeType": "EnumDefinition",
+            "src": "442:48:3"
+          },
+          {
+            "constant": false,
+            "id": 2010,
+            "name": "administrators",
+            "nodeType": "VariableDeclaration",
+            "scope": 2056,
+            "src": "498:39:3",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_address_$_t_bool_$",
+              "typeString": "mapping(address => bool)"
+            },
+            "typeName": {
+              "id": 2009,
+              "keyType": {
+                "id": 2007,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "506:7:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "498:24:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_address_$_t_bool_$",
+                "typeString": "mapping(address => bool)"
+              },
+              "valueType": {
+                "id": 2008,
+                "name": "bool",
+                "nodeType": "ElementaryTypeName",
+                "src": "517:4:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bool",
+                  "typeString": "bool"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 2014,
+            "name": "secretaries",
+            "nodeType": "VariableDeclaration",
+            "scope": 2056,
+            "src": "544:36:3",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+              "typeString": "mapping(address => uint256)"
+            },
+            "typeName": {
+              "id": 2013,
+              "keyType": {
+                "id": 2011,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "552:7:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "544:24:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                "typeString": "mapping(address => uint256)"
+              },
+              "valueType": {
+                "id": 2012,
+                "name": "uint",
+                "nodeType": "ElementaryTypeName",
+                "src": "563:4:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 2018,
+            "name": "groups",
+            "nodeType": "VariableDeclaration",
+            "scope": 2056,
+            "src": "587:31:3",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_uint256_$_t_address_$",
+              "typeString": "mapping(uint256 => address)"
+            },
+            "typeName": {
+              "id": 2017,
+              "keyType": {
+                "id": 2015,
+                "name": "uint",
+                "nodeType": "ElementaryTypeName",
+                "src": "595:4:3",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "587:24:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_uint256_$_t_address_$",
+                "typeString": "mapping(uint256 => address)"
+              },
+              "valueType": {
+                "id": 2016,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "603:7:3",
+                "stateMutability": "nonpayable",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 2020,
+            "name": "Dai",
+            "nodeType": "VariableDeclaration",
+            "scope": 2056,
+            "src": "627:10:3",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_contract$_IERC20_$3536",
+              "typeString": "contract IERC20"
+            },
+            "typeName": {
+              "contractScope": null,
+              "id": 2019,
+              "name": "IERC20",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 3536,
+              "src": "627:6:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_IERC20_$3536",
+                "typeString": "contract IERC20"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 2022,
+            "name": "groupCount",
+            "nodeType": "VariableDeclaration",
+            "scope": 2056,
+            "src": "646:15:3",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 2021,
+              "name": "uint",
+              "nodeType": "ElementaryTypeName",
+              "src": "646:4:3",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "body": null,
+            "documentation": "@dev modifier onlyAdmin\r\nAdd an admin\r\n@param _to the address being whitelisted\r*",
+            "id": 2027,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "addAdmin",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2025,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2024,
+                  "name": "_to",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2027,
+                  "src": "809:11:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2023,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "809:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "808:13:3"
+            },
+            "returnParameters": {
+              "id": 2026,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "828:0:3"
+            },
+            "scope": 2056,
+            "src": "791:38:3",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": null,
+            "documentation": "@dev modifier onlyAdmin\r\nRemove an admin\r\n@param _from the address being blacklisted\r*",
+            "id": 2032,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "removeAdmin",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2030,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2029,
+                  "name": "_from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2032,
+                  "src": "984:13:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2028,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "984:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "983:15:3"
+            },
+            "returnParameters": {
+              "id": 2031,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1005:0:3"
+            },
+            "scope": 2056,
+            "src": "963:43:3",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": null,
+            "documentation": "@dev modifier onlyAdmin\r\nApprove a secretary and create a new group\r\n@param _to the address being given a secretary role\r\n@param _volume uint number of expected claims\r\n@param _payout uint number of Dai paid per claim\r\n@return _group the address of the Group contact\r*",
+            "id": 2043,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "createGroup",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2039,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2034,
+                  "name": "_to",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2043,
+                  "src": "1364:11:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2033,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1364:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2036,
+                  "name": "_volume",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2043,
+                  "src": "1377:12:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2035,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1377:4:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2038,
+                  "name": "_payout",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2043,
+                  "src": "1391:12:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2037,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1391:4:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1363:41:3"
+            },
+            "returnParameters": {
+              "id": 2042,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2041,
+                  "name": "_group",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2043,
+                  "src": "1421:14:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2040,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1421:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1420:16:3"
+            },
+            "scope": 2056,
+            "src": "1343:94:3",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": null,
+            "documentation": "@dev modifier onlyAdmin\r\n@dev modifier unlocked\r\nRemit a single group assuming it is not timelocked\r\n@param _group the address of the group being remitted\r*",
+            "id": 2048,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "remitGroup",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2046,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2045,
+                  "name": "_group",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2048,
+                  "src": "1668:14:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2044,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1668:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1667:16:3"
+            },
+            "returnParameters": {
+              "id": 2047,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1690:0:3"
+            },
+            "scope": 2056,
+            "src": "1648:43:3",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": null,
+            "documentation": "@dev modifier onlyAdmin\r\n@dev require sufficienct balance\r\nExtend a loan, in Dai, to a Tanda Group\r\n@param _group the group being given the loan\r\n@param _months the length, in months (periods), the Group has to repay\r",
+            "id": 2055,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "loan",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2053,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2050,
+                  "name": "_group",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2055,
+                  "src": "1984:14:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2049,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1984:7:3",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2052,
+                  "name": "_months",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2055,
+                  "src": "2000:12:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2051,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2000:4:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1983:30:3"
+            },
+            "returnParameters": {
+              "id": 2054,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2020:0:3"
+            },
+            "scope": 2056,
+            "src": "1970:51:3",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 2057,
+        "src": "166:1860:3"
+      }
+    ],
+    "src": "0:2026:3"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.8+commit.23d335f2.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.0.11",
+  "updatedAt": "2019-09-23T11:57:58.692Z",
+  "devdoc": {
+    "methods": {
+      "addAdmin(address)": {
+        "details": "modifier onlyAdmin\r Add an admin\r",
+        "params": {
+          "_to": "the address being whitelisted\r*"
+        }
+      },
+      "createGroup(address,uint256,uint256)": {
+        "details": "modifier onlyAdmin\r Approve a secretary and create a new group\r",
+        "params": {
+          "_payout": "uint number of Dai paid per claim\r",
+          "_to": "the address being given a secretary role\r",
+          "_volume": "uint number of expected claims\r"
+        },
+        "return": "_group the address of the Group contact\r*"
+      },
+      "loan(address,uint256)": {
+        "details": "modifier onlyAdmin\rrequire sufficienct balance\r Extend a loan, in Dai, to a Tanda Group\r",
+        "params": {
+          "_group": "the group being given the loan\r",
+          "_months": "the length, in months (periods), the Group has to repay\r"
+        }
+      },
+      "remitGroup(address)": {
+        "details": "modifier onlyAdmin\rmodifier unlocked\r Remit a single group assuming it is not timelocked\r",
+        "params": {
+          "_group": "the address of the group being remitted\r*"
+        }
+      },
+      "removeAdmin(address)": {
+        "details": "modifier onlyAdmin\r Remove an admin\r",
+        "params": {
+          "_from": "the address being blacklisted\r*"
+        }
+      }
+    }
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}

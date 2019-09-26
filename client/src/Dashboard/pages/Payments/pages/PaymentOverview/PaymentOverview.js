@@ -9,7 +9,7 @@ const tableButtons = [
   { text: "MAKE PAYMENT", type: "green", url: "/admin/payments/new" }
 ];
 const PaymentOverview = props => {
-  const { user } = props;
+  const { user } = props.user;
   const title = user ? user.name : "";
   const payments = getPaymentHistory();
   return (

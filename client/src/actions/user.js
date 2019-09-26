@@ -1,5 +1,16 @@
 import axios from "axios";
-import { FETCH_USER } from "./types";
+import { returnErrors } from './errors';
+import { FETCH_USER, 
+  AUTH_ERROR,
+  USER_LOADING,
+  USER_LOADED,
+  LOGIN_SUCCESS,
+  REGISTRATION_FAILED,
+  REGISTRATION_SUCCESS,
+  LOGIN_FAILED,
+  USER_EXIST_ERROR,
+  LOGOUT_SUCCESS
+} from "./types";
 
 /**
  * @summary This is the basic action creator called at the initial loading of the dashboard. It will be used to check the authenticated state of the current user.
@@ -24,10 +35,19 @@ export const fetchUser = () => async dispatch => {
  * ! @todo Improve the error handling
  */
 export const signUp = body => async dispatch => {
+  
   try {
     const response = await axios.post("/auth/signup", body);
+  
+    
     dispatch({ type: FETCH_USER, payload: response.data });
-  } catch (error) {}
+  } catch (error) {
+   
+   dispatch(returnErrors(error.response.data.errors.email, error.response.status, "USER_EXIST_ERROR"));
+   dispatch({
+     type: REGISTRATION_FAILED
+   });
+  }
 };
 
 /**
@@ -39,8 +59,19 @@ export const signUp = body => async dispatch => {
  * ! @todo Improve the error handling
  */
 export const logIn = body => async dispatch => {
-  const response = await axios.post("/auth/login", body);
-  dispatch({ type: FETCH_USER, payload: response.data });
+  
+ 
+  try {
+    const response = await axios.post("/auth/login", body);
+    dispatch({ type: FETCH_USER, payload: response.data });
+  } catch (error) {
+   
+    
+    dispatch(returnErrors(error.response.data.error, error.response.status, "AUTH_ERROR"));
+   dispatch({
+     type: AUTH_ERROR
+   });
+  }
 };
 
 /**
@@ -56,7 +87,7 @@ export const logOut = () => async dispatch => {
       withCredentials: true
     });
 
-    dispatch({ type: FETCH_USER, payload: undefined });
+    dispatch({ type: LOGOUT_SUCCESS});
   } catch (error) {
     console.error(error);
   }

@@ -4,6 +4,7 @@ import { Form } from "react-final-form";
 //redux
 import { connect } from "react-redux";
 import * as actions from "../../../actions";
+
 import {
   Button,
   Grid,
@@ -20,41 +21,75 @@ import {
 import { LockOutlined } from "@material-ui/icons";
 import styles from "../styles/form.style";
 import { EmailField, PasswordField, NameField } from "../components/Fields";
+import { stat } from "fs";
 
 class SignUp extends React.Component {
+  state = {
+    isLoading: false,
+    msg: null,
+    isError: false,
+  };
   onSubmit = values => {
-    const { name, email, password } = values;
+   
+    this.setState({isLoading: true});
+  const { name, email, password } = values;
     this.props.signUp({ name, email, password });
   };
 
+  
+  componentDidUpdate(prevProps){
+  
+    const {error} = this.props;
+    if(error !==  prevProps.error){
+      // Check for registration error
+     
+      if(error.id == "USER_EXIST_ERROR"){
+       
+        this.setState({msg: error.msg, isLoading: false, isError: true});
+      }else{
+        this.setState({msg: null, isLoading: false});
+      }
+     
+    }
+  }
   render() {
     const { classes } = this.props;
     return (
+    
       <div className={classes.form}>
+    
         <Avatar className={classes.avatar}>
           <LockOutlined />
         </Avatar>
         <Typography component="h1" variant="h5">
           Sign Up
         </Typography>
+        {this.state.isError ? (<p className={classes.error}>{this.state.msg}</p>) : null}
         <Form onSubmit={this.onSubmit}>
+        
           {({ handleSubmit }) => (
             <form className={classes.formFix}>
+                
               <NameField />
               <EmailField />
               <PasswordField />
+             
               <Button
                 variant="contained"
                 className={classes.submit}
                 type="submit"
+                disabled={this.state.isLoading}
                 onClick={handleSubmit}
               >
                 SIGN UP
               </Button>
+             
+           
               {this.renderExtra()}
             </form>
           )}
         </Form>
+    
       </div>
     );
   }
@@ -130,8 +165,12 @@ class SignUp extends React.Component {
     );
   };
 }
-
+const mapStateToProps = state => ({
+  isAuthenticated: state.isAuthenticated,
+  error: state.error,
+  
+});
 export default connect(
-  null,
+  mapStateToProps,
   actions
 )(withStyles(styles, { withTheme: true })(SignUp));

@@ -44,9 +44,10 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(passport.initialize());
 mongoose.connect(keys.mongoURI, {
-  useNewUrlParser: true
-});
-
+  useNewUrlParser: true,
+  useCreateIndex: true 
+}).then(() => console.log("Connected")).catch(err => console.log("We're experiencing a server downtime.", err));
+ 
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
 if (process.env.NODE_ENV === "production") {
