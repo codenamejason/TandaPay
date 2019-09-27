@@ -4,6 +4,8 @@ import { Form } from "react-final-form";
 //redux
 import { connect } from "react-redux";
 import * as actions from "../../../actions";
+import { GoogleLogin, FacebookLogin } from "../components/Buttons";
+
 
 import {
   Button,
@@ -17,7 +19,10 @@ import {
   FormLabel,
   Avatar,
   Typography,
+  Divider
 } from "@material-ui/core";
+
+import Sep  from '../components/utils/Sep'
 import { LockOutlined } from "@material-ui/icons";
 import styles from "../styles/form.style";
 import { EmailField, PasswordField, NameField } from "../components/Fields";
@@ -58,15 +63,21 @@ class SignUp extends React.Component {
     
       <div className={classes.form}>
     
-        <Avatar className={classes.avatar}>
+        {/* <Avatar className={classes.avatar}>
           <LockOutlined />
         </Avatar>
         <Typography component="h1" variant="h5">
           Sign Up
-        </Typography>
+        </Typography> */}
+        <Grid container className={classes.social}>
+          <GoogleLogin />
+          <FacebookLogin />
+        </Grid>
+       
+        <Sep />
         {this.state.isError ? (<p className={classes.error}>{this.state.msg}</p>) : null}
         <Form onSubmit={this.onSubmit}>
-        
+      
           {({ handleSubmit }) => (
             <form className={classes.formFix}>
                 
@@ -85,7 +96,7 @@ class SignUp extends React.Component {
               </Button>
              
            
-              {this.renderExtra()}
+              {/* {this.renderExtra()} */}
             </form>
           )}
         </Form>

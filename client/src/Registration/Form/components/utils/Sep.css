@@ -1,0 +1,57 @@
+/* Glyph, by Harry Roberts */
+.wrapper{
+    margin-top: 40px;
+}
+hr.or {
+    overflow: visible; /* For IE */
+    padding: 0;
+    border: none;
+    border-top: 1px solid #949494;
+    color: #333;
+    text-align: center;
+    width: 300px;
+}
+hr.or:after {
+    content: "OR";
+    display: inline-block;
+    position: relative;
+    top: -1.1em;
+    font-size: 12px;
+    padding: 0.35em 0.35em;
+    background: #f6f6f6;
+    border-radius: 50%;
+ 
+}
+
+.mylink:hover {
+    color: #3570a8 !important;
+}
+
+.mylink:focus, .mylink a:hover {
+    text-decoration: underline;
+}
+.mylink:visited {
+    color: #3570a8 !important;
+}
+.mylink  {
+    color: #3570a8 !important;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.mylink:active {
+    color: #3570a8 !important;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* .mylink{
+    text-align: center;
+    width: 100%;
+    color: #111;
+    font-weight: bolder;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe", Roboto, Oxygen, Ubuntu, 
+    Canterell, "Open Sans", "Helvetica Neue", "sans-serif";
+  } */
+       
+  

@@ -8,7 +8,7 @@ import {
   Tab,
   Divider,
 } from "@material-ui/core";
-import { GoogleLogin, FacebookLogin } from "./Form/components/Buttons";
+
 import { connect } from "react-redux";
 import * as actions from "../actions";
 import { SignUp, Login } from "./Form/pages";
@@ -47,14 +47,12 @@ class Registration extends React.Component {
     const { classes } = this.props;
     return (
       <div>
-        <Typography variant="h1" className={classes.title}>
+        <Typography variant="h2" className={classes.title}>
           TandaPay
         </Typography>
-        <Typography variant="h4" className={classes.subtitle}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-          dolor purus non enim praesent elementum facilisis leo vel.
-        </Typography>
+      
+
+        
       </div>
     );
   };
@@ -68,12 +66,8 @@ class Registration extends React.Component {
         </Tabs>
         {this.state.tab === 0 && <SignUp />}
         {this.state.tab === 1 && <Login />}
-        <Divider className={classes.divider} />
-
-        <Grid container className={classes.social}>
-          <GoogleLogin />
-          <FacebookLogin />
-        </Grid>
+       
+  
       </div>
     );
   };

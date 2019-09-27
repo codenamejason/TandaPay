@@ -7,6 +7,9 @@ const styles = (theme) => ({
 	},
 	link: {
 		textDecoration: "none",
+		fontSize: "12px",
+		textAlign: "center",
+	
 		"&:hover": {
 			textDecoration: "none"
 		}

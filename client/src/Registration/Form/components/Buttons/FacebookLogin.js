@@ -5,12 +5,14 @@ import styles from "./button.style";
 function FacebookLogin(props) {
 	const { classes } = props;
 	return (
-		<FacebookLoginButton>
+		<FacebookLoginButton iconSize="20px" size="40px">
 			<Link href={"/auth/facebook"} color="inherit" className={classes.link}>
-				Sign In With Facebook
+				Sign up with Facebook
 			</Link>
 		</FacebookLoginButton>
 	);
 }
-
+///     <FacebookButton iconSize="50px" size="100px">
+//<span style={{ fontSize: 10 }}>Login with facebook</span>
+//</FacebookButton>
 export default withStyles(styles, { withTheme: true })(FacebookLogin);

@@ -1,14 +1,22 @@
+import { red } from "@material-ui/core/colors";
+
 const styles = (theme) => ({
 	form: {
 		margin: theme.spacing(5),
 		display: "flex",
 		flexDirection: "column",
-		alignItems: "center"
+		alignItems: "center",
+		
 	},
 	avatar: {
 		margin: theme.spacing(1),
 		backgroundColor: theme.palette.secondary.main
 	},
+	social:{
+		
+		width: "auto"
+	},
+	
 	formFix: {
 		width: "100%", // Fix IE 11 issue.
 		marginTop: theme.spacing(1)

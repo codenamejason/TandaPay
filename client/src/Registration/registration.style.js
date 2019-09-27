@@ -1,12 +1,11 @@
 const styles = theme => ({
   root: {
     height: "100vh",
+    backgroundColor: "white",
   },
   image: {
-    backgroundColor: "#222",
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
+    backgroundColor: "#2a2a72",
+    backgroundImage: "linear-gradient(315deg, #2a2a72 0%, #009ffd 74%)",
     display: "none",
     [theme.breakpoints.up("md")]: {
       display: "flex",
@@ -22,6 +21,8 @@ const styles = theme => ({
   subtitle: {
     color: "white",
     textAlign: "center",
+    fontSize: "14px;",
+    marginTop: "10px"
   },
   area: {
     margin: theme.spacing(8, 0),

@@ -10,12 +10,13 @@ export default ({
 		{...rest}
 		name={name}
 		fullWidth
-		variant={"outlined"}
+		 variant={"outlined"}
 		helperText={meta.touched ? meta.error : undefined}
 		error={meta.error && meta.touched}
 		InputProps={restInput}
 		onChange={onChange}
 		value={value}
-		margin="normal"
+		margin="dense"
+		
 	/>
 );
