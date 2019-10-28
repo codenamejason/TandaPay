@@ -8,33 +8,41 @@ import { connect } from "react-redux";
  * @param {Base Page} WrappedComponent
  */
 let withAuthorization = WrappedComponent => {
-    class AuthorizedComponent extends Component {
-        render() {
-            const { user } = this.props.user;
-            console.log(user);
-            let userHasPemissions = user && user.accountCompleted;
-            if (userHasPemissions) {
-                return (
-                    <React.Fragment>
-                        <Redirect to="/admin/payments" />
-                        <WrappedComponent {...this.props} />
-                    </React.Fragment>
-                );
-            } else {
-                if (!user) {
-                    return <Redirect to="/" />;
-                } else {
-                    return <Redirect to="/setup" />;
-                }
-            }
+  class AuthorizedComponent extends Component {
+    render() {
+      const { user } = this.props;
+
+      let userHasPemissions = user && user.accountCompleted;
+
+      if (userHasPemissions && user.role == "secretary") {
+        return (
+          <React.Fragment>
+            <Redirect to="/admin/payments" />
+            <WrappedComponent {...this.props} />
+          </React.Fragment>
+        );
+      } else if (userHasPemissions && user.role == "policyholder") {
+        return (
+          <React.Fragment>
+            <Redirect to="/holder/payments" />
+            <WrappedComponent {...this.props} />
+          </React.Fragment>
+        );
+      } else {
+        if (!user) {
+          return <Redirect to="/" />;
+        } else {
+          return <Redirect to="/setup" />;
         }
+      }
     }
-    const mapStateToProps = state => {
-        return {
-            user: state.user,
-        };
+  }
+  const mapStateToProps = state => {
+    return {
+      user: state.user
     };
-    return connect(mapStateToProps)(AuthorizedComponent);
+  };
+  return connect(mapStateToProps)(AuthorizedComponent);
 };
 
 /**
@@ -43,36 +51,37 @@ let withAuthorization = WrappedComponent => {
  * @param {Base Page} WrappedComponent
  */
 let withoutAuthorization = WrappedComponent => {
-    class UnauthorizedComponent extends Component {
-        render() {
-           
-            
-            const { user } = this.props.user;
-            console.log(user);
-            
-            let userHasPemissions = user;
-          
-            if (!userHasPemissions) {
-                // if the user doesn't exist
-                return <WrappedComponent {...this.props} />;
-            } else {
-                const { accountCompleted } = user;
+  class UnauthorizedComponent extends Component {
+    render() {
+      const { user } = this.props;
 
-                if (accountCompleted) {
-                    return <Redirect to="/admin" />;
-                } else {
-                    
-                    return <Redirect to="/setup" />;
-                }
-            }
+      let userHasPemissions = user;
+
+      if (!userHasPemissions) {
+        // if the user doesn't exist
+        return <WrappedComponent {...this.props} />;
+      } else {
+        const { accountCompleted } = user;
+
+        if (accountCompleted) {
+          if (user.role == "policyholder") {
+            return <Redirect to="/holder/payment" />;
+          } else if (user.role == "secretary") {
+            return <Redirect to="/admin/payment" />;
+          }
+          //return <Redirect to="/admin" />;
+        } else {
+          return <Redirect to="/setup" />;
         }
+      }
     }
-    const mapStateToProps = state => {
-        return {
-            user: state.user,
-        };
+  }
+  const mapStateToProps = state => {
+    return {
+      user: state.user
     };
-    return connect(mapStateToProps)(UnauthorizedComponent);
+  };
+  return connect(mapStateToProps)(UnauthorizedComponent);
 };
 
 /**
@@ -80,23 +89,27 @@ let withoutAuthorization = WrappedComponent => {
  * @param {*} WrappedComponent
  */
 let withIncompleteAuthorization = WrappedComponent => {
-    class LimitedComponent extends Component {
-        render() {
-            const { user } = this.props.user;
-            console.log(user);
-            if (!user) {
-                return <Redirect to="/" />;
-            } else if (user && user.accountCompleted) {
-                return <Redirect to="/admin" />;
-            }
-            return <WrappedComponent {...this.props} />;
-        }
-    }
-    const mapStateToProps = state => {
-        return { user: state.user };
-    };
+  class LimitedComponent extends Component {
+    render() {
+      const { user } = this.props;
 
-    return connect(mapStateToProps)(LimitedComponent);
+      if (!user) {
+        return <Redirect to="/" />;
+      } else if (user && user.accountCompleted) {
+        if (user.role == "policyholder") {
+          return <Redirect to="/holder" />;
+        } else if (user.role == "secretary") {
+          return <Redirect to="/admin" />;
+        }
+      }
+      return <WrappedComponent {...this.props} />;
+    }
+  }
+  const mapStateToProps = state => {
+    return { user: state.user };
+  };
+
+  return connect(mapStateToProps)(LimitedComponent);
 };
 
 export { withAuthorization, withoutAuthorization, withIncompleteAuthorization };

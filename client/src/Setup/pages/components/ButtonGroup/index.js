@@ -14,7 +14,7 @@ class ButtonGroup extends React.Component {
 						className={clsx(classes.button, classes.cancel)}
 						onClick={handlePrevious}
 					>
-						{page === 0 ? "Cancel" : "Previous"}
+						{page === 0 ? "Back" : "Back"}
 					</Button>
 				</Grid>
 				<Grid item xs={6} className={classes.nextButton}>

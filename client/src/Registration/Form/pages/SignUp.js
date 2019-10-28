@@ -6,7 +6,6 @@ import { connect } from "react-redux";
 import * as actions from "../../../actions";
 import { GoogleLogin, FacebookLogin } from "../components/Buttons";
 
-
 import {
   Button,
   Grid,
@@ -22,47 +21,30 @@ import {
   Divider
 } from "@material-ui/core";
 
-import Sep  from '../components/utils/Sep'
+import Sep from "../components/utils/Sep";
 import { LockOutlined } from "@material-ui/icons";
 import styles from "../styles/form.style";
 import { EmailField, PasswordField, NameField } from "../components/Fields";
 import { stat } from "fs";
+import Alert from "../../../components/Alert";
 
 class SignUp extends React.Component {
   state = {
     isLoading: false,
     msg: null,
-    isError: false,
+    isError: false
   };
   onSubmit = values => {
-   
-    this.setState({isLoading: true});
-  const { name, email, password } = values;
+    this.setState({ isLoading: true });
+    const { name, email, password } = values;
     this.props.signUp({ name, email, password });
+    this.setState({ isLoading: false });
   };
 
-  
-  componentDidUpdate(prevProps){
-  
-    const {error} = this.props;
-    if(error !==  prevProps.error){
-      // Check for registration error
-     
-      if(error.id == "USER_EXIST_ERROR"){
-       
-        this.setState({msg: error.msg, isLoading: false, isError: true});
-      }else{
-        this.setState({msg: null, isLoading: false});
-      }
-     
-    }
-  }
   render() {
     const { classes } = this.props;
     return (
-    
       <div className={classes.form}>
-    
         {/* <Avatar className={classes.avatar}>
           <LockOutlined />
         </Avatar>
@@ -73,18 +55,17 @@ class SignUp extends React.Component {
           <GoogleLogin />
           <FacebookLogin />
         </Grid>
-       
+
         <Sep />
-        {this.state.isError ? (<p className={classes.error}>{this.state.msg}</p>) : null}
+
         <Form onSubmit={this.onSubmit}>
-      
           {({ handleSubmit }) => (
             <form className={classes.formFix}>
-                
+              <Alert />
               <NameField />
               <EmailField />
               <PasswordField />
-             
+
               <Button
                 variant="contained"
                 className={classes.submit}
@@ -94,13 +75,11 @@ class SignUp extends React.Component {
               >
                 SIGN UP
               </Button>
-             
-           
+
               {/* {this.renderExtra()} */}
             </form>
           )}
         </Form>
-    
       </div>
     );
   }
@@ -178,8 +157,7 @@ class SignUp extends React.Component {
 }
 const mapStateToProps = state => ({
   isAuthenticated: state.isAuthenticated,
-  error: state.error,
-  
+  error: state.error
 });
 export default connect(
   mapStateToProps,

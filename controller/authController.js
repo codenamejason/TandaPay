@@ -159,8 +159,10 @@ const sendCookie = async (req, res) => {
     return res.redirect("/");
   }
   if (req.user) {
-    const { email, name, status, accountCompleted, role } = req.user;
-    return res.send({ token, email, name, status, accountCompleted, role });
+    const user = req.user;
+    // const { email, name, status, accountCompleted, role } = req.user;
+    // return res.send({ token, email, name, status, accountCompleted, role });
+    return res.send({ token, user });
   } else {
     return res.send();
   }

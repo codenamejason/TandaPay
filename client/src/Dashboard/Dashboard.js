@@ -26,7 +26,7 @@ class Dashboard extends React.PureComponent {
       loading: false
     };
 
-    this.startEthereumListener();
+    //this.startEthereumListener();
   }
 
   /**
@@ -45,10 +45,9 @@ class Dashboard extends React.PureComponent {
    * as we no longer care about the current state of the ethereum object.
    * Since we don't need a callback to handle any side-effects, we send null;
    */
-  componentWillUnmount() {
-    
-    window.ethereum.removeListeners("accountsChanged", null);
-  }
+  // componentWillUnmount() {
+  //   window.ethereum.removeListener("accountsChanged");
+  // }
   /**
    * @summary This function will attach an event listener to the global ethereum objected injected by Metamask (and other modern dApp browsers).
    * To call the redux action creator web3 function everything there's a change in the accounts.
@@ -56,6 +55,7 @@ class Dashboard extends React.PureComponent {
    * and when the user switches accounts, i.e from account 1 to account 2
    * @access global access (to ethereum window object)
    */
+
   startEthereumListener = () => {
     window.ethereum.addListener("accountsChanged", () => {
       this.props.connectWeb3();
@@ -83,6 +83,7 @@ class Dashboard extends React.PureComponent {
             <Route path="/admin/payments" component={Payments} />
             <Route path="/admin/profile" component={Profile} />
             <Route path="/admin/groups" component={Group} />
+
             <Route path="/admin/wallet" component={Wallet} />
             <Route path="/admin/claims" component={Claims} />
             <Route exact path="/admin/help" component={Help} />

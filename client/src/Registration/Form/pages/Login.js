@@ -5,7 +5,7 @@ import { Form } from "react-final-form";
 import { connect } from "react-redux";
 import * as actions from "../../../actions";
 import { GoogleLogin, FacebookLogin } from "../components/Buttons";
-import '../components/utils/Sep.css'
+import "../components/utils/Sep.css";
 import {
   Button,
   Grid,
@@ -14,36 +14,24 @@ import {
   Typography
 } from "@material-ui/core";
 import { LockOpenOutlined } from "@material-ui/icons";
+import Alert from "../../../components/Alert";
 import { EmailField, PasswordField } from "../components/Fields";
-import Sep  from '../components/utils/Sep'
+import Sep from "../components/utils/Sep";
 import styles from "../styles/form.style";
 
 class Login extends React.Component {
   state = {
     isLoading: false,
     msg: null,
-    isError: false,
+    isError: false
   };
   onSubmit = values => {
-    this.setState({isLoading: true});
+    this.setState({ isLoading: true });
     const { email, password } = values;
     this.props.logIn({ email, password });
+    this.setState({ isLoading: false });
   };
-  componentDidUpdate(prevProps){
-  
-    const {error} = this.props;
-    if(error !==  prevProps.error){
-      // Check for registration error
-     
-      if(error.id == "AUTH_ERROR"){
-       
-        this.setState({msg: error.msg, isLoading: false, isError: true});
-      }else{
-        this.setState({msg: null, isLoading: false});
-      }
-     
-    }
-  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -55,15 +43,16 @@ class Login extends React.Component {
           Log In
         </Typography> */}
 
-<Grid container className={classes.social}>
+        <Grid container className={classes.social}>
           <GoogleLogin />
           <FacebookLogin />
         </Grid>
         <Sep />
-        {this.state.isError ? (<p className={classes.error}>{this.state.msg}</p>) : null}
+
         <Form onSubmit={this.onSubmit}>
           {({ handleSubmit }) => (
             <form className={classes.formFix}>
+              <Alert />
               <EmailField />
               <PasswordField />
               <Button
@@ -93,7 +82,7 @@ class Login extends React.Component {
           </Link>
         </Grid>
         <Grid item>
-        Don't have an account?  
+          Don't have an account?
           <Link className="mylink" to="/admin" variant="body2">
             {" Sign Up"}
           </Link>
@@ -102,12 +91,8 @@ class Login extends React.Component {
     );
   };
 }
-const mapStateToProps = state => ({
-  isAuthenticated: state.isAuthenticated,
-  error: state.error,
-  
-});
+
 export default connect(
-  mapStateToProps,
+  null,
   actions
 )(withStyles(styles, { withTheme: true })(Login));

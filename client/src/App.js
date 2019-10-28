@@ -14,11 +14,13 @@ import {
 
 import Registration from "./Registration/Registration";
 import Dashboard from "./Dashboard/Dashboard";
+import Policyholder from "./Policyholder/Policyholder";
 import Setup from "./Setup/Setup";
 
 import Loader from "./components/Loader";
 
 import theme from "./theme";
+import "./App.css";
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -56,6 +58,8 @@ class App extends React.Component {
               component={withIncompleteAuthorization(Setup)}
             />
             <Route path="/admin" component={withAuthorization(Dashboard)} />
+
+            <Route path="/holder" component={withAuthorization(Policyholder)} />
           </Switch>
         </Router>
       </ThemeProvider>

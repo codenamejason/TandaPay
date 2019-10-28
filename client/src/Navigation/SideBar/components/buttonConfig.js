@@ -26,6 +26,8 @@ const nav = {
             icon: <ClaimsIcon />,
             url: "claims",
         },
+
+        
     },
 };
 

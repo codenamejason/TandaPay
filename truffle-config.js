@@ -18,12 +18,13 @@
  *
  */
 
-const HDWalletProvider = require("truffle-hdwallet-provider");
+const HDWalletProvider = require("@truffle/hdwallet-provider");
+
 const mnemonic =
   process.env.NODE_ENV === "development"
     ? require("./config/dev").mnemonic
     : require("./config/ci");
-const infuraKey = "e300c669a13a44a2aff60b7fee7e62f4";
+const infuraKey = "70dbae1c9dcd43148b48828ef18242e4";
 //
 
 module.exports = {
@@ -70,12 +71,12 @@ module.exports = {
       gas: 5500000, // Ropsten has a lower block limit than mainnet
       confirmations: 2, // # of confs to wait between deployments. (default: 0)
       timeoutBlocks: 200, // # of blocks before a deployment times out  (minimum/default: 50)
-      skipDryRun: true, // Skip dry run before migrations? (default: false for public nets )
+      skipDryRun: true // Skip dry run before migrations? (default: false for public nets )
     },
-    rinkeby: {
+    rinkeby9: {
       provider: () => {
         new HDWalletProvider(
-          mnemonic,
+          "pluck impact describe sport universe joke tip quick invite nut best broken",
           `https://rinkeby.infura.io/v3/${infuraKey}`
         );
       },
@@ -83,8 +84,25 @@ module.exports = {
       gas: 5500000,
       confirmations: 2,
       timeoutBlocks: 200,
-      skipDryRun: true,
+      skipDryRun: true
     },
+
+    rinkeby: {
+      provider: function() {
+        return new HDWalletProvider(
+          "pluck impact describe sport universe joke tip quick invite nut best broken",
+          "https://rinkeby.infura.io/v3/70dbae1c9dcd43148b48828ef18242e4"
+        );
+      },
+      network_id: 4,
+      gas: 0
+    },
+
+    ganache: {
+      host: "localhost",
+      port: 7545,
+      network_id: "*"
+    }
     // Useful for private networks
     // private: {
     // provider: () => new HDWalletProvider(mnemonic, `https://network.io`),
@@ -101,15 +119,16 @@ module.exports = {
   // Configure your compilers
   compilers: {
     solc: {
-      // version: "0.5.1",    // Fetch exact version from solc-bin (default: truffle's version)
-      // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
-      // settings: {          // See the solidity docs for advice about optimization and evmVersion
-      //  optimizer: {
-      //    enabled: false,
-      //    runs: 200
-      //  },
-      //  evmVersion: "byzantium"
-      // }
-    },
-  },
+      // version: "0.5.1", // Fetch exact version from solc-bin (default: truffle's version)
+      //docker: true, // Use "0.5.1" you've installed locally with docker (default: false)
+      settings: {
+        // See the solidity docs for advice about optimization and evmVersion
+        optimizer: {
+          enabled: true,
+          runs: 200
+        },
+        evmVersion: "byzantium"
+      }
+    }
+  }
 };

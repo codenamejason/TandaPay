@@ -27,7 +27,7 @@ class Claims extends React.Component {
     const headerText =
       user.role === "secretary" ? "Recent Claims" : "My Claims";
     const headerButtons = [
-      { text: "NEW CLAIM", type: "green", url: "/admin/claims/new" }
+      //{ text: "NEW CLAIM", type: "green", url: "/admin/claims/new" }
     ];
     return (
       <React.Fragment>

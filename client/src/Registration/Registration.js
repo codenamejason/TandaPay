@@ -6,7 +6,7 @@ import {
   withStyles,
   Tabs,
   Tab,
-  Divider,
+  Divider
 } from "@material-ui/core";
 
 import { connect } from "react-redux";
@@ -19,13 +19,13 @@ class Registration extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tab: 0,
+      tab: 0
     };
   }
 
   onTabChange = (event, newValue) => {
     this.setState({
-      tab: newValue,
+      tab: newValue
     });
   };
 
@@ -50,9 +50,6 @@ class Registration extends React.Component {
         <Typography variant="h2" className={classes.title}>
           TandaPay
         </Typography>
-      
-
-        
       </div>
     );
   };
@@ -66,8 +63,6 @@ class Registration extends React.Component {
         </Tabs>
         {this.state.tab === 0 && <SignUp />}
         {this.state.tab === 1 && <Login />}
-       
-  
       </div>
     );
   };

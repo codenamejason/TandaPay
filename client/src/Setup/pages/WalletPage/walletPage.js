@@ -83,7 +83,6 @@ class WalletPage extends React.Component {
    * @returns {VoidFunction} - will update component state with the ethereum addressif successful, otherwise resets component visuals from loading
    */
   onMetamaskClick = async () => {
-  
     const walletProvider = "metamask";
     this.setState({
       metamaskLoading: true,
@@ -92,6 +91,7 @@ class WalletPage extends React.Component {
     //enable metamask
     const [result, error] = await connectToMetamask();
     const ethAddress = result[0];
+
     if (error) {
       this.setState({
         metamaskLoading: false

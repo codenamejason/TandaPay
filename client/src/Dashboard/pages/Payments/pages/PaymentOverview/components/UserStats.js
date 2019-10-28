@@ -22,6 +22,8 @@ const stats = [
   }
 ];
 const UserStats = props => {
+  console.log(props);
+  
   const classes = useStyles(props);
   const { claims, group, ethereum } = props;
   return (

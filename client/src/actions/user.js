@@ -1,17 +1,13 @@
 import axios from "axios";
-import { returnErrors } from './errors';
-import { FETCH_USER, 
+import { setAlert } from "./alert";
+
+import {
   AUTH_ERROR,
-  USER_LOADING,
-  USER_LOADED,
-  LOGIN_SUCCESS,
-  REGISTRATION_FAILED,
-  REGISTRATION_SUCCESS,
-  LOGIN_FAILED,
-  USER_EXIST_ERROR,
+  FETCH_USER,
+  FETCH_OTHER_USER,
   LOGOUT_SUCCESS
 } from "./types";
-
+const API_BASE = process.env.REACT_APP_API_BASE;
 /**
  * @summary This is the basic action creator called at the initial loading of the dashboard. It will be used to check the authenticated state of the current user.
  * The API endpoint will only check the validity of the current token and the DB whitelist of auth tokens.
@@ -24,7 +20,39 @@ export const fetchUser = () => async dispatch => {
       withCredentials: true
     });
     dispatch({ type: FETCH_USER, payload: response.data });
-  } catch (error) {}
+  } catch (err) {
+    const error = err.response.data.error;
+
+    if (error) {
+      //dispatch(setAlert(error, "danger"));
+    }
+  }
+};
+
+function config() {
+  return {
+    baseURL: API_BASE,
+    headers: {
+      Authorization: "Bearer " + document.cookie.match(/x-auth=(\S+)/)[1]
+    }
+  };
+}
+
+export const fetchUserByID = user_id => async dispatch => {
+  try {
+    const rs = await axios.get("/user/" + user_id, config());
+
+    dispatch({ type: FETCH_OTHER_USER, payload: rs.data });
+
+    //dispatch({ type: FETCH_CLAIMS, payload: claims });
+  } catch (err) {
+    // console.log(err);
+    // const error = err.response.data.error;
+    // if (error) {
+    //   dispatch(setAlert(error, "danger"));
+    // }
+    // console.log(error.response);
+  }
 };
 
 /**
@@ -35,18 +63,18 @@ export const fetchUser = () => async dispatch => {
  * ! @todo Improve the error handling
  */
 export const signUp = body => async dispatch => {
-  
   try {
     const response = await axios.post("/auth/signup", body);
-  
-    
+
     dispatch({ type: FETCH_USER, payload: response.data });
-  } catch (error) {
-   
-   dispatch(returnErrors(error.response.data.errors.email, error.response.status, "USER_EXIST_ERROR"));
-   dispatch({
-     type: REGISTRATION_FAILED
-   });
+  } catch (err) {
+    const error = err.response.data.errors.email;
+    console.log(err.response);
+
+    if (error) {
+      console.log(error, "Invalid R");
+      dispatch(setAlert(error, "danger"));
+    }
   }
 };
 
@@ -59,18 +87,18 @@ export const signUp = body => async dispatch => {
  * ! @todo Improve the error handling
  */
 export const logIn = body => async dispatch => {
-  
- 
   try {
     const response = await axios.post("/auth/login", body);
-    dispatch({ type: FETCH_USER, payload: response.data });
-  } catch (error) {
-   
-    
-    dispatch(returnErrors(error.response.data.error, error.response.status, "AUTH_ERROR"));
-   dispatch({
-     type: AUTH_ERROR
-   });
+    // console.log(response.data);
+    console.log(response.data.user);
+
+    dispatch({ type: FETCH_USER, payload: response.data.user });
+  } catch (err) {
+    const error = err.response.data.error;
+
+    if (error) {
+      dispatch(setAlert(error, "danger"));
+    }
   }
 };
 
@@ -87,7 +115,7 @@ export const logOut = () => async dispatch => {
       withCredentials: true
     });
 
-    dispatch({ type: LOGOUT_SUCCESS});
+    dispatch({ type: LOGOUT_SUCCESS });
   } catch (error) {
     console.error(error);
   }

@@ -9,25 +9,25 @@ import data from "../../../../../data/claims.json";
 import styles from "./review.style";
 import ProfileCard from "./components/ProfileCard";
 import ClaimDocs from "./components/ClaimDocs";
-const claims = data.claims;
+
 class ClaimReview extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      claim: null
-    };
   }
   componentWillMount() {
-    const { match } = this.props;
+    const { match, claims } = this.props;
+
     const claimID = match.params.id;
     let claim;
+
     for (var x in claims) {
-      if (claims[x].objectID === claimID) {
+      if (claims[x]._id === claimID) {
         claim = claims[x];
       }
     }
     this.setState({
-      claim
+      claim,
+      claimID
     });
   }
   render() {
@@ -70,7 +70,7 @@ class ClaimReview extends React.Component {
    * @summary
    */
   handleClaimReject = () => {
-    console.log("Rejected");
+    this.props.denyClaim(this.state.claimID);
     this.props.history.push("/admin/claims");
   };
 
@@ -78,13 +78,14 @@ class ClaimReview extends React.Component {
    *
    */
   handleClaimApproval = () => {
-    console.log("Approved");
+    this.props.approveClaim(this.state.claimID);
+
     this.props.history.push("/admin/claims");
   };
 }
 
-function mapStateToProps({ user }) {
-  return { user };
+function mapStateToProps({ user, claims }) {
+  return { user, claims };
 }
 
 export default withRouter(

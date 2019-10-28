@@ -5,11 +5,9 @@ import { headRows } from "./data";
 import paymentData from "../../../../../data/payments.json";
 import UserStats from "./components/UserStats";
 
-const tableButtons = [
-  { text: "MAKE PAYMENT", type: "green", url: "/admin/payments/new" }
-];
 const PaymentOverview = props => {
-  const { user } = props.user;
+  const { user } = props;
+
   const title = user ? user.name : "";
   const payments = getPaymentHistory();
   return (
@@ -21,7 +19,6 @@ const PaymentOverview = props => {
         headRows={headRows}
         title="Payment History"
         type="payments"
-        buttons={tableButtons}
       />
     </React.Fragment>
   );
