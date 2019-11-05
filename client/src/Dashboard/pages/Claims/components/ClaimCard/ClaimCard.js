@@ -11,7 +11,10 @@ const ClaimCard = props => {
       <img src={claim.imageURL} className={classes.img} alt="User Profile" />
       <div className={classes.container}>
         <Typography className={classes.name}>{claim.name}</Typography>
-        <Typography className={classes.amount}>$ {claim.amount}</Typography>
+        <Typography className={classes.amount}>
+          {" "}
+          Period {claim.period}
+        </Typography>
       </div>
       <Typography variant="caption">
         {moment(claim.createdAt).format("MM/DD/YYYY")}

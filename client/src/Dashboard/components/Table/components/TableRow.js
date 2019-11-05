@@ -41,7 +41,7 @@ const EnhancedTableRow = props => {
       </TableCell>
       <TableCell align="left">
         <Typography className={classes.amount}>
-          $ {data[headRows[4].id]}
+          {data[headRows[4].id]}
         </Typography>
       </TableCell>
       <TableCell align="left">

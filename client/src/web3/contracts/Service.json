@@ -8380,12 +8380,12 @@
         }
       },
       "links": {},
-      "address": "0x2F168fFe51ba1bD8813E68317a2a3308b1EF3689",
-      "transactionHash": "0x24d6379e4921070c7f769891be2b21e4d57c4912d7987d7620fb8b48e0c56c5a"
+      "address": "0xB001A5D016CC74e98b505FAA8A5EdAF469b2216E",
+      "transactionHash": "0x3472393b2a2af4b2a8de36620306671ea0225c80dcf49930426c226c50ebb4e0"
     }
   },
   "schemaVersion": "3.0.16",
-  "updatedAt": "2019-10-28T16:10:26.843Z",
+  "updatedAt": "2019-10-29T21:50:35.102Z",
   "devdoc": {
     "author": "blOX Consulting LLC\r Date: 08.26.2019\r Implementation of Insurance Service/ Group Factory Contract\r",
     "methods": {

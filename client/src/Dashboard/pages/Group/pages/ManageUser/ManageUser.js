@@ -2,15 +2,14 @@ import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import { Typography, Card, Button, Grid, TextField } from "@material-ui/core";
+import { Typography, Card, Button, Grid } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
 import styles from "./manageUser.style";
 import * as actions from "../../../../../actions/user";
-import { addPolicyHolderToSmartContract } from "../../../../../web3";
+import {
+  addPolicyHolderToSmartContract,
+  removePolicyHolderFromSmartContract
+} from "../../../../../web3";
 class ManageUser extends React.Component {
   constructor(props) {
     super(props);
@@ -43,6 +42,17 @@ class ManageUser extends React.Component {
 
     console.log(result, error);
   };
+
+  removeUser = async () => {
+    const [result, error] = await removePolicyHolderFromSmartContract(
+      this.props.ethereum.web3,
+      this.props.ethereum.TGP,
+      this.state.newUser.ethereumAddress
+    );
+
+    console.log(result, error);
+  };
+
   render() {
     let { utilReducer, classes } = this.props;
     const { loading } = this.state;
@@ -78,6 +88,15 @@ class ManageUser extends React.Component {
                     onClick={this.addUser}
                   >
                     Add User
+                  </Button>
+
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    className={classes.button}
+                    onClick={this.removeUser}
+                  >
+                    Remove User
                   </Button>
                 </div>
               </Grid>

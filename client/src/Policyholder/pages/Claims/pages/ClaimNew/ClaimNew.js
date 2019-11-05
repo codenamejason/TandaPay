@@ -9,6 +9,8 @@ import FileUpload from "./components/FileUpload";
 import SummaryField from "./components/SummaryField";
 import AmountField from "./components/AmountField";
 import Alert from "../../../../../components/Alert";
+import { setAlert } from "../../../../../actions/alert";
+import { getActivePeriod } from "../../../../../web3";
 
 class ClaimNew extends React.Component {
   constructor(props) {
@@ -17,26 +19,43 @@ class ClaimNew extends React.Component {
       files: [],
       documents: [],
       summary: "",
-      amount: "",
+
       sumitting: false
     };
   }
 
-  handleClaimSubmit = () => {
+  handleClaimSubmit = async () => {
     this.setState({ sumitting: true });
-    const { files, summary, documents, amount } = this.state;
-    for (var i = 0; i < files.length; i++) {
-      documents.push(files[i]["name"]);
-    }
 
-    this.props.createClaim(summary, documents, amount);
-    this.setState({
-      files: [],
-      documents: [],
-      summary: "",
-      amount: "",
-      sumitting: false
-    });
+    const { files, summary, documents } = this.state;
+
+    const [period, error] = await getActivePeriod(
+      this.props.ethereum.web3,
+      this.props.ethereum.TGP
+    );
+
+    if (!error && parseFloat(period) > 0) {
+      for (var i = 0; i < files.length; i++) {
+        documents.push(files[i]["name"]);
+      }
+      await this.props.createClaim(
+        summary,
+        documents,
+        parseFloat(period),
+        this.props.user.ethereumAddress
+      );
+
+      this.setState({
+        files: [],
+        documents: [],
+        summary: "",
+
+        sumitting: false
+      });
+    } else {
+      alert("Group has not started");
+      this.setState({ sumitting: false });
+    }
   };
   displayGuide = guideURL => {
     // window.open(guideURL, "_blank");
@@ -49,12 +68,6 @@ class ClaimNew extends React.Component {
     });
   };
 
-  handleAmountUpdate = event => {
-    this.setState({
-      amount: event.target.value
-    });
-  };
-
   handleSummaryUpdate = event => {
     this.setState({
       summary: event.target.value
@@ -63,7 +76,7 @@ class ClaimNew extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { summary, files, amount, sumitting } = this.state;
+    const { summary, files, sumitting } = this.state;
     const headerButtons = [
       {
         text: "VIEW GUIDE",
@@ -75,11 +88,7 @@ class ClaimNew extends React.Component {
         text: "SUBMIT",
         type: "green",
         handleClick: this.handleClaimSubmit,
-        disabled:
-          summary === "" ||
-          files.length === 0 ||
-          amount === "" ||
-          sumitting === true
+        disabled: summary === "" || files.length === 0 || sumitting === true
       }
     ];
     return (
@@ -92,11 +101,6 @@ class ClaimNew extends React.Component {
               value={summary}
               handleUpdate={this.handleSummaryUpdate}
             />
-
-            <AmountField
-              value={amount}
-              handleUpdate={this.handleAmountUpdate}
-            />
           </Grid>
 
           <FileUpload onUpload={this.handleFileUpload} files={files} />
@@ -106,8 +110,8 @@ class ClaimNew extends React.Component {
   }
 }
 
-function mapStateToProps({ claims }) {
-  return { claims };
+function mapStateToProps({ claims, ethereum, user }) {
+  return { claims, ethereum, user };
 }
 export default withRouter(
   connect(

@@ -1080,12 +1080,12 @@
         }
       },
       "links": {},
-      "address": "0x51f86654a8FE6343B605eDC0D7F25abB5C3ca33B",
-      "transactionHash": "0x377a4d60ff4a9299623018487cc82a5d9672afeaa27b64f68268fb8e3a2337bc"
+      "address": "0xF555C7Fe30eb1C78DF20f223A8BB04D8B92AF56A",
+      "transactionHash": "0x03693182acd495ff05868f61863842d78f7830192112c07a5f24bee9749278f3"
     }
   },
   "schemaVersion": "3.0.16",
-  "updatedAt": "2019-10-28T16:10:28.195Z",
+  "updatedAt": "2019-10-29T21:50:35.845Z",
   "devdoc": {
     "author": "blOX Consulting\r Date: 8.26.19\r \r ERC20 Placeholder for Dai in TandaPay Demonstration\r",
     "details": "Literally ERC20Mintable\r*",

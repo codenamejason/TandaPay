@@ -29,11 +29,16 @@ export const fetchClaims = () => async dispatch => {
   } catch (error) {}
 };
 
-export const createClaim = (summary, documents, amount) => async dispatch => {
+export const createClaim = (
+  summary,
+  documents,
+  period,
+  claimantAddress
+) => async dispatch => {
   try {
     const rs = await axios.post(
       "/claims/",
-      { summary, documents, amount },
+      { summary, documents, period, claimantAddress },
       config()
     );
     const claims = rs.data;

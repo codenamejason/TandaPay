@@ -7,7 +7,12 @@ import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import styles from "./payment.style";
-import { getDAIBalance, calculatePayment } from "../../../../../web3";
+import {
+  getDAIBalance,
+  calculatePayment,
+  getActivePeriod,
+  approvePremiumForSmartContractAddress
+} from "../../../../../web3";
 class PaymentInfo extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +20,8 @@ class PaymentInfo extends Component {
     this.state = {
       working: false,
       balance: 0,
-      premium: "N/A"
+      premium: "N/A",
+      period: "N/A"
     };
   }
   async componentDidMount() {
@@ -44,6 +50,17 @@ class PaymentInfo extends Component {
           premium: premiumPayment
         });
       }
+
+      const [period, pError] = await getActivePeriod(
+        this.props.ethereum.web3,
+        this.props.ethereum.TGP
+      );
+
+      if (!pError) {
+        this.setState({
+          period
+        });
+      }
     } catch (e) {
       console.log(e);
     }
@@ -57,9 +74,22 @@ class PaymentInfo extends Component {
     this.props.onSignUpFormSubmit(this.props.ethereum.web3);
   }
 
+  approvePremium = async () => {
+    const [result, error] = await approvePremiumForSmartContractAddress(
+      this.props.ethereum.web3,
+      this.props.ethereum.DAI,
+
+      this.state.premium
+    );
+    console.log(result, error);
+    if (!error) {
+    } else {
+      alert("Error ");
+    }
+  };
   render() {
     const { classes } = this.props;
-    const { balance, premium, working } = this.state;
+    const { balance, premium, working, period } = this.state;
 
     return (
       <div className={classes.root}>
@@ -83,10 +113,10 @@ class PaymentInfo extends Component {
         <Divider variant="middle" />
         <div className={classes.section2}>
           <Typography gutterBottom variant="body1">
-            Subgroup
+            Period
           </Typography>
           <div>
-            <Chip className={classes.chip} label="Dumo Lab" />
+            <Chip className={classes.chip} label={period} />
           </div>
         </div>
 
@@ -113,7 +143,7 @@ class PaymentInfo extends Component {
             variant="contained"
             disabled={working}
             color="secondary"
-            type="submit"
+            onClick={this.approvePremium}
           >
             Approve Premium
           </Button>

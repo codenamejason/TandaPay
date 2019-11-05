@@ -21,7 +21,7 @@ function AmountField() {
       component={TextField}
       validate={validate}
       InputProps={{
-        startAdornment: <InputAdornment position="start">ETH</InputAdornment>,
+        startAdornment: <InputAdornment position="start">DAI</InputAdornment>
       }}
     />
   );

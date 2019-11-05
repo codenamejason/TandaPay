@@ -3,8 +3,10 @@ import clsx from "clsx";
 import { withStyles, Card, Typography, Button } from "@material-ui/core";
 import styles from "./card.style";
 import WalletModal from "../WalletModal/WalletModal";
+import BuyDai from "../BuyDai/BuyDai";
 import { connect } from "react-redux";
 import { getDAIBalance } from "../../../../../web3";
+import WyreModal from "../../../../components/WyreModal/WyreModal";
 /**
  * @summary
  * @param {Object} props
@@ -20,22 +22,20 @@ class WalletCard extends React.Component {
   }
 
   async componentDidMount() {
-    try{
-    const [balance, error] = await getDAIBalance(
-      this.props.ethereum.web3,
-      this.props.ethereum.DAI
-    );
-    if (!error) {
-      this.setState({
-        balance
-      });
+    try {
+      const [balance, error] = await getDAIBalance(
+        this.props.ethereum.web3,
+        this.props.ethereum.DAI
+      );
+      if (!error) {
+        this.setState({
+          balance
+        });
+      }
+    } catch (e) {
+      console.log(e);
     }
-  }catch(e){
-    console.log(e);
-    
   }
-  }
-
   /**
    * @summary Function generator that takes in the type of modal that it will open.
    * It uses the arrow functions to automatically bind the returned functions.
@@ -85,7 +85,7 @@ class WalletCard extends React.Component {
     });
   };
   render() {
-    const { classes } = this.props;
+    const { classes, user } = this.props;
     const { open, type, balance } = this.state;
     return (
       <Card className={classes.walletCard}>
@@ -94,7 +94,13 @@ class WalletCard extends React.Component {
           <Typography variant="body1">Balance</Typography>
           <Typography variant="body1">{balance} DAI</Typography>
         </div>
-        <WalletModal open={open} type={type} handleClose={this.handleClose} />
+        {/* <WyreModal /> */}
+        <WalletModal
+          open={open}
+          type={type}
+          handleClose={this.handleClose}
+          address={user.ethereumAddress}
+        />
         <div className={classes.buttonGroup}>
           <Button
             className={clsx(classes.button, [classes.red])}
@@ -108,20 +114,22 @@ class WalletCard extends React.Component {
           >
             SEND
           </Button>
-          <Button
+          {/* <Button
             className={clsx(classes.button, [classes.green])}
             onClick={this.handleOpen("buy")}
           >
             BUY
-          </Button>
+          </Button> */}
+
+          <BuyDai />
         </div>
       </Card>
     );
   }
 }
 
-function mapStateToProps({ ethereum }) {
-  return { ethereum };
+function mapStateToProps({ ethereum, user }) {
+  return { ethereum, user };
 }
 
 export default connect(mapStateToProps)(

@@ -25,7 +25,7 @@ const ProfileCard = props => {
             </div>
             <div className={classes.amountContainer}>
               <Typography variant="h5" className={classes.amount}>
-                $ {claim.amount} claim
+                Claim period {claim.period}
               </Typography>
             </div>
           </Grid>

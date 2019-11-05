@@ -11,7 +11,7 @@ import AddressField from "./components/AddressField";
  * @todo Refactor the Modal's containers to improve performance
  */
 const WalletModal = props => {
-  const { type, open, handleClose, classes } = props;
+  const { type, open, handleClose, classes, address } = props;
 
   return (
     <Modal open={open} onClose={handleClose}>
@@ -27,7 +27,7 @@ const WalletModal = props => {
                   <AmountField />
                 </Grid>
                 <Grid item xs={12} className={classes.container}>
-                  <AddressField />
+                  <AddressField address={address} />
                 </Grid>
                 <Grid item xs={12} className={classes.buttonContainer}>
                   <Button
@@ -47,8 +47,8 @@ const WalletModal = props => {
   );
 };
 
-const onSubmit = values => {
-  console.log(values);
+const onSubmit = (props, values) => {
+  //this.props.history.push("/admin/claims");
 };
 
 export default withStyles(styles, { withTheme: true })(WalletModal);

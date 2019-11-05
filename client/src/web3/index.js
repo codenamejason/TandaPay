@@ -131,11 +131,18 @@ const calculatePayment = async (web3, TGP) => {
   try {
     const accounts = await web3.eth.getAccounts();
     const balance = await TGP.methods.calculatePayment(accounts[0]).call();
-    console.log(balance, "the premium");
 
     return [web3.utils.fromWei(balance), null];
   } catch (e) {
-    console.log(e, "the premium Error");
+    return [null, e];
+  }
+};
+
+const getActivePeriod = async (web3, TGP) => {
+  try {
+    const period = await TGP.methods.activePeriod().call();
+    return [period, null];
+  } catch (e) {
     return [null, e];
   }
 };
@@ -145,6 +152,45 @@ const addPolicyHolderToSmartContract = async (web3, TGP, address, subgroup) => {
     const accounts = await web3.eth.getAccounts();
     const result = await TGP.methods
       .addPolicyholder(address, subgroup)
+      .send({ from: accounts[0] });
+
+    return [result, null];
+  } catch (e) {
+    return [null, e];
+  }
+};
+
+const approvePremiumForSmartContractAddress = async (web3, DAI, amount) => {
+  try {
+    const accounts = await web3.eth.getAccounts();
+    const result = await DAI.methods
+      .approve(process.env.REACT_APP_Group_ADDRESS, web3.utils.toWei(amount))
+      .send({ from: accounts[0] });
+
+    return [result, null];
+  } catch (e) {
+    return [null, e];
+  }
+};
+
+const submitClaimToSmartContract = async (web3, TGP, period, claimant) => {
+  try {
+    const accounts = await web3.eth.getAccounts();
+    const result = await TGP.methods
+      .submitClaim(period, claimant)
+      .send({ from: accounts[0] });
+
+    return [result, null];
+  } catch (e) {
+    return [null, e];
+  }
+};
+
+const removePolicyHolderFromSmartContract = async (web3, TGP, address) => {
+  try {
+    const accounts = await web3.eth.getAccounts();
+    const result = await TGP.methods
+      .removePolicyholder(address)
       .send({ from: accounts[0] });
 
     return [result, null];
@@ -178,5 +224,9 @@ export {
   calculatePayment,
   createDAIContract,
   addPolicyHolderToSmartContract,
-  groupContract
+  removePolicyHolderFromSmartContract,
+  groupContract,
+  getActivePeriod,
+  submitClaimToSmartContract,
+  approvePremiumForSmartContractAddress
 };

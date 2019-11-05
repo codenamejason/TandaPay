@@ -21,7 +21,11 @@ app.use(
       defaultSrc: ["'self'"],
       styleSrc: ["'self'", "'unsafe-inline'"],
       fontSrc: ["data:"],
-      scriptSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: [
+        "'self'",
+        "'unsafe-inline'",
+        "https://verify.sendwyre.com/js/widget-loader.js"
+      ],
       imgSrc: [
         "data:",
         "https://source.unsplash.com/random",
@@ -41,7 +45,7 @@ app.use(
         "http://localhost:8080",
         "https://storage.googleapis.com/"
       ],
-      frameSrc: ["https://x2.fortmatic.com/"]
+      frameSrc: ["https://x2.fortmatic.com/", "https://verify.testwyre.com/"]
     }
   })
 );

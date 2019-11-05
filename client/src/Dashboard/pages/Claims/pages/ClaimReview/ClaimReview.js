@@ -9,7 +9,7 @@ import data from "../../../../../data/claims.json";
 import styles from "./review.style";
 import ProfileCard from "./components/ProfileCard";
 import ClaimDocs from "./components/ClaimDocs";
-
+import { submitClaimToSmartContract } from "../../../../../web3";
 class ClaimReview extends React.Component {
   constructor(props) {
     super(props);
@@ -25,6 +25,8 @@ class ClaimReview extends React.Component {
         claim = claims[x];
       }
     }
+    console.log(claim, "the claim");
+
     this.setState({
       claim,
       claimID
@@ -77,15 +79,26 @@ class ClaimReview extends React.Component {
   /**
    *
    */
-  handleClaimApproval = () => {
-    this.props.approveClaim(this.state.claimID);
+  handleClaimApproval = async () => {
+    const [result, error] = await submitClaimToSmartContract(
+      this.props.ethereum.web3,
+      this.props.ethereum.TGP,
+      this.state.claim.period,
+      this.state.claim.claimantAddress
+    );
+    console.log(result, error);
+    if (!error) {
+      await this.props.approveClaim(this.state.claimID);
 
-    this.props.history.push("/admin/claims");
+      this.props.history.push("/admin/claims");
+    } else {
+      alert("Error ");
+    }
   };
 }
 
-function mapStateToProps({ user, claims }) {
-  return { user, claims };
+function mapStateToProps({ user, claims, ethereum }) {
+  return { user, claims, ethereum };
 }
 
 export default withRouter(

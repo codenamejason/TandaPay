@@ -24,10 +24,10 @@ const headRows = [
     label: "Creation Date"
   },
   {
-    id: "amount",
+    id: "period",
     numeric: true,
     disablePadding: false,
-    label: "Claim Disbursement"
+    label: "Claim Period"
   },
   {
     id: "_id",

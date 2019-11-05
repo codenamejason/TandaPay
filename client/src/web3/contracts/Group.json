@@ -53405,12 +53405,12 @@
         }
       },
       "links": {},
-      "address": "0x02b3EC388c2E923653C86c59ecC472e2F111B1ff",
-      "transactionHash": "0xc61fb3fd215ac3b0ff9cedb2f3710fac019cd517ff327792a8c514c7aecf5e3c"
+      "address": "0x8C66DA27ce529a0058a2eC376401bF693454A805",
+      "transactionHash": "0x2bbe57931144c8e9f2a3cda125a74a1616080b7dab8183e99df424baa9f270f5"
     }
   },
   "schemaVersion": "3.0.16",
-  "updatedAt": "2019-10-28T16:10:28.215Z",
+  "updatedAt": "2019-10-29T21:50:35.871Z",
   "devdoc": {
     "author": "blOX Consulting LLC\r Date: 08.26.2019\r Implementation of Group Insurance Contract\r",
     "methods": {
