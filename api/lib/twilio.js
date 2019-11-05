@@ -47,6 +47,8 @@ function sendSMS(phone, text) {
  * @returns: void
  */
 function sendEmail(email, subject, html) {
+    console.log("Here");
+
     if (sendgrid == null) setup();
     try {
         return sendgrid.send({

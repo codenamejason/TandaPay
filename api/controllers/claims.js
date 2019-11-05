@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Claim = mongoose.model("claims");
+const Group = mongoose.model("groups");
 
 /**
  * @summary: Gets all claims associated with a user's group
@@ -11,10 +12,10 @@ const Claim = mongoose.model("claims");
 async function getAllClaims(req, res, next) {
     let { groupID } = req.user;
     try {
-        let claims = await Claim.find({ groupID })
+        let claims = await Claim.find({ groupID });
         res.status(200).send(claims);
-    } catch(e) {
-        res.status(500).send({ error: 'internal error' });
+    } catch (e) {
+        res.status(500).send({ error: "internal error" });
     }
 }
 
@@ -26,18 +27,47 @@ async function getAllClaims(req, res, next) {
  * @returns: void
  */
 async function createNewClaim(req, res, next) {
-    let { summary, documents, amount } = req.body;
+    let { summary, documents, period, claimantAddress } = req.body;
 
-    if (summary.length < 10) {
-        return res.status(400).send({ error: 'summary too short' });
+    let group = await Group.findOne().elemMatch("subgroups", {
+        "members.id": req.user.id,
+    });
+    if (!group) {
+        return res.status(400).send({ error: "No group found" });
+    }
+
+    let group_name = group.groupName;
+    let subgroup_name = "";
+    for (let index = 0; index < group.subgroups.length; index++) {
+        const element = group.subgroups[index];
+        for (
+            let innerindex = 0;
+            innerindex < element.members.length;
+            innerindex++
+        ) {
+            const member = element.members[innerindex];
+            if (member.id == req.user.id) {
+                subgroup_name = element.name;
+            }
+        }
+
+        if (subgroup_name != "") {
+            break;
+        }
+    }
+
+    if (subgroup_name == "") {
+        return res
+            .status(400)
+            .send({ error: "You have not join any subgroup" });
+    }
+
+    if (summary.length < 0) {
+        return res.status(400).send({ error: "summary too short" });
     }
 
     if (documents.length < 1) {
-        return res.status(400).send({ error: 'document(s) required' });
-    }
-
-    if (amount <= 0) {
-        return res.status(400).send({ error: 'amount too low' });
+        return res.status(400).send({ error: "document(s) required" });
     }
 
     let claim = new Claim({
@@ -45,10 +75,12 @@ async function createNewClaim(req, res, next) {
         claimantID: req.user.id,
         claimantName: req.user.name,
         status: "pending",
-
+        subgroupName: subgroup_name,
+        groupName: group_name,
         summary,
         documents,
-        amount,
+        period,
+        claimantAddress,
     });
     await claim.save();
 
@@ -119,7 +151,7 @@ async function updateClaimByID(req, res, next) {
 
     if (summary) {
         if (summary.length < 10) {
-            return res.status(400).send({ error: 'summary too short' });
+            return res.status(400).send({ error: "summary too short" });
         }
 
         claim.summary = summary;
@@ -127,7 +159,7 @@ async function updateClaimByID(req, res, next) {
 
     if (documents) {
         if (documents.length < 1) {
-            return res.status(400).send({ error: 'too few documents' });
+            return res.status(400).send({ error: "too few documents" });
         }
 
         claim.documents = documents;
@@ -135,7 +167,7 @@ async function updateClaimByID(req, res, next) {
 
     if (amount !== undefined) {
         if (amount <= 0) {
-            return res.status(400).send({ error: 'amount too low' });
+            return res.status(400).send({ error: "amount too low" });
         }
 
         claim.amount = amount;
@@ -143,7 +175,7 @@ async function updateClaimByID(req, res, next) {
 
     try {
         await claim.save();
-    } catch(e) {
+    } catch (e) {
         res.status(500).send({ error: "internal error" });
     }
 
@@ -156,7 +188,7 @@ async function updateClaimByID(req, res, next) {
  * @param res: The Express response object
  * @param next: The Express next function
  * @returns: void
-*/
+ */
 async function approveClaimByID(req, res, next) {
     let { claimID } = req.params;
     if (!claimID) {
@@ -172,7 +204,10 @@ async function approveClaimByID(req, res, next) {
         return res.status(404).send({ error: "no such claim" });
     }
 
-    if (claim.groupID != req.user.groupID.toString() || req.user.role != "secretary") {
+    if (
+        claim.groupID != req.user.groupID.toString() ||
+        req.user.role != "secretary"
+    ) {
         return res.status(403).send({ error: "you do not have permission" });
     }
 
@@ -187,7 +222,7 @@ async function approveClaimByID(req, res, next) {
  * @param res: The Express response object
  * @param next: The Express next function
  * @returns: void
-*/
+ */
 async function denyClaimByID(req, res, next) {
     let { claimID } = req.params;
     if (!claimID) {
@@ -203,7 +238,10 @@ async function denyClaimByID(req, res, next) {
         return res.status(404).send({ error: "no such claim" });
     }
 
-    if (claim.groupID != req.user.groupID.toString() || req.user.role != "secretary") {
+    if (
+        claim.groupID != req.user.groupID.toString() ||
+        req.user.role != "secretary"
+    ) {
         return res.status(403).send({ error: "you do not have permission" });
     }
 

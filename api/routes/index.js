@@ -6,11 +6,12 @@ let cors = require("cors");
 app.use(
     cors({
         origin: [
-            "https://peerless-dahlia-229121.appspot.com",
-            "http://peerless-dahlia-229121.appspot.com",
             "http://localhost:3000",
-            "http://127.0.0.1:3000",
+            "http://localhost:5000",
+
+            "https://tandapay-255615.appspot.com",
         ],
+        optionsSuccessStatus: 200,
         allowedHeaders: ["Content-Type", "Authorization"],
         credentials: true,
     })

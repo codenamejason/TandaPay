@@ -27,6 +27,7 @@ async function createUploadUrl(name) {
         contentType: "application/pdf",
         expires: Date.now() + FIFTEEN_MINUTES,
     }))[0];
+    console.log(url);
 
     return url;
 }

@@ -1,4 +1,5 @@
 let Group = require("../models/Group");
+let User = require("../models/User");
 
 let checkSetupSettings = async (req, res, next) => {
     const { role, accessCode, walletProvider, ethAddress } = req.body;
@@ -92,6 +93,22 @@ const updateWallet = async (req, res, next) => {
         res.status(500).send(e);
     }
 };
+
+async function userById(req, res) {
+    try {
+        const result = await User.findOne({ _id: req.params.userID })
+            .select("-settings")
+            .select("-password")
+            .select("-tokens");
+
+        console.log(result, "loging user");
+
+        return res.send({ OtherUser: result });
+    } catch (e) {
+        res.status(500).send(e);
+    }
+}
+
 const sendProfile = (req, res) => {
     const token = req.token;
     const user = req.user;
@@ -127,4 +144,5 @@ module.exports = {
     generateUpdatedToken,
     updateWallet,
     sendProfile,
+    userById,
 };

@@ -6,6 +6,7 @@ const {
     generateUpdatedToken,
     sendProfile,
     updateWallet,
+    userById,
 } = require("../controllers/user");
 const {
     authenticated,
@@ -17,6 +18,7 @@ let router = express.Router();
  * MOVE ENTIRE ROUTE TO API FOLDER
  */
 
+router.get("/:userID", userById);
 /**
  * @summary retrieves the full information about the user and sends it back as a response
  * @param token identifier to determine which user to retrieve

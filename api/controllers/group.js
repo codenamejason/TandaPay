@@ -1,6 +1,9 @@
 let mongoose = require("mongoose");
 let crypto = require("crypto");
 let Group = mongoose.model("groups");
+const ObjectId = require("mongodb").ObjectID;
+const Subgroup = require("../models/Subgroup");
+
 let { sendEmail } = require("../lib/twilio");
 let invitationTemplate = require("../templates/invite.html.js");
 
@@ -24,6 +27,100 @@ async function getGroupByIDController(req, res, next) {
 
     res.status(200).send(group);
     next();
+}
+
+/**
+ * @summary: create sub-group
+ * @param req: The Express request object
+ * @param res: The Express response object
+ * @returns: group
+ */
+// members: { $exists: true },
+// $where: "this.members.length>1",
+// subgroups: { $exists: true },
+// $where: "this.subgroups.members.length<7",
+async function newSubGroupController(req, res) {
+    let { subName, group_id } = req.body;
+    let { name, _id } = req.user;
+
+    let group = await Group.findOne({
+        _id: group_id,
+        "subgroups.members.id": { $nin: _id },
+
+        "members.id": _id,
+    });
+
+    if (group == null) {
+        console.log("null here");
+        return res
+            .status(400)
+            .send({ error: "You're not eligible to create a subgroup" });
+    }
+
+    let subgroup = {
+        name: subName,
+        leader: _id,
+        members: [
+            {
+                id: _id,
+                name: name,
+            },
+        ],
+    };
+
+    // if (group.subgroups.length > 0) {
+    //     console.log("i used unshift");
+    //
+    //     group.subgroups.unshift(subgroup);
+    // } else {
+    //     console.log("i used push");
+    //
+    // }
+    group.subgroups.push(subgroup);
+    await group.save();
+    return res.status(200).send(group);
+}
+
+/**
+ * @summary: join sub-group
+ * @param req: The Express request object
+ * @param res: The Express response object
+ * @returns: group
+ */
+async function joinSubGroupController(req, res) {
+    let { sub_id, group_id } = req.body;
+    let { name, _id } = req.user;
+    let unwrap = sub_id.split("-");
+    let subId = unwrap[0];
+    let index = unwrap[1];
+
+    let group = await Group.findOne({
+        _id: group_id,
+        "subgroups._id": subId,
+        "members.id": _id,
+        "subgroups.members.id": { $nin: _id },
+    });
+
+    if (group == null || group == "") {
+        return res
+            .status(400)
+            .send({ error: "You're not eligible to join a subgroup" });
+    }
+
+    let joinsubgroup = {
+        id: _id,
+        name: name,
+    };
+
+    group.subgroups[index].members.unshift(joinsubgroup);
+    let membersCount = group.subgroups[index].members.length;
+    if (membersCount > 7) {
+        return res
+            .status(400)
+            .send({ error: "Maximum number of participant reached" });
+    }
+    await group.save();
+    return res.status(200).send(group);
 }
 
 /**
@@ -73,7 +170,7 @@ async function newGroupController(req, res, next) {
             charterID,
             groupStanding: "okay",
             subgroups: [],
-            accessCode: generateAccessCode()
+            accessCode: generateAccessCode(),
         });
         await group.save();
 
@@ -126,7 +223,7 @@ async function inviteToGroupController(req, res, next) {
     let html = invitationTemplate({
         group: group.groupName,
         secretary: secretary.name,
-        url: "https://peerless-dahlia-229121.appspot.com/",
+        url: "https://tandapay-255615.appspot.com",
         code: group.accessCode,
     });
 
@@ -144,11 +241,13 @@ async function inviteToGroupController(req, res, next) {
  * this can generate 4,294,967,296 unique access codes
  */
 function generateAccessCode() {
-    return crypto.randomBytes(4).toString('hex');
+    return crypto.randomBytes(4).toString("hex");
 }
 
 module.exports = {
     getGroupByIDController,
     newGroupController,
     inviteToGroupController,
+    newSubGroupController,
+    joinSubGroupController,
 };

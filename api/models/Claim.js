@@ -8,8 +8,12 @@ const claimSchema = new Schema({
     groupID: ObjectId,
     claimantID: ObjectId,
     claimantName: String,
+    subgroupName: String,
+    groupName: String,
     summary: String,
-    amount: Number,
+    claimantAddress: String,
+    createdAt: { type: Date, default: Date.now },
+    period: Number,
     documents: [String],
     status: {
         type: String,

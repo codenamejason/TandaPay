@@ -1,15 +1,17 @@
-// RUNME: gsutil cors set cors.json gs://[bucket name]
 [
     {
         "origin": [
             "https://peerless-dahlia-229121.appspot.com",
             "http://peerless-dahlia-229121.appspot.com",
             "http://localhost:3000",
-            "http://127.0.0.1"
+            "http://localhost:5000",
+            "http://127.0.0.1",
+            "https://tandapay-255615.appspot.com",
+            "http://tandapay-255615.appspot.com"
         ],
         "responseHeader": ["Content-Type"],
         "requestHeader": ["Content-Type", "Authorization"],
-        "method": ["GET", "PUT"],
+        "method": ["GET", "PUT", "POST", "DELETE"],
         "maxAgeSeconds": 3600
     }
 ]
