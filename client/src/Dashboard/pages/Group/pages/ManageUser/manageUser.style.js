@@ -28,18 +28,28 @@ const styles = theme => ({
   },
   imageContainer: {
     height: "inherit",
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
+    float: "right"
   },
   subgroup: {
     color: theme.palette.warning.main,
     fontWeight: "bold"
   },
+
   standing: {
     color: theme.palette.secondary.light,
     fontWeight: "bold"
   },
   img: {
     height: "100%"
+  },
+  root: {
+    flexGrow: 1
+  },
+  paper: {
+    padding: theme.spacing(2),
+    margin: "10px",
+    color: theme.palette.text.secondary
   }
 });
 

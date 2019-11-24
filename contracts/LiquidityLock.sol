@@ -6,7 +6,7 @@ import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
 
 /**
  * @author blOX Consulting LLC
- * Date: 08.09.2019
+ * Date: 08.26.2019
  * Liquidity Contract for Secretary to post stake into 
  * Administrator remittance should always pay out secretary
  */

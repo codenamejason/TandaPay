@@ -45,14 +45,12 @@ const EnhancedTableRow = props => {
         </Typography>
       </TableCell>
       <TableCell align="left">
-        <Button
-          variant="contained"
-          to={`/holder/${type}/${data._id}`}
-          component={RegLink}
-          className={classes.button}
+        <a
+          href={"https://rinkeby.etherscan.io/tx/" + data.transactionHash}
+          target="_blank"
         >
           REVIEW
-        </Button>
+        </a>
       </TableCell>
     </TableRow>
   );

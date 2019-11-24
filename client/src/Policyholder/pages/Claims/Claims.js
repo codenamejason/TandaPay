@@ -5,6 +5,9 @@ import styles from "./claims.style";
 import ClaimsOverview from "./pages/ClaimsOverview";
 import ClaimReview from "./pages/ClaimReview/ClaimReview";
 import ClaimNew from "./pages/ClaimNew/ClaimNew";
+import DefectClaim from "./pages/DefectClaim/DefectClaim";
+import DefectionGuide from "./pages/DefectionGuide/DefectionGuide";
+import ClaimsGuide from "./pages/ClaimsGuide/ClaimsGuide";
 
 class Claims extends React.Component {
   render() {
@@ -15,6 +18,15 @@ class Claims extends React.Component {
         <Switch>
           <Route exact path="/holder/claims" component={ClaimsOverview} />
           <Route exact path="/holder/claims/new" component={ClaimNew} />
+          <Route exact path="/holder/claims/defect" component={DefectClaim} />
+          <Route
+            exact
+            path="/holder/claims/defect/guide"
+            component={DefectionGuide}
+          />
+
+          <Route exact path="/holder/claims/guide" component={ClaimsGuide} />
+
           <Route exact path="/holder/claims/:id" component={ClaimReview} />
         </Switch>
       </main>

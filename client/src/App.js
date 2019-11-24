@@ -67,7 +67,4 @@ class App extends React.Component {
   }
 }
 
-export default connect(
-  null,
-  actions
-)(App);
+export default connect(null, actions)(App);

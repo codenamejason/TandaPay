@@ -21,6 +21,12 @@ export const USER_LOADED = "user_loaded";
 export const LOGOUT_SUCCESS = "logout_success";
 export const SET_ALERT = "set_alert";
 export const REMOVE_ALERT = "remove_alert";
+
+export const SET_ETH_ALERT = "set_eth_alert";
+export const REMOVE_ETH_ALERT = "remove_eth_alert";
+
 export const CREATE_SUBGROUP_SUCCESS = "create_subgroup_success";
 export const CREATE_SUBGROUP_FAILED = "create_subgroup_failed";
 export const CLAIM_CREATED = "create_created";
+export const FETCH_TRANSFERS = "fetch_transfers";
+export const FETCH_PREMIUM = "fetch_premium";

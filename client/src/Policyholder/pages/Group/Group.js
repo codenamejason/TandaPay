@@ -2,7 +2,7 @@ import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { Route, Switch } from "react-router-dom";
 
-import { GroupCreator, GroupDashboard, InviteMember } from "./pages";
+import { GroupDashboard } from "./pages";
 import { withGroup, withoutGroup } from "./components/HOCs.js";
 import SubgroupMembers from "./pages/SubgroupMembers/SubgroupMembers";
 import styles from "./group.style.js";
@@ -31,16 +31,6 @@ const Group = () => (
         path="/holder/groups/subgroup/:id"
         component={withGroup(SubgroupMembers)}
       />{" "}
-      <Route
-        exact
-        path="/holder/groups/new"
-        component={withoutGroup(GroupCreator)}
-      />
-      <Route
-        exact
-        path="/holder/groups/invite"
-        component={withGroup(InviteMember)}
-      />
     </Switch>
   </Wrapper>
 );

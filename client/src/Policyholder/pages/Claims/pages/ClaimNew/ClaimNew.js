@@ -15,6 +15,8 @@ import { getActivePeriod } from "../../../../../web3";
 class ClaimNew extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props);
+
     this.state = {
       files: [],
       documents: [],
@@ -31,7 +33,7 @@ class ClaimNew extends React.Component {
 
     const [period, error] = await getActivePeriod(
       this.props.ethereum.web3,
-      this.props.ethereum.TGP
+      this.props.group.contract
     );
 
     if (!error && parseFloat(period) > 0) {
@@ -81,9 +83,9 @@ class ClaimNew extends React.Component {
       {
         text: "VIEW GUIDE",
         type: "blue",
-        handleClick: this.displayGuide
+        url: "/holder/claims/guide"
       },
-      { text: "CANCEL", type: "red", url: "/admin/claims" },
+      { text: "CANCEL", type: "red", url: "/holder/claims" },
       {
         text: "SUBMIT",
         type: "green",
@@ -110,8 +112,8 @@ class ClaimNew extends React.Component {
   }
 }
 
-function mapStateToProps({ claims, ethereum, user }) {
-  return { claims, ethereum, user };
+function mapStateToProps({ claims, ethereum, user, group }) {
+  return { claims, ethereum, user, group };
 }
 export default withRouter(
   connect(

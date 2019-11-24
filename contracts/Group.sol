@@ -5,20 +5,22 @@ import 'openzeppelin-solidity/contracts/ownership/Secondary.sol';
 
 /**
  * @author blOX Consulting LLC
- * Date: 08.11.2019
- * Implementation of Group
+ * Date: 08.26.2019
+ * Implementation of Group Insurance Contract
  */
 contract Group is IGroup, Secondary {
-    
+
     ///MODIFIERS///
 
     /**
      * Determine whether the liquidity contract is accessable by the Secretary
      */
     modifier liquidityLock() {
-        uint range = block.timestamp - origin;
-        uint bound = range.mod(30);
-        require(origin == 0 || bound <= 6 days, "Liquidity Stake is currently Locked!");
+        if (!isLobby()) {
+            uint range = block.timestamp - origin;
+            uint bound = range.mod(30);
+            require(origin == 0 || bound <= 6 days, "Liquidity Stake is currently Locked!");
+        }
         _;
     }
 
@@ -40,6 +42,7 @@ contract Group is IGroup, Secondary {
     modifier allowed(uint _period, subperiod _state) {
         require(getSubperiod(_period) == uint(_state), "Incorrect subperiod for this action!");
         _;
+
     }
 
     /**
@@ -61,17 +64,17 @@ contract Group is IGroup, Secondary {
     ///CONSTRUCTOR///
 
     /**
-     * Construct a new Test Group
+     * Construct a new Group
      * @param _dai the address of the Dai ERC20 contract
      * @param _secretary the address of the secretary of this group
-     *     @dev _secretary is minter / admin in Test Group
      * @param _volume the number of expected claims
      * @param _payout the number of Dai tokens to pay out per claim
      */
     constructor(address _dai, address _secretary, uint _volume, uint _payout) public {
+        secretary = _secretary;
         currentPeriod = 0;
         uint total = _volume.mul(_payout);
-        Liquidity = new LiquidityLock(total.mul(2), _secretary, _dai);
+        Liquidity = new LiquidityLock(total, _secretary, _dai);
         Dai = IERC20(_dai);
         volume = _volume;
         payout = _payout;
@@ -98,7 +101,8 @@ contract Group is IGroup, Secondary {
         emit Stopped();
     }
 
-    function endPeriod(uint _period) public onlyPrimary {
+    function endPeriod(uint _period) public {
+        require(msg.sender == secretary || msg.sender == primary(), "Only Primary (Admin of Service.sol) or the Secretary may end the Period");
         stripToxicSubgroups(_period);
         payClaims(_period);
         payRefunds(_period);
@@ -109,7 +113,8 @@ contract Group is IGroup, Secondary {
             origin = 0;
         }
         emit PeriodEnded(_period);
-        loanMonths = loanMonths.sub(1);
+        if (loanMonths > 2)
+            loanMonths = loanMonths.sub(1);
     }
 
     function withdraw() public onlySecretary liquidityLock {
@@ -117,9 +122,9 @@ contract Group is IGroup, Secondary {
         emit LiquidityWithdrawn(balance);
     }
 
-    function makeLoan(uint _months) public onlyPrimary onlyLobby {
+    function makeLoan(uint _debt, uint _months) public onlyPrimary onlyLobby {
         require(!loaned(), "Cannot have two loans simultaneously!");
-        loanDebt = (volume.mul(payout)).mul(2);
+        loanDebt = _debt;
         loanMonths = _months;
         emit Loaned(loanDebt, loanMonths);
     }
@@ -127,8 +132,7 @@ contract Group is IGroup, Secondary {
     function addPolicyholder(address _to, uint _subgroup) public onlySecretary onlyLobby {
         require(policyholders[_to] == 0, "Policyholder already exists!");
         require(subgroupCounts[_subgroup] < 7, "Subgroup is full!");
-        require(_subgroup > subgroupIndex.add(1), "Incorrect subgroup syntax!");
-        
+
         policyholders[_to] = _subgroup;
         subgroupCounts[_subgroup] = subgroupCounts[_subgroup].add(1);
         groupSize = groupSize.add(1);
@@ -136,20 +140,19 @@ contract Group is IGroup, Secondary {
         if(_subgroup == subgroupIndex.add(1))
             subgroupIndex = subgroupIndex.add(1);
     }
-    
+
     function removePolicyholder(address _from) public onlySecretary onlyLobby {
         require(policyholders[_from] != 0, "Policyholder does not exist!");
-        
+
         subgroupCounts[policyholders[_from]] = subgroupCounts[policyholders[_from]].sub(1);
         policyholders[_from] = 0;
         groupSize = groupSize.sub(1);
         emit PolicyholderRemoved(_from);
     }
-    
+
     function changeSubgroup(address _policyholder, uint _subgroup) public onlySecretary onlyLobby {
         require(subgroupCounts[_subgroup] < 7, "Subgroup is full!");
-        require(_subgroup > subgroupIndex.add(1), "Incorrect subgroup syntax!");
-        
+
         subgroupCounts[policyholders[_policyholder]] = subgroupCounts[policyholders[_policyholder]].sub(1);
         subgroupCounts[_subgroup] = subgroupCounts[_subgroup].add(1);
         uint old = policyholders[_policyholder];
@@ -158,29 +161,26 @@ contract Group is IGroup, Secondary {
         if(_subgroup == subgroupIndex.add(1))
             subgroupIndex = subgroupIndex.add(1);
     }
-    
+
     function makePayment(uint _period) public onlyPolicyholder allowed(_period, subperiod.PRE) {
         require(participantToIndex[_period][msg.sender] == 0, "Address has already paid premium as a Policyholder!");
-        uint subgroup = subgroupCounts[policyholders[msg.sender]];
-        uint premiumPayment = calculatePremium();
-        uint overPayment = calculateOverpayment(subgroup, premiumPayment);
-        uint loanPayment = calculateLoanPayment();
-        uint total = premiumPayment.add(overPayment).add(loanPayment);
+        uint total = calculatePayment(msg.sender);
         require(Dai.allowance(msg.sender, address(this)) >= total, "Insufficient Dai allowance for Payment!");
-
-        Dai.transferFrom(msg.sender, address(this), premiumPayment.add(overPayment));
-        Dai.transferFrom(msg.sender, primary(), loanPayment);
+        uint loan = calculateLoanPayment();
+        uint insurance = total.sub(loan);
+        Dai.transferFrom(msg.sender, address(this), insurance);
+        Dai.transferFrom(msg.sender, primary(), loan);
         participantIndices[_period] = participantIndices[_period].add(1);
         uint index = participantIndices[_period];
         participants[_period][index] = msg.sender;
         participantToIndex[_period][msg.sender] = index;
         emit Paid(msg.sender, _period);
-        claimPools[_period] = claimPools[_period].add(premiumPayment.add(overPayment));
+        claimPools[_period] = claimPools[_period].add(insurance);
     }
 
     function submitClaim(uint _period, address _claimant) public onlySecretary allowed(_period, subperiod.ACTIVE) {
         require(claimants[_period][_claimant] == 0, "Claimant already has an existing Claim!");
-        
+
         claimIndices[_period] = claimIndices[_period].add(1);
         uint index = claimIndices[_period];
         claims[_period][index] = _claimant;
@@ -196,15 +196,33 @@ contract Group is IGroup, Secondary {
         if(claimIndex != 0)
             removeClaim(_period, claimIndex);
         uint subgroup = policyholders[msg.sender];
+        uint subgroupSize = getSubgroupSize(subgroup);
         defectionCounts[_period][subgroup] = defectionCounts[_period][subgroup].add(1);
         if(defectionCounts[_period][subgroup] >= DEFECTION_THRESHOLD)
             toxicSubgroups[_period][subgroup] = true;
-        Dai.transfer(msg.sender, calculatePremium());
+        uint premium = calculatePremium();
+        uint overpayment = calculateOverpayment(subgroupSize);
+        uint totalRefunded = premium.add(overpayment);
+        Dai.transfer(msg.sender, totalRefunded);
         removeParticipant(_period, participantIndex);
         emit Defected(msg.sender, _period);
+        claimPools[_period] = claimPools[_period].sub(totalRefunded);
     }
 
     ///INTERFACE VIEWABLE FUNCTIONS///
+
+    function isLobby() public view returns (bool) {
+        if (next == false) {
+            uint nextPeriod = currentPeriod.add(1);
+            if (periodLocks[nextPeriod][0] == 0)
+                return true;
+        }
+        return false;
+    }
+
+    function doNext() public view returns (bool) {
+        return next;
+    }
 
     function getSecretary() public view returns (address) {
         return secretary;
@@ -214,8 +232,13 @@ contract Group is IGroup, Secondary {
         return address(Liquidity);
     }
 
-    function groupPremium() public view returns (uint) {
-        return (payout.mul(volume));
+    function withdrawable() public view returns (bool) {
+        uint range = block.timestamp - origin;
+        uint bound = range.mod(30);
+        if (origin == 0 || bound <= 6 days)
+            return true;
+        else
+            return false;
     }
 
     function activePeriod() public view returns (uint) {
@@ -240,28 +263,32 @@ contract Group is IGroup, Secondary {
     }
 
     function loaned() public view returns (bool) {
-        return (loanDebt == 0 && loanMonths == 0);
-    }    
+        return (loanDebt != 0);
+    }
 
     function calculatePayment(address _query) public view returns (uint) {
+        uint subgroupSize = subgroupCounts[policyholders[_query]];
         uint premium = calculatePremium();
-        uint overpayment = calculateOverpayment(policyholders[_query], premium);
+        uint overpayment = calculateOverpayment(subgroupSize);
         uint loan = calculateLoanPayment();
-        return (premium.add(overpayment).add(loan));
+        return premium.add(overpayment).add(loan);
     }
 
     function calculatePremium() public view returns (uint) {
         uint total = payout.mul(volume);
-        return total.div(groupSize);
+        if (groupSize < 50)
+            return total.div(50);
+        else
+            return total.div(groupSize);
     }
 
-    function calculateOverpayment(uint _subgroup, uint _premium) public view returns (uint) {
-        uint subgroupSize = subgroupCounts[_subgroup];
-        return (_premium.div(subgroupSize.sub(1)));
+    function calculateOverpayment(uint _size) public view returns (uint) {
+        uint premium = calculatePremium();
+        return (premium.div(_size.sub(1)));
     }
 
     function calculateLoanPayment() public view returns (uint) {
-        return loanDebt.sub((loanMonths.add(1)).mul(groupSize));
+        return loanDebt.div((loanMonths.add(1)).mul(groupSize));
     }
 
     function calculateExpectedPayout(uint _period) public view returns (uint) {
@@ -273,6 +300,70 @@ contract Group is IGroup, Secondary {
         if (share > payout)
             share = payout;
         return share;
+    }
+
+    function calculateEndowment(uint _months) public view returns (uint _endowment) {
+        require(_months >= 2, "Endowment must use two or more months to pay back Loan!");
+
+        uint size = groupSize;
+        if (size < 50)
+            size = 50;
+        uint subgroupEstimate = 5;
+        uint premium = calculatePremium();
+        uint overpayment = calculateOverpayment(subgroupEstimate);
+        uint groupPremium = premium.mul(size);
+        uint groupOverpayment = overpayment.mul(size);
+        uint payment = groupPremium.add(groupOverpayment);
+        _endowment = payment.add(payment.div(_months.sub(1)));
+    }
+
+    function viewLoan() public view returns (uint _debt, uint _months) {
+        _debt = loanDebt;
+        _months = loanMonths;
+    }
+
+    function viewPool(uint _period) public view returns (uint _pool) {
+        return claimPools[_period];
+    }
+
+    function isPolicyholder(address _query) public view returns (uint _subgroup) {
+        return policyholders[_query];
+    }
+
+    function getSize() public view returns (uint _size) {
+        return groupSize;
+    }
+
+    function getSubgroupSize(uint _index) public view returns (uint _size) {
+        return subgroupCounts[_index];
+    }
+
+    function isParticipant(uint _period, address _query) public view returns (uint _index) {
+        return participantToIndex[_period][_query];
+    }
+
+    function activeIndex(uint _period) public view returns (uint _index) {
+        return participantIndices[_period];
+    }
+
+    function indexToParticipant(uint _period, uint _index) public view returns (address _participant) {
+        return participants[_period][_index];
+    }
+
+    function isClaimant(uint _period, address _query) public view returns (uint _index) {
+        return claimants[_period][_query];
+    }
+
+    function claimIndex(uint _period) public view returns (uint _index) {
+        return claimIndices[_period];
+    }
+
+    function indexToClaimant(uint _period, uint _index) public view returns (address _claimant) {
+        return claims[_period][_index];
+    }
+
+    function getDefectionCount(uint _period, uint _subgroup) public view returns (uint _count) {
+        return defectionCounts[_period][_subgroup];
     }
 
     ///INTERNAL FUNCTIONS///
@@ -328,11 +419,10 @@ contract Group is IGroup, Secondary {
             address claimant = claims[_period][i];
             Dai.transfer(claimant, share);
             claimPools[_period] = claimPools[_period].sub(share);
-            removeParticipant(_period, participantToIndex[_period][claimant]);
             emit ClaimPaid(claimant, _period);
         }
     }
-    
+
     /**
      * Pay refunds to the remaining active policyholders according to the remaining Dai pool
      * @param _period uint index of period being remitted
@@ -345,6 +435,7 @@ contract Group is IGroup, Secondary {
             for(uint i = 1; i <= index; i++) {
                 address participant = participants[_period][i];
                 Dai.transfer(participant, share);
+                claimPools[_period] = claimPools[_period].sub(share);
                 delete participants[_period][i];
                 delete participantToIndex[_period][participant];
             }

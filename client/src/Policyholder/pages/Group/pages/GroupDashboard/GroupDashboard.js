@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 
 import { Myself, Subgroup, Members } from "./components";
 
-import { PageHeader } from "../../../../components/";
 import * as actions from "../../../../../actions";
 
 const GroupDashboard = connect(

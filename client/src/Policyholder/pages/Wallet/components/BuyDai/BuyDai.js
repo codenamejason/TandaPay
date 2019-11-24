@@ -19,7 +19,7 @@ class BuyDai extends Component {
     this.setState({
       open: !this.state.open,
 
-      title: "Buy DAI"
+      title: "Sell DAI"
     });
   };
 
@@ -40,7 +40,7 @@ class BuyDai extends Component {
           onClick={this.handleBuyFormClick}
           className=" btn btn-primary"
         >
-          Buy DAI
+          Sell DAI
         </Button>{" "}
         <Dialog
           open={open}

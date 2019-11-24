@@ -3,17 +3,20 @@ import { connect } from "react-redux";
 import TextField from "@material-ui/core/TextField";
 import { setAlert } from "../../../../../../../actions/alert";
 import { creatSubgroup } from "../../../../../../../actions/group";
-
+import { Redirect } from "react-router-dom";
 import Alert from "../../../../../../../components/Alert";
 import PropTypes from "prop-types";
 //register
 const Form = ({ setAlert, groupID, creatSubgroup }) => {
   const [formData, setFormData] = useState({
     name: "",
-    group_id: groupID
+    group_id: groupID,
+    isSubmiting: false,
+    btnText: "Create Now",
+    done: false
   });
 
-  const { name, group_id } = formData;
+  const { name, group_id, btnText, isSubmiting, done } = formData;
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,12 +26,27 @@ const Form = ({ setAlert, groupID, creatSubgroup }) => {
     if (name == "") {
       setAlert("Subgroup name is required", "danger");
     } else {
-      creatSubgroup({ name, group_id });
+      setFormData({
+        ...formData,
+        btnText: "Creating please waiting...",
+        isSubmiting: true
+      });
+      let response = creatSubgroup({ name, group_id });
+      response.then(s => {
+        setFormData({
+          ...formData,
+          btnText: "Create Now",
+          name: "",
+          isSubmiting: false,
+          done: true
+        });
+      });
     }
   };
 
   return (
     <Fragment>
+      {done ? <Redirect to="/holder/groups" /> : null}
       <form className="form" onSubmit={e => onSubmit(e)}>
         <Alert />
         <div className="form-group">
@@ -51,7 +69,12 @@ const Form = ({ setAlert, groupID, creatSubgroup }) => {
           />
         </div>
         <div className="form-group">
-          <input type="submit" className="btn btn-primary" value="Register" />
+          <input
+            type="submit"
+            className="btn btn-primary"
+            value={btnText}
+            disabled={isSubmiting}
+          />
         </div>
       </form>
     </Fragment>

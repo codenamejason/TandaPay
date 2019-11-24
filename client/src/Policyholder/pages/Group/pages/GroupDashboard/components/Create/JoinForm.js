@@ -7,15 +7,18 @@ import PropTypes from "prop-types";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Alert from "../../../../../../../components/Alert";
 import { JoinSubgroup } from "../../../../../../../actions/group";
-
+import { Redirect } from "react-router-dom";
 const JoinForm = ({ setAlert, groupID, JoinSubgroup, subgroups }) => {
   const [formData, setFormData] = useState({
     value: "",
-    group_id: groupID
+    group_id: groupID,
+    done: false,
+    btnText: "Join Now ",
+    isSubmiting: false
   });
 
   const radioGroupRef = React.useRef(null);
-  const { value, group_id } = formData;
+  const { value, group_id, done, btnText, isSubmiting } = formData;
 
   const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -26,12 +29,25 @@ const JoinForm = ({ setAlert, groupID, JoinSubgroup, subgroups }) => {
     if (value == "") {
       setAlert("Please choose a subgroup from the list below", "danger");
     } else {
-      JoinSubgroup({ value, group_id });
+      setFormData({
+        ...formData,
+        btnText: "Joining please waiting...",
+        isSubmiting: true
+      });
+      let response = JoinSubgroup({ value, group_id });
+      response.then(s => {
+        setFormData({
+          ...formData,
+          done: true
+        });
+      });
     }
+    //window.location("/holder/groups");
   };
 
   return (
     <Fragment>
+      {done ? <Redirect to="/holder/groups" /> : null}
       <form className="form" onSubmit={e => onSubmit(e)}>
         <Alert />
         <div className="form-group">
@@ -53,7 +69,12 @@ const JoinForm = ({ setAlert, groupID, JoinSubgroup, subgroups }) => {
           </RadioGroup>
         </div>
         <div className="form-group">
-          <input type="submit" className="btn btn-danger" value="Join Now" />
+          <input
+            type="submit"
+            className="btn btn-danger"
+            value={btnText}
+            disabled={isSubmiting}
+          />
         </div>
       </form>
     </Fragment>

@@ -10,6 +10,8 @@ import styles from "./review.style";
 import ProfileCard from "./components/ProfileCard";
 import ClaimDocs from "./components/ClaimDocs";
 import { submitClaimToSmartContract } from "../../../../../web3";
+import EthAlert from "../../../../../components/EthAlert";
+import Alert from "../../../../../components/Alert";
 class ClaimReview extends React.Component {
   constructor(props) {
     super(props);
@@ -25,7 +27,6 @@ class ClaimReview extends React.Component {
         claim = claims[x];
       }
     }
-    console.log(claim, "the claim");
 
     this.setState({
       claim,
@@ -51,6 +52,8 @@ class ClaimReview extends React.Component {
     const { claim } = this.state;
     return (
       <React.Fragment>
+        <Alert />
+        <EthAlert />
         <PageHeader
           title="Claim Overview"
           buttons={headerButtons}
@@ -80,25 +83,34 @@ class ClaimReview extends React.Component {
    *
    */
   handleClaimApproval = async () => {
+    console.log(this.state.claim.claimantAddress, this.state.claim.period);
+
     const [result, error] = await submitClaimToSmartContract(
       this.props.ethereum.web3,
-      this.props.ethereum.TGP,
+      this.props.group.contract,
       this.state.claim.period,
       this.state.claim.claimantAddress
     );
     console.log(result, error);
-    if (!error) {
+
+    if (result) {
+      let msg = "Group created successfully.";
+      let type = "success";
+      let hash = result.transactionHash;
+      this.props.dispatchEthCustomMessage({ msg, type, hash });
       await this.props.approveClaim(this.state.claimID);
 
       this.props.history.push("/admin/claims");
     } else {
-      alert("Error ");
+      let msg = "Group creation failed refresh the page and try again.";
+      let type = "danger";
+      this.props.dispatchCustomMessage({ msg, type });
     }
   };
 }
 
-function mapStateToProps({ user, claims, ethereum }) {
-  return { user, claims, ethereum };
+function mapStateToProps({ user, claims, ethereum, group }) {
+  return { user, claims, ethereum, group };
 }
 
 export default withRouter(

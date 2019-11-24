@@ -6,7 +6,7 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import * as actions from "../../../../../../../actions";
 import styles from "./Myself.style.js";
-
+import Avatar from "react-avatar";
 const Myself = ({ classes, group, user }) => {
   const { name, email } = user;
   function doJoin(e) {
@@ -20,11 +20,12 @@ const Myself = ({ classes, group, user }) => {
           <div>
             <Grid container spacing={4}>
               <Grid item md={4}>
-                <img
+                <Avatar name={name} size="150px" />
+                {/* <img
                   src="https://via.placeholder.com/150"
                   className={classes.img}
                   alt="User Profile"
-                />
+                /> */}
               </Grid>
               <Grid item md={8}>
                 <Typography variant="body1">
@@ -65,9 +66,9 @@ const Myself = ({ classes, group, user }) => {
   );
 };
 
-const Bold = withStyles(styles, { withTheme: true })(
-  ({ classes, children }) => <span className={classes.bold}>{children}</span>
-);
+const Bold = withStyles(styles, {
+  withTheme: true
+})(({ classes, children }) => <span className={classes.bold}>{children}</span>);
 
 function mapStateToProps({ group, user }) {
   return { group, user };

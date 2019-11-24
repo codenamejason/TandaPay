@@ -30,6 +30,10 @@ class Claims extends React.Component {
     const headerButtons = [
       { text: "NEW CLAIM", type: "green", url: "/holder/claims/new" }
     ];
+
+    const tableButtons = [
+      { text: "DEFECT PAYMENT", type: "red", url: "/holder/claims/defect" }
+    ];
     return (
       <React.Fragment>
         <PageHeader
@@ -48,6 +52,7 @@ class Claims extends React.Component {
           headRows={headRows}
           title="All Claims"
           type="claims"
+          buttons={tableButtons}
         />
       </React.Fragment>
     );

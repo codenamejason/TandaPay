@@ -32,6 +32,11 @@
           "indexed": false,
           "name": "_group",
           "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_to",
+          "type": "address"
         }
       ],
       "name": "GroupCreated",
@@ -225,25 +230,25 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.5.8+commit.23d335f2\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":true,\"inputs\":[],\"name\":\"getGroupCount\",\"outputs\":[{\"name\":\"_index\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_from\",\"type\":\"address\"}],\"name\":\"removeAdmin\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_group\",\"type\":\"address\"},{\"name\":\"_months\",\"type\":\"uint256\"}],\"name\":\"loan\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_query\",\"type\":\"address\"}],\"name\":\"isAdmin\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_to\",\"type\":\"address\"},{\"name\":\"_volume\",\"type\":\"uint256\"},{\"name\":\"_payout\",\"type\":\"uint256\"}],\"name\":\"createGroup\",\"outputs\":[{\"name\":\"_group\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_query\",\"type\":\"address\"}],\"name\":\"isSecretary\",\"outputs\":[{\"name\":\"_index\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_to\",\"type\":\"address\"}],\"name\":\"addAdmin\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_group\",\"type\":\"address\"}],\"name\":\"remitGroup\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_index\",\"type\":\"uint256\"}],\"name\":\"getGroup\",\"outputs\":[{\"name\":\"_group\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"_approved\",\"type\":\"address\"}],\"name\":\"AdminApproved\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"_revoked\",\"type\":\"address\"}],\"name\":\"AdminRevoked\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"_group\",\"type\":\"address\"}],\"name\":\"GroupCreated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"_group\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"_period\",\"type\":\"uint256\"}],\"name\":\"Remitted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"_group\",\"type\":\"address\"}],\"name\":\"Loaned\",\"type\":\"event\"}],\"devdoc\":{\"author\":\"blOX Consulting LLC\\r Date: 08.26.2019\\r Interface for Insurance Service/ Group Factory Contract\\r\",\"methods\":{\"addAdmin(address)\":{\"details\":\"modifier onlyAdmin\\r Add an admin\\r\",\"params\":{\"_to\":\"the address being whitelisted\\r*\"}},\"createGroup(address,uint256,uint256)\":{\"details\":\"modifier onlyAdmin\\r Approve a secretary and create a new group\\r\",\"params\":{\"_payout\":\"uint number of Dai paid per claim\\r\",\"_to\":\"the address being given a secretary role\\r\",\"_volume\":\"uint number of expected claims\\r\"},\"return\":\"_group the address of the Group contact\\r*\"},\"getGroup(uint256)\":{\"params\":{\"_index\":\"uint key to return address value in mapping 'groups'\\r\"},\"return\":\"the address stored at the queried index. Returns 0x00 if none\\r\"},\"getGroupCount()\":{\"return\":\"_index uint number of deployed Group child contracts deployed\\r\"},\"isAdmin(address)\":{\"params\":{\"_query\":\"address being queried as Administrator\\r\"},\"return\":\"bool true if the address is an Administrator, and false otherwise\\r\"},\"isSecretary(address)\":{\"params\":{\"_query\":\"address being queried as Secretary\\r\"},\"return\":\"_index uint stored index of Secretary's Group; returns 0 if none\\r\"},\"loan(address,uint256)\":{\"details\":\"modifier onlyAdmin\\rrequire sufficienct balance\\r Extend a loan, in Dai, to a Tanda Group\\r\",\"params\":{\"_group\":\"the group being given the loan\\r\",\"_months\":\"the length, in months (periods), the Group has to repay\\r\"}},\"remitGroup(address)\":{\"details\":\"modifier onlyAdmin\\rmodifier unlocked\\r Remit a single group assuming it is not timelocked\\r\",\"params\":{\"_group\":\"the address of the group being remitted\\r*\"}},\"removeAdmin(address)\":{\"details\":\"modifier onlyAdmin\\r Remove an admin\\r\",\"params\":{\"_from\":\"the address being blacklisted\\r*\"}}}},\"userdoc\":{\"methods\":{\"getGroup(uint256)\":{\"notice\":\"Determine the Group address stored internally at a specific index\\r\"},\"getGroupCount()\":{\"notice\":\"Determine the number of insurance groups deployed by this Service\\r\"},\"isAdmin(address)\":{\"notice\":\"Query an address to determine if it currently holds an Administrator role in the Service\\r\"},\"isSecretary(address)\":{\"notice\":\"Determine if an address is a Secretary by returning the index of their group\\r\"}}}},\"settings\":{\"compilationTarget\":{\"/C/Users/Coda/Desktop/The Smart Contract/TandaPay-Contracts/contracts/IService.sol\":\"IService\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/Coda/Desktop/The Smart Contract/TandaPay-Contracts/contracts/IService.sol\":{\"keccak256\":\"0x1d7049cd425d6b76f2d590010fc1a4629569360080ae0c5e277322554e065014\",\"urls\":[\"bzzr://275d93e9c9146d277624c745cab42842b4d360b1215825932546e1f13490d834\"]},\"openzeppelin-solidity/contracts/math/SafeMath.sol\":{\"keccak256\":\"0x4ccf2d7b51873db1ccfd54ca2adae5eac3b184f9699911ed4490438419f1c690\",\"urls\":[\"bzzr://1604f5b6d6e916c154efd8c6720cda069e5ba32dfa0a9dedf2b42e5b02d07f89\"]},\"openzeppelin-solidity/contracts/token/ERC20/IERC20.sol\":{\"keccak256\":\"0x90e8c2521653bbb1768b05889c5760031e688d9cd361f167489b89215e201b95\",\"urls\":[\"bzzr://aa8b45b57edafc3d67bc5d916327ea16807fae33f753ca163ae0c4061b789766\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.5.8+commit.23d335f2\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":true,\"inputs\":[],\"name\":\"getGroupCount\",\"outputs\":[{\"name\":\"_index\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_from\",\"type\":\"address\"}],\"name\":\"removeAdmin\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_group\",\"type\":\"address\"},{\"name\":\"_months\",\"type\":\"uint256\"}],\"name\":\"loan\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_query\",\"type\":\"address\"}],\"name\":\"isAdmin\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_to\",\"type\":\"address\"},{\"name\":\"_volume\",\"type\":\"uint256\"},{\"name\":\"_payout\",\"type\":\"uint256\"}],\"name\":\"createGroup\",\"outputs\":[{\"name\":\"_group\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_query\",\"type\":\"address\"}],\"name\":\"isSecretary\",\"outputs\":[{\"name\":\"_index\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_to\",\"type\":\"address\"}],\"name\":\"addAdmin\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_group\",\"type\":\"address\"}],\"name\":\"remitGroup\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_index\",\"type\":\"uint256\"}],\"name\":\"getGroup\",\"outputs\":[{\"name\":\"_group\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"_approved\",\"type\":\"address\"}],\"name\":\"AdminApproved\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"_revoked\",\"type\":\"address\"}],\"name\":\"AdminRevoked\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"_group\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"_to\",\"type\":\"address\"}],\"name\":\"GroupCreated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"_group\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"_period\",\"type\":\"uint256\"}],\"name\":\"Remitted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"_group\",\"type\":\"address\"}],\"name\":\"Loaned\",\"type\":\"event\"}],\"devdoc\":{\"author\":\"blOX Consulting LLC\\r Date: 08.26.2019\\r Interface for Insurance Service/ Group Factory Contract\\r\",\"methods\":{\"addAdmin(address)\":{\"details\":\"modifier onlyAdmin\\r Add an admin\\r\",\"params\":{\"_to\":\"the address being whitelisted\\r*\"}},\"createGroup(address,uint256,uint256)\":{\"details\":\"modifier onlyAdmin\\r Approve a secretary and create a new group\\r\",\"params\":{\"_payout\":\"uint number of Dai paid per claim\\r\",\"_to\":\"the address being given a secretary role\\r\",\"_volume\":\"uint number of expected claims\\r\"},\"return\":\"_group the address of the Group contact\\r*\"},\"getGroup(uint256)\":{\"params\":{\"_index\":\"uint key to return address value in mapping 'groups'\\r\"},\"return\":\"the address stored at the queried index. Returns 0x00 if none\\r\"},\"getGroupCount()\":{\"return\":\"_index uint number of deployed Group child contracts deployed\\r\"},\"isAdmin(address)\":{\"params\":{\"_query\":\"address being queried as Administrator\\r\"},\"return\":\"bool true if the address is an Administrator, and false otherwise\\r\"},\"isSecretary(address)\":{\"params\":{\"_query\":\"address being queried as Secretary\\r\"},\"return\":\"_index uint stored index of Secretary's Group; returns 0 if none\\r\"},\"loan(address,uint256)\":{\"details\":\"modifier onlyAdmin\\rrequire sufficienct balance\\r Extend a loan, in Dai, to a Tanda Group\\r\",\"params\":{\"_group\":\"the group being given the loan\\r\",\"_months\":\"the length, in months (periods), the Group has to repay\\r\"}},\"remitGroup(address)\":{\"details\":\"modifier onlyAdmin\\rmodifier unlocked\\r Remit a single group assuming it is not timelocked\\r\",\"params\":{\"_group\":\"the address of the group being remitted\\r*\"}},\"removeAdmin(address)\":{\"details\":\"modifier onlyAdmin\\r Remove an admin\\r\",\"params\":{\"_from\":\"the address being blacklisted\\r*\"}}}},\"userdoc\":{\"methods\":{\"getGroup(uint256)\":{\"notice\":\"Determine the Group address stored internally at a specific index\\r\"},\"getGroupCount()\":{\"notice\":\"Determine the number of insurance groups deployed by this Service\\r\"},\"isAdmin(address)\":{\"notice\":\"Query an address to determine if it currently holds an Administrator role in the Service\\r\"},\"isSecretary(address)\":{\"notice\":\"Determine if an address is a Secretary by returning the index of their group\\r\"}}}},\"settings\":{\"compilationTarget\":{\"/C/Users/Coda/Desktop/The Smart Contract/TandaPay-Contracts/contracts/IService.sol\":\"IService\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/Coda/Desktop/The Smart Contract/TandaPay-Contracts/contracts/IService.sol\":{\"keccak256\":\"0xdc130f3c192db406ce3bb0ec8572ce97571b78318884c22dfd97ddead3cb12ee\",\"urls\":[\"bzzr://8bf2fed63b82a48053ce9a84c59ea7cad804fc8dd325a2248034c54c3acb1b26\"]},\"openzeppelin-solidity/contracts/math/SafeMath.sol\":{\"keccak256\":\"0x4ccf2d7b51873db1ccfd54ca2adae5eac3b184f9699911ed4490438419f1c690\",\"urls\":[\"bzzr://1604f5b6d6e916c154efd8c6720cda069e5ba32dfa0a9dedf2b42e5b02d07f89\"]},\"openzeppelin-solidity/contracts/token/ERC20/IERC20.sol\":{\"keccak256\":\"0x90e8c2521653bbb1768b05889c5760031e688d9cd361f167489b89215e201b95\",\"urls\":[\"bzzr://aa8b45b57edafc3d67bc5d916327ea16807fae33f753ca163ae0c4061b789766\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "pragma solidity >= 0.4.0 < 0.7.0;\r\n\r\nimport 'openzeppelin-solidity/contracts/math/SafeMath.sol';\r\nimport 'openzeppelin-solidity/contracts/token/ERC20/IERC20.sol';\r\n\r\n\r\n/**\r\n * @author blOX Consulting LLC\r\n * Date: 08.26.2019\r\n * Interface for Insurance Service/ Group Factory Contract\r\n */\r\ncontract IService {\r\n\r\n    using SafeMath for uint;\r\n\r\n    event AdminApproved(address _approved);\r\n    event AdminRevoked(address _revoked);\r\n    event GroupCreated(address _group);\r\n    event Remitted(address _group, uint _period);\r\n    event Loaned(address _group);\r\n\r\n    enum subperiod {LOBBY, PRE, ACTIVE, POST, ENDED}\r\n\r\n    mapping(address => bool) administrators;\r\n    mapping(address => uint) secretaries;\r\n    mapping(uint => address) groups;\r\n\r\n    IERC20 Dai;\r\n\r\n    uint groupCount;\r\n\r\n    ///MUTABLE FUNCTIONS///\r\n\r\n    /**\r\n     * @dev modifier onlyAdmin\r\n     * Add an admin\r\n     * @param _to the address being whitelisted\r\n     **/\r\n    function addAdmin(address _to) public;\r\n\r\n    /**\r\n     * @dev modifier onlyAdmin\r\n     * Remove an admin\r\n     * @param _from the address being blacklisted\r\n     **/\r\n    function removeAdmin(address _from) public;\r\n\r\n    /**\r\n     * @dev modifier onlyAdmin\r\n     * Approve a secretary and create a new group\r\n     * @param _to the address being given a secretary role\r\n     * @param _volume uint number of expected claims\r\n     * @param _payout uint number of Dai paid per claim\r\n     * @return _group the address of the Group contact\r\n     **/\r\n    function createGroup(address _to, uint _volume, uint _payout) public returns (address _group);\r\n\r\n    /**\r\n     * @dev modifier onlyAdmin\r\n     * @dev modifier unlocked\r\n     * Remit a single group assuming it is not timelocked\r\n     * @param _group the address of the group being remitted\r\n     **/\r\n    function remitGroup(address _group) public;\r\n\r\n    /**\r\n     * @dev modifier onlyAdmin\r\n     * @dev require sufficienct balance\r\n     * Extend a loan, in Dai, to a Tanda Group\r\n     * @param _group the group being given the loan\r\n     * @param _months the length, in months (periods), the Group has to repay\r\n     */\r\n    function loan(address _group, uint _months) public;\r\n\r\n    ///VIEWABLE FUNCTIONS///\r\n    \r\n    /**\r\n     * Query an address to determine if it currently holds an Administrator role in the Service\r\n     * @param _query address being queried as Administrator\r\n     * @return bool true if the address is an Administrator, and false otherwise\r\n     */\r\n    function isAdmin(address _query) public view returns (bool);\r\n\r\n    /**\r\n     * Determine if an address is a Secretary by returning the index of their group\r\n     * @param _query address being queried as Secretary\r\n     * @return _index uint stored index of Secretary's Group; returns 0 if none\r\n     */\r\n    function isSecretary(address _query) public view returns (uint _index);\r\n\r\n    /**\r\n     * Determine the Group address stored internally at a specific index\r\n     * @param _index uint key to return address value in mapping 'groups'\r\n     * @return the address stored at the queried index. Returns 0x00 if none\r\n     */\r\n    function getGroup(uint _index) public view returns (address _group);\r\n\r\n    /**\r\n     * Determine the number of insurance groups deployed by this Service\r\n     * @return _index uint number of deployed Group child contracts deployed\r\n     */\r\n    function getGroupCount() public view returns (uint _index);\r\n\r\n}",
+  "source": "pragma solidity >= 0.4.0 < 0.7.0;\r\n\r\nimport 'openzeppelin-solidity/contracts/math/SafeMath.sol';\r\nimport 'openzeppelin-solidity/contracts/token/ERC20/IERC20.sol';\r\n\r\n\r\n/**\r\n * @author blOX Consulting LLC\r\n * Date: 08.26.2019\r\n * Interface for Insurance Service/ Group Factory Contract\r\n */\r\ncontract IService {\r\n\r\n    using SafeMath for uint;\r\n\r\n    event AdminApproved(address _approved);\r\n    event AdminRevoked(address _revoked);\r\n    event GroupCreated(address _group, address _to);\r\n    event Remitted(address _group, uint _period);\r\n    event Loaned(address _group);\r\n\r\n    enum subperiod {LOBBY, PRE, ACTIVE, POST, ENDED}\r\n\r\n    mapping(address => bool) administrators;\r\n    mapping(address => uint) secretaries;\r\n    mapping(uint => address) groups;\r\n\r\n    IERC20 Dai;\r\n\r\n    uint groupCount;\r\n\r\n    ///MUTABLE FUNCTIONS///\r\n\r\n    /**\r\n     * @dev modifier onlyAdmin\r\n     * Add an admin\r\n     * @param _to the address being whitelisted\r\n     **/\r\n    function addAdmin(address _to) public;\r\n\r\n    /**\r\n     * @dev modifier onlyAdmin\r\n     * Remove an admin\r\n     * @param _from the address being blacklisted\r\n     **/\r\n    function removeAdmin(address _from) public;\r\n\r\n    /**\r\n     * @dev modifier onlyAdmin\r\n     * Approve a secretary and create a new group\r\n     * @param _to the address being given a secretary role\r\n     * @param _volume uint number of expected claims\r\n     * @param _payout uint number of Dai paid per claim\r\n     * @return _group the address of the Group contact\r\n     **/\r\n    function createGroup(address _to, uint _volume, uint _payout) public returns (address _group);\r\n\r\n    /**\r\n     * @dev modifier onlyAdmin\r\n     * @dev modifier unlocked\r\n     * Remit a single group assuming it is not timelocked\r\n     * @param _group the address of the group being remitted\r\n     **/\r\n    function remitGroup(address _group) public;\r\n\r\n    /**\r\n     * @dev modifier onlyAdmin\r\n     * @dev require sufficienct balance\r\n     * Extend a loan, in Dai, to a Tanda Group\r\n     * @param _group the group being given the loan\r\n     * @param _months the length, in months (periods), the Group has to repay\r\n     */\r\n    function loan(address _group, uint _months) public;\r\n\r\n    ///VIEWABLE FUNCTIONS///\r\n\r\n    /**\r\n     * Query an address to determine if it currently holds an Administrator role in the Service\r\n     * @param _query address being queried as Administrator\r\n     * @return bool true if the address is an Administrator, and false otherwise\r\n     */\r\n    function isAdmin(address _query) public view returns (bool);\r\n\r\n    /**\r\n     * Determine if an address is a Secretary by returning the index of their group\r\n     * @param _query address being queried as Secretary\r\n     * @return _index uint stored index of Secretary's Group; returns 0 if none\r\n     */\r\n    function isSecretary(address _query) public view returns (uint _index);\r\n\r\n    /**\r\n     * Determine the Group address stored internally at a specific index\r\n     * @param _index uint key to return address value in mapping 'groups'\r\n     * @return the address stored at the queried index. Returns 0x00 if none\r\n     */\r\n    function getGroup(uint _index) public view returns (address _group);\r\n\r\n    /**\r\n     * Determine the number of insurance groups deployed by this Service\r\n     * @return _index uint number of deployed Group child contracts deployed\r\n     */\r\n    function getGroupCount() public view returns (uint _index);\r\n\r\n}\r\n",
   "sourcePath": "C:\\Users\\Coda\\Desktop\\The Smart Contract\\TandaPay-Contracts\\contracts\\IService.sol",
   "ast": {
     "absolutePath": "/C/Users/Coda/Desktop/The Smart Contract/TandaPay-Contracts/contracts/IService.sol",
     "exportedSymbols": {
       "IService": [
-        2527
+        3643
       ]
     },
-    "id": 2528,
+    "id": 3644,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2418,
+        "id": 3532,
         "literals": [
           "solidity",
           ">=",
@@ -254,27 +259,27 @@
           ".0"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:33:3"
+        "src": "0:33:4"
       },
       {
         "absolutePath": "openzeppelin-solidity/contracts/math/SafeMath.sol",
         "file": "openzeppelin-solidity/contracts/math/SafeMath.sol",
-        "id": 2419,
+        "id": 3533,
         "nodeType": "ImportDirective",
-        "scope": 2528,
-        "sourceUnit": 3297,
-        "src": "37:59:3",
+        "scope": 3644,
+        "sourceUnit": 4412,
+        "src": "37:59:4",
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
         "absolutePath": "openzeppelin-solidity/contracts/token/ERC20/IERC20.sol",
         "file": "openzeppelin-solidity/contracts/token/ERC20/IERC20.sol",
-        "id": 2420,
+        "id": 3534,
         "nodeType": "ImportDirective",
-        "scope": 2528,
-        "sourceUnit": 3858,
-        "src": "98:64:3",
+        "scope": 3644,
+        "sourceUnit": 4973,
+        "src": "98:64:4",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -284,34 +289,34 @@
         "contractKind": "contract",
         "documentation": "@author blOX Consulting LLC\r\nDate: 08.26.2019\r\nInterface for Insurance Service/ Group Factory Contract\r",
         "fullyImplemented": false,
-        "id": 2527,
+        "id": 3643,
         "linearizedBaseContracts": [
-          2527
+          3643
         ],
         "name": "IService",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "id": 2423,
+            "id": 3537,
             "libraryName": {
               "contractScope": null,
-              "id": 2421,
+              "id": 3535,
               "name": "SafeMath",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 3296,
-              "src": "324:8:3",
+              "referencedDeclaration": 4411,
+              "src": "324:8:4",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_SafeMath_$3296",
+                "typeIdentifier": "t_contract$_SafeMath_$4411",
                 "typeString": "library SafeMath"
               }
             },
             "nodeType": "UsingForDirective",
-            "src": "318:24:3",
+            "src": "318:24:4",
             "typeName": {
-              "id": 2422,
+              "id": 3536,
               "name": "uint",
               "nodeType": "ElementaryTypeName",
-              "src": "337:4:3",
+              "src": "337:4:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -321,21 +326,21 @@
           {
             "anonymous": false,
             "documentation": null,
-            "id": 2427,
+            "id": 3541,
             "name": "AdminApproved",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 2426,
+              "id": 3540,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2425,
+                  "id": 3539,
                   "indexed": false,
                   "name": "_approved",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2427,
-                  "src": "370:17:3",
+                  "scope": 3541,
+                  "src": "370:17:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -343,10 +348,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2424,
+                    "id": 3538,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "370:7:3",
+                    "src": "370:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -357,28 +362,28 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "369:19:3"
+              "src": "369:19:4"
             },
-            "src": "350:39:3"
+            "src": "350:39:4"
           },
           {
             "anonymous": false,
             "documentation": null,
-            "id": 2431,
+            "id": 3545,
             "name": "AdminRevoked",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 2430,
+              "id": 3544,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2429,
+                  "id": 3543,
                   "indexed": false,
                   "name": "_revoked",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2431,
-                  "src": "414:16:3",
+                  "scope": 3545,
+                  "src": "414:16:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -386,10 +391,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2428,
+                    "id": 3542,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "414:7:3",
+                    "src": "414:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -400,28 +405,28 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "413:18:3"
+              "src": "413:18:4"
             },
-            "src": "395:37:3"
+            "src": "395:37:4"
           },
           {
             "anonymous": false,
             "documentation": null,
-            "id": 2435,
+            "id": 3551,
             "name": "GroupCreated",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 2434,
+              "id": 3550,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2433,
+                  "id": 3547,
                   "indexed": false,
                   "name": "_group",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2435,
-                  "src": "457:14:3",
+                  "scope": 3551,
+                  "src": "457:14:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -429,53 +434,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2432,
+                    "id": 3546,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "457:7:3",
-                    "stateMutability": "nonpayable",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "456:16:3"
-            },
-            "src": "438:35:3"
-          },
-          {
-            "anonymous": false,
-            "documentation": null,
-            "id": 2441,
-            "name": "Remitted",
-            "nodeType": "EventDefinition",
-            "parameters": {
-              "id": 2440,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 2437,
-                  "indexed": false,
-                  "name": "_group",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 2441,
-                  "src": "494:14:3",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 2436,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "494:7:3",
+                    "src": "457:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -487,54 +449,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 2439,
+                  "id": 3549,
                   "indexed": false,
-                  "name": "_period",
+                  "name": "_to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2441,
-                  "src": "510:12:3",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_uint256",
-                    "typeString": "uint256"
-                  },
-                  "typeName": {
-                    "id": 2438,
-                    "name": "uint",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "510:4:3",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_uint256",
-                      "typeString": "uint256"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "493:30:3"
-            },
-            "src": "479:45:3"
-          },
-          {
-            "anonymous": false,
-            "documentation": null,
-            "id": 2445,
-            "name": "Loaned",
-            "nodeType": "EventDefinition",
-            "parameters": {
-              "id": 2444,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 2443,
-                  "indexed": false,
-                  "name": "_group",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 2445,
-                  "src": "543:14:3",
+                  "scope": 3551,
+                  "src": "473:11:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -542,10 +462,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2442,
+                    "id": 3548,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "543:7:3",
+                    "src": "473:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -556,56 +476,169 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "542:16:3"
+              "src": "456:29:4"
             },
-            "src": "530:29:3"
+            "src": "438:48:4"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 3557,
+            "name": "Remitted",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 3556,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3553,
+                  "indexed": false,
+                  "name": "_group",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3557,
+                  "src": "507:14:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3552,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "507:7:4",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3555,
+                  "indexed": false,
+                  "name": "_period",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3557,
+                  "src": "523:12:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3554,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "523:4:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "506:30:4"
+            },
+            "src": "492:45:4"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 3561,
+            "name": "Loaned",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 3560,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3559,
+                  "indexed": false,
+                  "name": "_group",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3561,
+                  "src": "556:14:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3558,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "556:7:4",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "555:16:4"
+            },
+            "src": "543:29:4"
           },
           {
             "canonicalName": "IService.subperiod",
-            "id": 2451,
+            "id": 3567,
             "members": [
               {
-                "id": 2446,
+                "id": 3562,
                 "name": "LOBBY",
                 "nodeType": "EnumValue",
-                "src": "583:5:3"
+                "src": "596:5:4"
               },
               {
-                "id": 2447,
+                "id": 3563,
                 "name": "PRE",
                 "nodeType": "EnumValue",
-                "src": "590:3:3"
+                "src": "603:3:4"
               },
               {
-                "id": 2448,
+                "id": 3564,
                 "name": "ACTIVE",
                 "nodeType": "EnumValue",
-                "src": "595:6:3"
+                "src": "608:6:4"
               },
               {
-                "id": 2449,
+                "id": 3565,
                 "name": "POST",
                 "nodeType": "EnumValue",
-                "src": "603:4:3"
+                "src": "616:4:4"
               },
               {
-                "id": 2450,
+                "id": 3566,
                 "name": "ENDED",
                 "nodeType": "EnumValue",
-                "src": "609:5:3"
+                "src": "622:5:4"
               }
             ],
             "name": "subperiod",
             "nodeType": "EnumDefinition",
-            "src": "567:48:3"
+            "src": "580:48:4"
           },
           {
             "constant": false,
-            "id": 2455,
+            "id": 3571,
             "name": "administrators",
             "nodeType": "VariableDeclaration",
-            "scope": 2527,
-            "src": "623:39:3",
+            "scope": 3643,
+            "src": "636:39:4",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -613,28 +646,28 @@
               "typeString": "mapping(address => bool)"
             },
             "typeName": {
-              "id": 2454,
+              "id": 3570,
               "keyType": {
-                "id": 2452,
+                "id": 3568,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
-                "src": "631:7:3",
+                "src": "644:7:4",
                 "typeDescriptions": {
                   "typeIdentifier": "t_address",
                   "typeString": "address"
                 }
               },
               "nodeType": "Mapping",
-              "src": "623:24:3",
+              "src": "636:24:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_mapping$_t_address_$_t_bool_$",
                 "typeString": "mapping(address => bool)"
               },
               "valueType": {
-                "id": 2453,
+                "id": 3569,
                 "name": "bool",
                 "nodeType": "ElementaryTypeName",
-                "src": "642:4:3",
+                "src": "655:4:4",
                 "typeDescriptions": {
                   "typeIdentifier": "t_bool",
                   "typeString": "bool"
@@ -646,11 +679,11 @@
           },
           {
             "constant": false,
-            "id": 2459,
+            "id": 3575,
             "name": "secretaries",
             "nodeType": "VariableDeclaration",
-            "scope": 2527,
-            "src": "669:36:3",
+            "scope": 3643,
+            "src": "682:36:4",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -658,28 +691,28 @@
               "typeString": "mapping(address => uint256)"
             },
             "typeName": {
-              "id": 2458,
+              "id": 3574,
               "keyType": {
-                "id": 2456,
+                "id": 3572,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
-                "src": "677:7:3",
+                "src": "690:7:4",
                 "typeDescriptions": {
                   "typeIdentifier": "t_address",
                   "typeString": "address"
                 }
               },
               "nodeType": "Mapping",
-              "src": "669:24:3",
+              "src": "682:24:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
                 "typeString": "mapping(address => uint256)"
               },
               "valueType": {
-                "id": 2457,
+                "id": 3573,
                 "name": "uint",
                 "nodeType": "ElementaryTypeName",
-                "src": "688:4:3",
+                "src": "701:4:4",
                 "typeDescriptions": {
                   "typeIdentifier": "t_uint256",
                   "typeString": "uint256"
@@ -691,11 +724,11 @@
           },
           {
             "constant": false,
-            "id": 2463,
+            "id": 3579,
             "name": "groups",
             "nodeType": "VariableDeclaration",
-            "scope": 2527,
-            "src": "712:31:3",
+            "scope": 3643,
+            "src": "725:31:4",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -703,28 +736,28 @@
               "typeString": "mapping(uint256 => address)"
             },
             "typeName": {
-              "id": 2462,
+              "id": 3578,
               "keyType": {
-                "id": 2460,
+                "id": 3576,
                 "name": "uint",
                 "nodeType": "ElementaryTypeName",
-                "src": "720:4:3",
+                "src": "733:4:4",
                 "typeDescriptions": {
                   "typeIdentifier": "t_uint256",
                   "typeString": "uint256"
                 }
               },
               "nodeType": "Mapping",
-              "src": "712:24:3",
+              "src": "725:24:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_mapping$_t_uint256_$_t_address_$",
                 "typeString": "mapping(uint256 => address)"
               },
               "valueType": {
-                "id": 2461,
+                "id": 3577,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
-                "src": "728:7:3",
+                "src": "741:7:4",
                 "stateMutability": "nonpayable",
                 "typeDescriptions": {
                   "typeIdentifier": "t_address",
@@ -737,26 +770,26 @@
           },
           {
             "constant": false,
-            "id": 2465,
+            "id": 3581,
             "name": "Dai",
             "nodeType": "VariableDeclaration",
-            "scope": 2527,
-            "src": "752:10:3",
+            "scope": 3643,
+            "src": "765:10:4",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_IERC20_$3857",
+              "typeIdentifier": "t_contract$_IERC20_$4972",
               "typeString": "contract IERC20"
             },
             "typeName": {
               "contractScope": null,
-              "id": 2464,
+              "id": 3580,
               "name": "IERC20",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 3857,
-              "src": "752:6:3",
+              "referencedDeclaration": 4972,
+              "src": "765:6:4",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_IERC20_$3857",
+                "typeIdentifier": "t_contract$_IERC20_$4972",
                 "typeString": "contract IERC20"
               }
             },
@@ -765,11 +798,11 @@
           },
           {
             "constant": false,
-            "id": 2467,
+            "id": 3583,
             "name": "groupCount",
             "nodeType": "VariableDeclaration",
-            "scope": 2527,
-            "src": "771:15:3",
+            "scope": 3643,
+            "src": "784:15:4",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -777,10 +810,10 @@
               "typeString": "uint256"
             },
             "typeName": {
-              "id": 2466,
+              "id": 3582,
               "name": "uint",
               "nodeType": "ElementaryTypeName",
-              "src": "771:4:3",
+              "src": "784:4:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -792,23 +825,23 @@
           {
             "body": null,
             "documentation": "@dev modifier onlyAdmin\r\nAdd an admin\r\n@param _to the address being whitelisted\r*",
-            "id": 2472,
+            "id": 3588,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "addAdmin",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2470,
+              "id": 3586,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2469,
+                  "id": 3585,
                   "name": "_to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2472,
-                  "src": "965:11:3",
+                  "scope": 3588,
+                  "src": "978:11:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -816,10 +849,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2468,
+                    "id": 3584,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "965:7:3",
+                    "src": "978:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -830,16 +863,16 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "964:13:3"
+              "src": "977:13:4"
             },
             "returnParameters": {
-              "id": 2471,
+              "id": 3587,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "984:0:3"
+              "src": "997:0:4"
             },
-            "scope": 2527,
-            "src": "947:38:3",
+            "scope": 3643,
+            "src": "960:38:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
@@ -847,23 +880,23 @@
           {
             "body": null,
             "documentation": "@dev modifier onlyAdmin\r\nRemove an admin\r\n@param _from the address being blacklisted\r*",
-            "id": 2477,
+            "id": 3593,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "removeAdmin",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2475,
+              "id": 3591,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2474,
+                  "id": 3590,
                   "name": "_from",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2477,
-                  "src": "1140:13:3",
+                  "scope": 3593,
+                  "src": "1153:13:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -871,10 +904,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2473,
+                    "id": 3589,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1140:7:3",
+                    "src": "1153:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -885,16 +918,16 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1139:15:3"
+              "src": "1152:15:4"
             },
             "returnParameters": {
-              "id": 2476,
+              "id": 3592,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1161:0:3"
+              "src": "1174:0:4"
             },
-            "scope": 2527,
-            "src": "1119:43:3",
+            "scope": 3643,
+            "src": "1132:43:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
@@ -902,23 +935,23 @@
           {
             "body": null,
             "documentation": "@dev modifier onlyAdmin\r\nApprove a secretary and create a new group\r\n@param _to the address being given a secretary role\r\n@param _volume uint number of expected claims\r\n@param _payout uint number of Dai paid per claim\r\n@return _group the address of the Group contact\r*",
-            "id": 2488,
+            "id": 3604,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "createGroup",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2484,
+              "id": 3600,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2479,
+                  "id": 3595,
                   "name": "_to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2488,
-                  "src": "1520:11:3",
+                  "scope": 3604,
+                  "src": "1533:11:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -926,10 +959,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2478,
+                    "id": 3594,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1520:7:3",
+                    "src": "1533:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -941,11 +974,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 2481,
+                  "id": 3597,
                   "name": "_volume",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2488,
-                  "src": "1533:12:3",
+                  "scope": 3604,
+                  "src": "1546:12:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -953,10 +986,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2480,
+                    "id": 3596,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1533:4:3",
+                    "src": "1546:4:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -967,11 +1000,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 2483,
+                  "id": 3599,
                   "name": "_payout",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2488,
-                  "src": "1547:12:3",
+                  "scope": 3604,
+                  "src": "1560:12:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -979,10 +1012,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2482,
+                    "id": 3598,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1547:4:3",
+                    "src": "1560:4:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -992,19 +1025,19 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1519:41:3"
+              "src": "1532:41:4"
             },
             "returnParameters": {
-              "id": 2487,
+              "id": 3603,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2486,
+                  "id": 3602,
                   "name": "_group",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2488,
-                  "src": "1577:14:3",
+                  "scope": 3604,
+                  "src": "1590:14:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1012,10 +1045,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2485,
+                    "id": 3601,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1577:7:3",
+                    "src": "1590:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1026,10 +1059,10 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1576:16:3"
+              "src": "1589:16:4"
             },
-            "scope": 2527,
-            "src": "1499:94:3",
+            "scope": 3643,
+            "src": "1512:94:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
@@ -1037,23 +1070,23 @@
           {
             "body": null,
             "documentation": "@dev modifier onlyAdmin\r\n@dev modifier unlocked\r\nRemit a single group assuming it is not timelocked\r\n@param _group the address of the group being remitted\r*",
-            "id": 2493,
+            "id": 3609,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "remitGroup",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2491,
+              "id": 3607,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2490,
+                  "id": 3606,
                   "name": "_group",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2493,
-                  "src": "1824:14:3",
+                  "scope": 3609,
+                  "src": "1837:14:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1061,10 +1094,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2489,
+                    "id": 3605,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1824:7:3",
+                    "src": "1837:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1075,16 +1108,16 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1823:16:3"
+              "src": "1836:16:4"
             },
             "returnParameters": {
-              "id": 2492,
+              "id": 3608,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1846:0:3"
+              "src": "1859:0:4"
             },
-            "scope": 2527,
-            "src": "1804:43:3",
+            "scope": 3643,
+            "src": "1817:43:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
@@ -1092,23 +1125,23 @@
           {
             "body": null,
             "documentation": "@dev modifier onlyAdmin\r\n@dev require sufficienct balance\r\nExtend a loan, in Dai, to a Tanda Group\r\n@param _group the group being given the loan\r\n@param _months the length, in months (periods), the Group has to repay\r",
-            "id": 2500,
+            "id": 3616,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "loan",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2498,
+              "id": 3614,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2495,
+                  "id": 3611,
                   "name": "_group",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2500,
-                  "src": "2140:14:3",
+                  "scope": 3616,
+                  "src": "2153:14:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1116,10 +1149,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2494,
+                    "id": 3610,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "2140:7:3",
+                    "src": "2153:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1131,11 +1164,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 2497,
+                  "id": 3613,
                   "name": "_months",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2500,
-                  "src": "2156:12:3",
+                  "scope": 3616,
+                  "src": "2169:12:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1143,10 +1176,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2496,
+                    "id": 3612,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "2156:4:3",
+                    "src": "2169:4:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1156,16 +1189,16 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "2139:30:3"
+              "src": "2152:30:4"
             },
             "returnParameters": {
-              "id": 2499,
+              "id": 3615,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "2176:0:3"
+              "src": "2189:0:4"
             },
-            "scope": 2527,
-            "src": "2126:51:3",
+            "scope": 3643,
+            "src": "2139:51:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
@@ -1173,23 +1206,23 @@
           {
             "body": null,
             "documentation": "Query an address to determine if it currently holds an Administrator role in the Service\r\n@param _query address being queried as Administrator\r\n@return bool true if the address is an Administrator, and false otherwise\r",
-            "id": 2507,
+            "id": 3623,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "isAdmin",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2503,
+              "id": 3619,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2502,
+                  "id": 3618,
                   "name": "_query",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2507,
-                  "src": "2496:14:3",
+                  "scope": 3623,
+                  "src": "2505:14:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1197,10 +1230,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2501,
+                    "id": 3617,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "2496:7:3",
+                    "src": "2505:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1211,19 +1244,19 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "2495:16:3"
+              "src": "2504:16:4"
             },
             "returnParameters": {
-              "id": 2506,
+              "id": 3622,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2505,
+                  "id": 3621,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2507,
-                  "src": "2533:4:3",
+                  "scope": 3623,
+                  "src": "2542:4:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1231,10 +1264,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2504,
+                    "id": 3620,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "2533:4:3",
+                    "src": "2542:4:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -1244,10 +1277,10 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "2532:6:3"
+              "src": "2541:6:4"
             },
-            "scope": 2527,
-            "src": "2479:60:3",
+            "scope": 3643,
+            "src": "2488:60:4",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
@@ -1255,23 +1288,23 @@
           {
             "body": null,
             "documentation": "Determine if an address is a Secretary by returning the index of their group\r\n@param _query address being queried as Secretary\r\n@return _index uint stored index of Secretary's Group; returns 0 if none\r",
-            "id": 2514,
+            "id": 3630,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "isSecretary",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2510,
+              "id": 3626,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2509,
+                  "id": 3625,
                   "name": "_query",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2514,
-                  "src": "2809:14:3",
+                  "scope": 3630,
+                  "src": "2818:14:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1279,10 +1312,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2508,
+                    "id": 3624,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "2809:7:3",
+                    "src": "2818:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1293,19 +1326,19 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "2808:16:3"
+              "src": "2817:16:4"
             },
             "returnParameters": {
-              "id": 2513,
+              "id": 3629,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2512,
+                  "id": 3628,
                   "name": "_index",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2514,
-                  "src": "2846:11:3",
+                  "scope": 3630,
+                  "src": "2855:11:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1313,10 +1346,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2511,
+                    "id": 3627,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "2846:4:3",
+                    "src": "2855:4:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1326,10 +1359,10 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "2845:13:3"
+              "src": "2854:13:4"
             },
-            "scope": 2527,
-            "src": "2788:71:3",
+            "scope": 3643,
+            "src": "2797:71:4",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
@@ -1337,23 +1370,23 @@
           {
             "body": null,
             "documentation": "Determine the Group address stored internally at a specific index\r\n@param _index uint key to return address value in mapping 'groups'\r\n@return the address stored at the queried index. Returns 0x00 if none\r",
-            "id": 2521,
+            "id": 3637,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getGroup",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2517,
+              "id": 3633,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2516,
+                  "id": 3632,
                   "name": "_index",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2521,
-                  "src": "3130:11:3",
+                  "scope": 3637,
+                  "src": "3139:11:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1361,10 +1394,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2515,
+                    "id": 3631,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "3130:4:3",
+                    "src": "3139:4:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1374,19 +1407,19 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "3129:13:3"
+              "src": "3138:13:4"
             },
             "returnParameters": {
-              "id": 2520,
+              "id": 3636,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2519,
+                  "id": 3635,
                   "name": "_group",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2521,
-                  "src": "3164:14:3",
+                  "scope": 3637,
+                  "src": "3173:14:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1394,10 +1427,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2518,
+                    "id": 3634,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "3164:7:3",
+                    "src": "3173:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1408,10 +1441,10 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "3163:16:3"
+              "src": "3172:16:4"
             },
-            "scope": 2527,
-            "src": "3112:68:3",
+            "scope": 3643,
+            "src": "3121:68:4",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
@@ -1419,29 +1452,29 @@
           {
             "body": null,
             "documentation": "Determine the number of insurance groups deployed by this Service\r\n@return _index uint number of deployed Group child contracts deployed\r",
-            "id": 2526,
+            "id": 3642,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getGroupCount",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2522,
+              "id": 3638,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "3380:2:3"
+              "src": "3389:2:4"
             },
             "returnParameters": {
-              "id": 2525,
+              "id": 3641,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2524,
+                  "id": 3640,
                   "name": "_index",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2526,
-                  "src": "3404:11:3",
+                  "scope": 3642,
+                  "src": "3413:11:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1449,10 +1482,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2523,
+                    "id": 3639,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "3404:4:3",
+                    "src": "3413:4:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1462,33 +1495,33 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "3403:13:3"
+              "src": "3412:13:4"
             },
-            "scope": 2527,
-            "src": "3358:59:3",
+            "scope": 3643,
+            "src": "3367:59:4",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 2528,
-        "src": "291:3131:3"
+        "scope": 3644,
+        "src": "291:3140:4"
       }
     ],
-    "src": "0:3422:3"
+    "src": "0:3433:4"
   },
   "legacyAST": {
     "absolutePath": "/C/Users/Coda/Desktop/The Smart Contract/TandaPay-Contracts/contracts/IService.sol",
     "exportedSymbols": {
       "IService": [
-        2527
+        3643
       ]
     },
-    "id": 2528,
+    "id": 3644,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2418,
+        "id": 3532,
         "literals": [
           "solidity",
           ">=",
@@ -1499,27 +1532,27 @@
           ".0"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:33:3"
+        "src": "0:33:4"
       },
       {
         "absolutePath": "openzeppelin-solidity/contracts/math/SafeMath.sol",
         "file": "openzeppelin-solidity/contracts/math/SafeMath.sol",
-        "id": 2419,
+        "id": 3533,
         "nodeType": "ImportDirective",
-        "scope": 2528,
-        "sourceUnit": 3297,
-        "src": "37:59:3",
+        "scope": 3644,
+        "sourceUnit": 4412,
+        "src": "37:59:4",
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
         "absolutePath": "openzeppelin-solidity/contracts/token/ERC20/IERC20.sol",
         "file": "openzeppelin-solidity/contracts/token/ERC20/IERC20.sol",
-        "id": 2420,
+        "id": 3534,
         "nodeType": "ImportDirective",
-        "scope": 2528,
-        "sourceUnit": 3858,
-        "src": "98:64:3",
+        "scope": 3644,
+        "sourceUnit": 4973,
+        "src": "98:64:4",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -1529,34 +1562,34 @@
         "contractKind": "contract",
         "documentation": "@author blOX Consulting LLC\r\nDate: 08.26.2019\r\nInterface for Insurance Service/ Group Factory Contract\r",
         "fullyImplemented": false,
-        "id": 2527,
+        "id": 3643,
         "linearizedBaseContracts": [
-          2527
+          3643
         ],
         "name": "IService",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "id": 2423,
+            "id": 3537,
             "libraryName": {
               "contractScope": null,
-              "id": 2421,
+              "id": 3535,
               "name": "SafeMath",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 3296,
-              "src": "324:8:3",
+              "referencedDeclaration": 4411,
+              "src": "324:8:4",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_SafeMath_$3296",
+                "typeIdentifier": "t_contract$_SafeMath_$4411",
                 "typeString": "library SafeMath"
               }
             },
             "nodeType": "UsingForDirective",
-            "src": "318:24:3",
+            "src": "318:24:4",
             "typeName": {
-              "id": 2422,
+              "id": 3536,
               "name": "uint",
               "nodeType": "ElementaryTypeName",
-              "src": "337:4:3",
+              "src": "337:4:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -1566,21 +1599,21 @@
           {
             "anonymous": false,
             "documentation": null,
-            "id": 2427,
+            "id": 3541,
             "name": "AdminApproved",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 2426,
+              "id": 3540,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2425,
+                  "id": 3539,
                   "indexed": false,
                   "name": "_approved",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2427,
-                  "src": "370:17:3",
+                  "scope": 3541,
+                  "src": "370:17:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1588,10 +1621,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2424,
+                    "id": 3538,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "370:7:3",
+                    "src": "370:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1602,28 +1635,28 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "369:19:3"
+              "src": "369:19:4"
             },
-            "src": "350:39:3"
+            "src": "350:39:4"
           },
           {
             "anonymous": false,
             "documentation": null,
-            "id": 2431,
+            "id": 3545,
             "name": "AdminRevoked",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 2430,
+              "id": 3544,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2429,
+                  "id": 3543,
                   "indexed": false,
                   "name": "_revoked",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2431,
-                  "src": "414:16:3",
+                  "scope": 3545,
+                  "src": "414:16:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1631,10 +1664,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2428,
+                    "id": 3542,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "414:7:3",
+                    "src": "414:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1645,28 +1678,28 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "413:18:3"
+              "src": "413:18:4"
             },
-            "src": "395:37:3"
+            "src": "395:37:4"
           },
           {
             "anonymous": false,
             "documentation": null,
-            "id": 2435,
+            "id": 3551,
             "name": "GroupCreated",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 2434,
+              "id": 3550,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2433,
+                  "id": 3547,
                   "indexed": false,
                   "name": "_group",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2435,
-                  "src": "457:14:3",
+                  "scope": 3551,
+                  "src": "457:14:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1674,53 +1707,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2432,
+                    "id": 3546,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "457:7:3",
-                    "stateMutability": "nonpayable",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "456:16:3"
-            },
-            "src": "438:35:3"
-          },
-          {
-            "anonymous": false,
-            "documentation": null,
-            "id": 2441,
-            "name": "Remitted",
-            "nodeType": "EventDefinition",
-            "parameters": {
-              "id": 2440,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 2437,
-                  "indexed": false,
-                  "name": "_group",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 2441,
-                  "src": "494:14:3",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 2436,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "494:7:3",
+                    "src": "457:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1732,54 +1722,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 2439,
+                  "id": 3549,
                   "indexed": false,
-                  "name": "_period",
+                  "name": "_to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2441,
-                  "src": "510:12:3",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_uint256",
-                    "typeString": "uint256"
-                  },
-                  "typeName": {
-                    "id": 2438,
-                    "name": "uint",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "510:4:3",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_uint256",
-                      "typeString": "uint256"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "493:30:3"
-            },
-            "src": "479:45:3"
-          },
-          {
-            "anonymous": false,
-            "documentation": null,
-            "id": 2445,
-            "name": "Loaned",
-            "nodeType": "EventDefinition",
-            "parameters": {
-              "id": 2444,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 2443,
-                  "indexed": false,
-                  "name": "_group",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 2445,
-                  "src": "543:14:3",
+                  "scope": 3551,
+                  "src": "473:11:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1787,10 +1735,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2442,
+                    "id": 3548,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "543:7:3",
+                    "src": "473:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1801,56 +1749,169 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "542:16:3"
+              "src": "456:29:4"
             },
-            "src": "530:29:3"
+            "src": "438:48:4"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 3557,
+            "name": "Remitted",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 3556,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3553,
+                  "indexed": false,
+                  "name": "_group",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3557,
+                  "src": "507:14:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3552,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "507:7:4",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3555,
+                  "indexed": false,
+                  "name": "_period",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3557,
+                  "src": "523:12:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3554,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "523:4:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "506:30:4"
+            },
+            "src": "492:45:4"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 3561,
+            "name": "Loaned",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 3560,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3559,
+                  "indexed": false,
+                  "name": "_group",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3561,
+                  "src": "556:14:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3558,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "556:7:4",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "555:16:4"
+            },
+            "src": "543:29:4"
           },
           {
             "canonicalName": "IService.subperiod",
-            "id": 2451,
+            "id": 3567,
             "members": [
               {
-                "id": 2446,
+                "id": 3562,
                 "name": "LOBBY",
                 "nodeType": "EnumValue",
-                "src": "583:5:3"
+                "src": "596:5:4"
               },
               {
-                "id": 2447,
+                "id": 3563,
                 "name": "PRE",
                 "nodeType": "EnumValue",
-                "src": "590:3:3"
+                "src": "603:3:4"
               },
               {
-                "id": 2448,
+                "id": 3564,
                 "name": "ACTIVE",
                 "nodeType": "EnumValue",
-                "src": "595:6:3"
+                "src": "608:6:4"
               },
               {
-                "id": 2449,
+                "id": 3565,
                 "name": "POST",
                 "nodeType": "EnumValue",
-                "src": "603:4:3"
+                "src": "616:4:4"
               },
               {
-                "id": 2450,
+                "id": 3566,
                 "name": "ENDED",
                 "nodeType": "EnumValue",
-                "src": "609:5:3"
+                "src": "622:5:4"
               }
             ],
             "name": "subperiod",
             "nodeType": "EnumDefinition",
-            "src": "567:48:3"
+            "src": "580:48:4"
           },
           {
             "constant": false,
-            "id": 2455,
+            "id": 3571,
             "name": "administrators",
             "nodeType": "VariableDeclaration",
-            "scope": 2527,
-            "src": "623:39:3",
+            "scope": 3643,
+            "src": "636:39:4",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -1858,28 +1919,28 @@
               "typeString": "mapping(address => bool)"
             },
             "typeName": {
-              "id": 2454,
+              "id": 3570,
               "keyType": {
-                "id": 2452,
+                "id": 3568,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
-                "src": "631:7:3",
+                "src": "644:7:4",
                 "typeDescriptions": {
                   "typeIdentifier": "t_address",
                   "typeString": "address"
                 }
               },
               "nodeType": "Mapping",
-              "src": "623:24:3",
+              "src": "636:24:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_mapping$_t_address_$_t_bool_$",
                 "typeString": "mapping(address => bool)"
               },
               "valueType": {
-                "id": 2453,
+                "id": 3569,
                 "name": "bool",
                 "nodeType": "ElementaryTypeName",
-                "src": "642:4:3",
+                "src": "655:4:4",
                 "typeDescriptions": {
                   "typeIdentifier": "t_bool",
                   "typeString": "bool"
@@ -1891,11 +1952,11 @@
           },
           {
             "constant": false,
-            "id": 2459,
+            "id": 3575,
             "name": "secretaries",
             "nodeType": "VariableDeclaration",
-            "scope": 2527,
-            "src": "669:36:3",
+            "scope": 3643,
+            "src": "682:36:4",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -1903,28 +1964,28 @@
               "typeString": "mapping(address => uint256)"
             },
             "typeName": {
-              "id": 2458,
+              "id": 3574,
               "keyType": {
-                "id": 2456,
+                "id": 3572,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
-                "src": "677:7:3",
+                "src": "690:7:4",
                 "typeDescriptions": {
                   "typeIdentifier": "t_address",
                   "typeString": "address"
                 }
               },
               "nodeType": "Mapping",
-              "src": "669:24:3",
+              "src": "682:24:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
                 "typeString": "mapping(address => uint256)"
               },
               "valueType": {
-                "id": 2457,
+                "id": 3573,
                 "name": "uint",
                 "nodeType": "ElementaryTypeName",
-                "src": "688:4:3",
+                "src": "701:4:4",
                 "typeDescriptions": {
                   "typeIdentifier": "t_uint256",
                   "typeString": "uint256"
@@ -1936,11 +1997,11 @@
           },
           {
             "constant": false,
-            "id": 2463,
+            "id": 3579,
             "name": "groups",
             "nodeType": "VariableDeclaration",
-            "scope": 2527,
-            "src": "712:31:3",
+            "scope": 3643,
+            "src": "725:31:4",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -1948,28 +2009,28 @@
               "typeString": "mapping(uint256 => address)"
             },
             "typeName": {
-              "id": 2462,
+              "id": 3578,
               "keyType": {
-                "id": 2460,
+                "id": 3576,
                 "name": "uint",
                 "nodeType": "ElementaryTypeName",
-                "src": "720:4:3",
+                "src": "733:4:4",
                 "typeDescriptions": {
                   "typeIdentifier": "t_uint256",
                   "typeString": "uint256"
                 }
               },
               "nodeType": "Mapping",
-              "src": "712:24:3",
+              "src": "725:24:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_mapping$_t_uint256_$_t_address_$",
                 "typeString": "mapping(uint256 => address)"
               },
               "valueType": {
-                "id": 2461,
+                "id": 3577,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
-                "src": "728:7:3",
+                "src": "741:7:4",
                 "stateMutability": "nonpayable",
                 "typeDescriptions": {
                   "typeIdentifier": "t_address",
@@ -1982,26 +2043,26 @@
           },
           {
             "constant": false,
-            "id": 2465,
+            "id": 3581,
             "name": "Dai",
             "nodeType": "VariableDeclaration",
-            "scope": 2527,
-            "src": "752:10:3",
+            "scope": 3643,
+            "src": "765:10:4",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_IERC20_$3857",
+              "typeIdentifier": "t_contract$_IERC20_$4972",
               "typeString": "contract IERC20"
             },
             "typeName": {
               "contractScope": null,
-              "id": 2464,
+              "id": 3580,
               "name": "IERC20",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 3857,
-              "src": "752:6:3",
+              "referencedDeclaration": 4972,
+              "src": "765:6:4",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_IERC20_$3857",
+                "typeIdentifier": "t_contract$_IERC20_$4972",
                 "typeString": "contract IERC20"
               }
             },
@@ -2010,11 +2071,11 @@
           },
           {
             "constant": false,
-            "id": 2467,
+            "id": 3583,
             "name": "groupCount",
             "nodeType": "VariableDeclaration",
-            "scope": 2527,
-            "src": "771:15:3",
+            "scope": 3643,
+            "src": "784:15:4",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -2022,10 +2083,10 @@
               "typeString": "uint256"
             },
             "typeName": {
-              "id": 2466,
+              "id": 3582,
               "name": "uint",
               "nodeType": "ElementaryTypeName",
-              "src": "771:4:3",
+              "src": "784:4:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -2037,23 +2098,23 @@
           {
             "body": null,
             "documentation": "@dev modifier onlyAdmin\r\nAdd an admin\r\n@param _to the address being whitelisted\r*",
-            "id": 2472,
+            "id": 3588,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "addAdmin",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2470,
+              "id": 3586,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2469,
+                  "id": 3585,
                   "name": "_to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2472,
-                  "src": "965:11:3",
+                  "scope": 3588,
+                  "src": "978:11:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2061,10 +2122,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2468,
+                    "id": 3584,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "965:7:3",
+                    "src": "978:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -2075,16 +2136,16 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "964:13:3"
+              "src": "977:13:4"
             },
             "returnParameters": {
-              "id": 2471,
+              "id": 3587,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "984:0:3"
+              "src": "997:0:4"
             },
-            "scope": 2527,
-            "src": "947:38:3",
+            "scope": 3643,
+            "src": "960:38:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
@@ -2092,23 +2153,23 @@
           {
             "body": null,
             "documentation": "@dev modifier onlyAdmin\r\nRemove an admin\r\n@param _from the address being blacklisted\r*",
-            "id": 2477,
+            "id": 3593,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "removeAdmin",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2475,
+              "id": 3591,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2474,
+                  "id": 3590,
                   "name": "_from",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2477,
-                  "src": "1140:13:3",
+                  "scope": 3593,
+                  "src": "1153:13:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2116,10 +2177,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2473,
+                    "id": 3589,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1140:7:3",
+                    "src": "1153:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -2130,16 +2191,16 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1139:15:3"
+              "src": "1152:15:4"
             },
             "returnParameters": {
-              "id": 2476,
+              "id": 3592,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1161:0:3"
+              "src": "1174:0:4"
             },
-            "scope": 2527,
-            "src": "1119:43:3",
+            "scope": 3643,
+            "src": "1132:43:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
@@ -2147,23 +2208,23 @@
           {
             "body": null,
             "documentation": "@dev modifier onlyAdmin\r\nApprove a secretary and create a new group\r\n@param _to the address being given a secretary role\r\n@param _volume uint number of expected claims\r\n@param _payout uint number of Dai paid per claim\r\n@return _group the address of the Group contact\r*",
-            "id": 2488,
+            "id": 3604,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "createGroup",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2484,
+              "id": 3600,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2479,
+                  "id": 3595,
                   "name": "_to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2488,
-                  "src": "1520:11:3",
+                  "scope": 3604,
+                  "src": "1533:11:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2171,10 +2232,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2478,
+                    "id": 3594,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1520:7:3",
+                    "src": "1533:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -2186,11 +2247,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 2481,
+                  "id": 3597,
                   "name": "_volume",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2488,
-                  "src": "1533:12:3",
+                  "scope": 3604,
+                  "src": "1546:12:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2198,10 +2259,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2480,
+                    "id": 3596,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1533:4:3",
+                    "src": "1546:4:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -2212,11 +2273,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 2483,
+                  "id": 3599,
                   "name": "_payout",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2488,
-                  "src": "1547:12:3",
+                  "scope": 3604,
+                  "src": "1560:12:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2224,10 +2285,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2482,
+                    "id": 3598,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1547:4:3",
+                    "src": "1560:4:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -2237,19 +2298,19 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1519:41:3"
+              "src": "1532:41:4"
             },
             "returnParameters": {
-              "id": 2487,
+              "id": 3603,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2486,
+                  "id": 3602,
                   "name": "_group",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2488,
-                  "src": "1577:14:3",
+                  "scope": 3604,
+                  "src": "1590:14:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2257,10 +2318,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2485,
+                    "id": 3601,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1577:7:3",
+                    "src": "1590:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -2271,10 +2332,10 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1576:16:3"
+              "src": "1589:16:4"
             },
-            "scope": 2527,
-            "src": "1499:94:3",
+            "scope": 3643,
+            "src": "1512:94:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
@@ -2282,23 +2343,23 @@
           {
             "body": null,
             "documentation": "@dev modifier onlyAdmin\r\n@dev modifier unlocked\r\nRemit a single group assuming it is not timelocked\r\n@param _group the address of the group being remitted\r*",
-            "id": 2493,
+            "id": 3609,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "remitGroup",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2491,
+              "id": 3607,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2490,
+                  "id": 3606,
                   "name": "_group",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2493,
-                  "src": "1824:14:3",
+                  "scope": 3609,
+                  "src": "1837:14:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2306,10 +2367,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2489,
+                    "id": 3605,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1824:7:3",
+                    "src": "1837:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -2320,16 +2381,16 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1823:16:3"
+              "src": "1836:16:4"
             },
             "returnParameters": {
-              "id": 2492,
+              "id": 3608,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1846:0:3"
+              "src": "1859:0:4"
             },
-            "scope": 2527,
-            "src": "1804:43:3",
+            "scope": 3643,
+            "src": "1817:43:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
@@ -2337,23 +2398,23 @@
           {
             "body": null,
             "documentation": "@dev modifier onlyAdmin\r\n@dev require sufficienct balance\r\nExtend a loan, in Dai, to a Tanda Group\r\n@param _group the group being given the loan\r\n@param _months the length, in months (periods), the Group has to repay\r",
-            "id": 2500,
+            "id": 3616,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "loan",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2498,
+              "id": 3614,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2495,
+                  "id": 3611,
                   "name": "_group",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2500,
-                  "src": "2140:14:3",
+                  "scope": 3616,
+                  "src": "2153:14:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2361,10 +2422,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2494,
+                    "id": 3610,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "2140:7:3",
+                    "src": "2153:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -2376,11 +2437,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 2497,
+                  "id": 3613,
                   "name": "_months",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2500,
-                  "src": "2156:12:3",
+                  "scope": 3616,
+                  "src": "2169:12:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2388,10 +2449,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2496,
+                    "id": 3612,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "2156:4:3",
+                    "src": "2169:4:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -2401,16 +2462,16 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "2139:30:3"
+              "src": "2152:30:4"
             },
             "returnParameters": {
-              "id": 2499,
+              "id": 3615,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "2176:0:3"
+              "src": "2189:0:4"
             },
-            "scope": 2527,
-            "src": "2126:51:3",
+            "scope": 3643,
+            "src": "2139:51:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
@@ -2418,23 +2479,23 @@
           {
             "body": null,
             "documentation": "Query an address to determine if it currently holds an Administrator role in the Service\r\n@param _query address being queried as Administrator\r\n@return bool true if the address is an Administrator, and false otherwise\r",
-            "id": 2507,
+            "id": 3623,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "isAdmin",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2503,
+              "id": 3619,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2502,
+                  "id": 3618,
                   "name": "_query",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2507,
-                  "src": "2496:14:3",
+                  "scope": 3623,
+                  "src": "2505:14:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2442,10 +2503,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2501,
+                    "id": 3617,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "2496:7:3",
+                    "src": "2505:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -2456,19 +2517,19 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "2495:16:3"
+              "src": "2504:16:4"
             },
             "returnParameters": {
-              "id": 2506,
+              "id": 3622,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2505,
+                  "id": 3621,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2507,
-                  "src": "2533:4:3",
+                  "scope": 3623,
+                  "src": "2542:4:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2476,10 +2537,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2504,
+                    "id": 3620,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "2533:4:3",
+                    "src": "2542:4:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -2489,10 +2550,10 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "2532:6:3"
+              "src": "2541:6:4"
             },
-            "scope": 2527,
-            "src": "2479:60:3",
+            "scope": 3643,
+            "src": "2488:60:4",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
@@ -2500,23 +2561,23 @@
           {
             "body": null,
             "documentation": "Determine if an address is a Secretary by returning the index of their group\r\n@param _query address being queried as Secretary\r\n@return _index uint stored index of Secretary's Group; returns 0 if none\r",
-            "id": 2514,
+            "id": 3630,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "isSecretary",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2510,
+              "id": 3626,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2509,
+                  "id": 3625,
                   "name": "_query",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2514,
-                  "src": "2809:14:3",
+                  "scope": 3630,
+                  "src": "2818:14:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2524,10 +2585,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2508,
+                    "id": 3624,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "2809:7:3",
+                    "src": "2818:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -2538,19 +2599,19 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "2808:16:3"
+              "src": "2817:16:4"
             },
             "returnParameters": {
-              "id": 2513,
+              "id": 3629,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2512,
+                  "id": 3628,
                   "name": "_index",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2514,
-                  "src": "2846:11:3",
+                  "scope": 3630,
+                  "src": "2855:11:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2558,10 +2619,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2511,
+                    "id": 3627,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "2846:4:3",
+                    "src": "2855:4:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -2571,10 +2632,10 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "2845:13:3"
+              "src": "2854:13:4"
             },
-            "scope": 2527,
-            "src": "2788:71:3",
+            "scope": 3643,
+            "src": "2797:71:4",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
@@ -2582,23 +2643,23 @@
           {
             "body": null,
             "documentation": "Determine the Group address stored internally at a specific index\r\n@param _index uint key to return address value in mapping 'groups'\r\n@return the address stored at the queried index. Returns 0x00 if none\r",
-            "id": 2521,
+            "id": 3637,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getGroup",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2517,
+              "id": 3633,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2516,
+                  "id": 3632,
                   "name": "_index",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2521,
-                  "src": "3130:11:3",
+                  "scope": 3637,
+                  "src": "3139:11:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2606,10 +2667,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2515,
+                    "id": 3631,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "3130:4:3",
+                    "src": "3139:4:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -2619,19 +2680,19 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "3129:13:3"
+              "src": "3138:13:4"
             },
             "returnParameters": {
-              "id": 2520,
+              "id": 3636,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2519,
+                  "id": 3635,
                   "name": "_group",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2521,
-                  "src": "3164:14:3",
+                  "scope": 3637,
+                  "src": "3173:14:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2639,10 +2700,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2518,
+                    "id": 3634,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "3164:7:3",
+                    "src": "3173:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -2653,10 +2714,10 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "3163:16:3"
+              "src": "3172:16:4"
             },
-            "scope": 2527,
-            "src": "3112:68:3",
+            "scope": 3643,
+            "src": "3121:68:4",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
@@ -2664,29 +2725,29 @@
           {
             "body": null,
             "documentation": "Determine the number of insurance groups deployed by this Service\r\n@return _index uint number of deployed Group child contracts deployed\r",
-            "id": 2526,
+            "id": 3642,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getGroupCount",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2522,
+              "id": 3638,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "3380:2:3"
+              "src": "3389:2:4"
             },
             "returnParameters": {
-              "id": 2525,
+              "id": 3641,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2524,
+                  "id": 3640,
                   "name": "_index",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2526,
-                  "src": "3404:11:3",
+                  "scope": 3642,
+                  "src": "3413:11:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2694,10 +2755,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2523,
+                    "id": 3639,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "3404:4:3",
+                    "src": "3413:4:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -2707,20 +2768,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "3403:13:3"
+              "src": "3412:13:4"
             },
-            "scope": 2527,
-            "src": "3358:59:3",
+            "scope": 3643,
+            "src": "3367:59:4",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 2528,
-        "src": "291:3131:3"
+        "scope": 3644,
+        "src": "291:3140:4"
       }
     ],
-    "src": "0:3422:3"
+    "src": "0:3433:4"
   },
   "compiler": {
     "name": "solc",
@@ -2728,7 +2789,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.16",
-  "updatedAt": "2019-10-29T21:50:32.975Z",
+  "updatedAt": "2019-11-18T07:21:39.892Z",
   "devdoc": {
     "author": "blOX Consulting LLC\r Date: 08.26.2019\r Interface for Insurance Service/ Group Factory Contract\r",
     "methods": {

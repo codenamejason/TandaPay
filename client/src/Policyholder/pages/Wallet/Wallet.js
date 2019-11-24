@@ -4,7 +4,7 @@ import { Route, Switch } from "react-router-dom";
 import styles from "./wallet.style";
 import WalletOverview from "./pages/WalletOverview";
 import TransferReview from "./pages/TransferReview";
-import FinalizeBuy from "./pages/FinalizeBuy";
+import SellDai from "./pages/SellDai";
 class Wallet extends React.Component {
   render() {
     const { classes } = this.props;
@@ -12,11 +12,7 @@ class Wallet extends React.Component {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Switch>
-          <Route
-            exact
-            path="/holder/wallet/finalize/:address/:amount/:id"
-            component={FinalizeBuy}
-          />
+          <Route exact path="/holder/wallet/sell/:email" component={SellDai} />
           <Route exact path="/holder/wallet" component={WalletOverview} />
           <Route exact path="/holder/wallet/:id" component={TransferReview} />
         </Switch>

@@ -155,4 +155,15 @@ export {
   updateSettings
 } from "./user";
 
-export { fetchGroup, createGroup, inviteMember } from "./group";
+export {
+  fetchGroup,
+  createGroup,
+  inviteMember,
+  checkAccessCode,
+  dispatchCustomMessage,
+  dispatchEthCustomMessage,
+  removeUserFromSubgroup,
+  lockSubgroup,
+  addGroupContractAddress,
+  recordpremiumpayment
+} from "./group";

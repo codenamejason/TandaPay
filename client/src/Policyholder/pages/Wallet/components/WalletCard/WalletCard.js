@@ -102,25 +102,6 @@ class WalletCard extends React.Component {
           address={user.ethereumAddress}
         />
         <div className={classes.buttonGroup}>
-          <Button
-            className={clsx(classes.button, [classes.red])}
-            onClick={this.handleOpen("sell")}
-          >
-            SELL
-          </Button>
-          <Button
-            className={clsx(classes.button, [classes.yellow])}
-            onClick={this.handleOpen("send")}
-          >
-            SEND
-          </Button>
-          {/* <Button
-            className={clsx(classes.button, [classes.green])}
-            onClick={this.handleOpen("buy")}
-          >
-            BUY
-          </Button> */}
-
           <BuyDai />
         </div>
       </Card>

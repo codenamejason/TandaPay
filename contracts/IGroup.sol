@@ -7,8 +7,8 @@ import './LiquidityLock.sol';
 
 /**
  * @author blOX Consulting LLC
- * Date: 08.11.2019
- * Interface for Group
+ * Date: 08.26.2019
+ * Interface for Group Insurance Contract
  */
 contract IGroup {
 
@@ -88,11 +88,12 @@ contract IGroup {
     function withdraw() public;
 
     /**
-     * @dev modifier onlySecretary (admin in production)
-     * Give a new loan to the group
+     * @dev onlyPrimary
+     * Give a new loan to the Group contract
+     * @param _debt Dai value given to the Secretary by the Insurance Service
      * @param _months uint number of months to repay loan to underwriter
      */
-    function makeLoan(uint _months) public;
+    function makeLoan(uint _debt, uint _months) public;
 
     /**
      * @dev modifier onlySecretary, onlyLobby
@@ -143,6 +144,18 @@ contract IGroup {
     ///VIEWABLE FUNCTIONS///
 
     /**
+     * Determine whether the current group is in the lobby
+     * @return true if the current active period is Lobby, and false otherwise
+     */
+    function isLobby() public view returns (bool);
+
+    /**
+     * Determine whether the Group is scheduled to start the next Period
+     * @return true if the next flag is up, and false otherwise
+     */
+    function doNext() public view returns (bool);
+
+    /**
      * Return the address of the Group Contract's secretary role
      * @return address of Secretary
      */
@@ -155,10 +168,10 @@ contract IGroup {
     function getLiquidity() public view returns (address);
 
     /**
-     * Determine the total expected Group premium
-     * @return uint max value of all Dai paid into group during any period
+     * Determine whether the liquidity contract can be withdrawn from currently
+     * @return true if the liquidity contract can be emptied, and false otherwise
      */
-    function groupPremium() public view returns (uint); 
+    function withdrawable() public view returns (bool);
 
     /**
      * Get the index of the currently active period
@@ -194,11 +207,10 @@ contract IGroup {
 
     /**
      * Determine the overpayment necessary for a subgroup's members
-     * @param _subgroup uint subgroup index being queried
-     * @param _premium uint premium paid per policyholder
+     * @param _size uint size of subgroup
      * @return uint value in Dai paid to cover cost of defection
      */
-    function calculateOverpayment(uint _subgroup, uint _premium) public view returns (uint);
+    function calculateOverpayment(uint _size) public view returns (uint);
 
     /**
      * Determine the loan repayment necessary to repay administration
@@ -212,4 +224,102 @@ contract IGroup {
      * @return uint value in Dai paid to each claimant
      */
     function calculateExpectedPayout(uint _period) public view returns (uint);
+
+    /**
+     * Determine the Dai value of an endowment loaned to this Group
+     * This is a BASIC estimator and should be revisited before production
+     * @dev assumption: subgroup size of 5
+     * @dev assumption: group size of 75
+     * @param _months uint number of months to repay a Loan
+     * @return _endowment uint the value of Dai required to make a Loan
+     */
+    function calculateEndowment(uint _months) public view returns (uint _endowment);
+
+    /**
+     * Determine the current status of the Group's Loan
+     * @return _debt uint value of Dai still owed to the Insurance Service
+     * @return _months uint number of months left to repay loan
+     */
+    function viewLoan() public view returns (uint _debt, uint _months);
+
+    /**
+     * Determine the liquidity in a given Period's Dai Pool
+     * @param _period uint index of period being viewed
+     * @return _pool uint value of Dai stored during that Period
+     */
+    function viewPool(uint _period) public view returns (uint _pool);
+
+    /**
+     * Determine whether a specified address is a policyholder in this Group
+     * @param _query address being queried for policyholder role
+     * @return _subgroup uint subgroup index of policyholder; returns 0 if not policyholder
+     */
+    function isPolicyholder(address _query) public view returns (uint _subgroup);
+
+    /**
+     * Return the number of policyholders in this Group
+     * @return _size uint policyholders index
+     */
+    function getSize() public view returns (uint _size);
+
+    /**
+     * Determine the number of policyholders within a given subgroup
+     * @param _index uint index of subgroup being queried
+     * @return _size uint subgroup size
+     */
+    function getSubgroupSize(uint _index) public view returns (uint _size);
+
+    /**
+     * Determine whether an address is a participant in a specified Period
+     * @param _period uint Insurance Period being queried
+     * @param _query address being checked for role of participant
+     * @return _index uint index in participants mapping; 0 if not participant
+     */
+    function isParticipant(uint _period, address _query) public view returns (uint _index);
+
+    /**
+     * Determine the participant index in a given period
+     * @param _period uint index of period being queried
+     * @return _index uint number of participants in period
+     */
+    function activeIndex(uint _period) public view returns (uint _index);
+
+    /**
+     * Determine the participant address associated with a specific index in a given Period
+     * @param _period uint Insurance Period index
+     * @param _index uint participant index being queried
+     * @return _participant address of participant stored at the given index; returns 0 if null
+     */
+    function indexToParticipant(uint _period, uint _index) public view returns (address _participant);
+
+    /**
+     * Determine whether an address is a claimant in a specified Period
+     * @param _period uint Insurance Period being queried
+     * @param _query address being checked for role of claimant
+     * @return _index uint index in claimant mapping; 0 if not claimant
+     */
+    function isClaimant(uint _period, address _query) public view returns (uint _index);
+
+    /**
+     * Determine the claim index in a given Period
+     * @param _period uint index of period being queried
+     * @return _index uint number of Claims opened during the Period
+     */
+    function claimIndex(uint _period) public view returns (uint _index);
+
+    /**
+     * Determine the claimant address associated with a specific index in a given Period
+     * @param _period Insurance Period index
+     * @param _index uint claim index being queried
+     * @return _claimant address of claimant stored at the given index; returns 0 if null
+     */
+    function indexToClaimant(uint _period, uint _index) public view returns (address _claimant);
+
+    /**
+     * Determine the defection count of a subgroup during a period
+     * @param _period uint index of Period being queried for defections
+     * @param _subgroup uint index of Subgroup being queried for defections
+     * @return _count uint number of defectors in the subgroup during the specified period
+     */
+    function getDefectionCount(uint _period, uint _subgroup) public view returns (uint _count);
 }

@@ -7,13 +7,14 @@ import {
   TablePagination,
   Paper,
   Grid,
-  TableRow,
+  TableRow
 } from "@material-ui/core";
 import {
   EnhancedTableToolbar,
   EnhancedTableHead,
-  EnhancedTableRow,
+  EnhancedTableRow
 } from "./components/";
+
 import { getSorting, stableSort } from "./utils";
 import styles from "./table.style";
 
@@ -94,10 +95,10 @@ function EnhancedTable(props) {
           rowsPerPage={rowsPerPage}
           page={page}
           backIconButtonProps={{
-            "aria-label": "Previous Page",
+            "aria-label": "Previous Page"
           }}
           nextIconButtonProps={{
-            "aria-label": "Next Page",
+            "aria-label": "Next Page"
           }}
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}

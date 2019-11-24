@@ -3,8 +3,12 @@ const styles = theme => ({
     maxWidth: 345,
     margin: 20
   },
+  theImage: {
+    textAlign: "center",
+    padding: "10px"
+  },
   media: {
-    height: 140
+    height: "auto"
   }
 });
 

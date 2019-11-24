@@ -1,10 +1,4 @@
-import {
-  FETCH_USER,
-  REGISTRATION_FAILED,
-  LOGIN_FAILED,
-  AUTH_ERROR,
-  LOGOUT_SUCCESS
-} from "../actions/types";
+import { FETCH_USER, LOGOUT_SUCCESS } from "../actions/types";
 
 export default function(state = null, action) {
   switch (action.type) {

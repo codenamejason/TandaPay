@@ -2,14 +2,17 @@ import React from "react";
 import { CssBaseline, Grid, withStyles } from "@material-ui/core";
 import { connect } from "react-redux";
 import * as actions from "../actions";
-import { WalletPage, RolePage } from "./pages";
+import { WalletPage, RolePage, Tos } from "./pages";
 import styles from "./setup.style";
 
 class Setup extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       role: "",
+      groupName: "",
+      charterID: "",
       accessCode: "",
       walletProvider: "",
       ethAddress: "",
@@ -17,19 +20,48 @@ class Setup extends React.Component {
     };
   }
   onRoleSubmit = (role, accessCode) => {
-    this.setState({
-      role,
-      accessCode,
-      page: 1
-    });
+    if (role == "policyholder") {
+      this.props
+        .checkAccessCode({ accessCode })
+        .then(rs => {
+          if (rs.isLegit == true) {
+            this.setState({
+              groupName: rs.groupName,
+              charterID: rs.charterID,
+              role,
+              accessCode,
+              page: 1
+            });
+          } else {
+            let msg = "Invalid access code";
+            let type = "danger";
+            this.props.dispatchCustomMessage({ msg, type });
+          }
+        })
+        .catch(error => {});
+    } else {
+      this.setState({
+        role,
+        accessCode,
+        page: 2
+      });
+    }
   };
 
+  handleOnAggree = () => {};
+  onTosSubmit = aggreed => {
+    if (aggreed) {
+      this.setState({
+        page: 2
+      });
+    }
+  };
   onWalletSubmit = (walletProvider, ethAddress) => {
     this.setState({
       walletProvider,
       ethAddress
     });
-    const { role, accessCode } = this.state;
+    const { role, accessCode, groupName, charterID } = this.state;
     localStorage.groupCreated = role === "policyholder" ? "yes" : "no";
     //call action creator
     this.props.completeAccount({
@@ -53,10 +85,11 @@ class Setup extends React.Component {
   };
   render() {
     const { classes } = this.props;
-    const { page, role, accessCode } = this.state;
+    const { page, role, accessCode, groupName, charterID } = this.state;
     return (
       <Grid container component="main" className={classes.root}>
         <CssBaseline />
+
         {page === 0 && (
           <RolePage
             onPageSubmit={this.onRoleSubmit}
@@ -66,6 +99,14 @@ class Setup extends React.Component {
           />
         )}
         {page === 1 && (
+          <Tos
+            groupName={groupName}
+            charterID={charterID}
+            onPageSubmit={this.onTosSubmit}
+            previousPage={this.handlePrevious}
+          />
+        )}
+        {page === 2 && (
           <WalletPage
             onPageSubmit={this.onWalletSubmit}
             previousPage={this.handlePrevious}

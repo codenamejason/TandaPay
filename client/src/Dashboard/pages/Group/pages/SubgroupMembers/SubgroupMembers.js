@@ -9,7 +9,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import styles from "./subgroupMembers.style";
-
+import Avatar from "react-avatar";
 class SubgroupMembers extends React.Component {
   constructor(props) {
     super(props);
@@ -69,13 +69,16 @@ class SubgroupMembers extends React.Component {
 }
 
 const SubCard = ({ classes, userData }) => (
-  <Card>
+  <Card className={classes.card}>
     <CardActionArea>
-      <CardMedia
+      {/* <CardMedia
         className={classes.media}
         image="https://via.placeholder.com/150"
         title="Contemplative Reptile"
-      />
+      /> */}
+      <Typography className={classes.theImage}>
+        <Avatar name={userData.name} round={true} />
+      </Typography>
       <CardContent>
         <Typography gutterBottom variant="h5" component="h2">
           {userData.name}

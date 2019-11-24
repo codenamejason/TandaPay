@@ -1,4 +1,8 @@
-import { getDAIBalance } from "../../../../../../../web3";
+import {
+  getDAIBalance,
+  getActivePeriod,
+  calculatePayment
+} from "../../../../../../../web3";
 
 /**
  * @summary It will switch through each type, and then retrieve the stats associated
@@ -20,7 +24,8 @@ const getStats = async (type, data) => {
       return [amount.toFixed(2), extra];
     }
     case "payment": {
-      const [amount, extra] = getGroupStat(data);
+      const [amount, extra] = await getGroupStat(data);
+
       return [amount, extra];
     }
     case "wallet": {
@@ -61,15 +66,27 @@ const getWalletStat = async ethereum => {
  * It holds the information regarding premium payments, payment dates, who the secretary is, etc.
  * @returns {Array}
  */
-const getGroupStat = group => {
-  const amount = group._id === null ? "N/A" : group.premium;
-  const extra =
-    group._id === null ? "GROUP MUST BE CREATED" : group.paymentDate;
+const getGroupStat = async data => {
+  if (data.ethereum == null || data.group == null) {
+    return ["0", "Waiting for info"];
+  }
+  const { web3, DAI } = data.ethereum;
+  const { contract } = data.group;
 
-  if (extra === undefined) {
-    return [amount, "PERIOD NOT STARTED"];
+  const [period, error] = await getActivePeriod(web3, contract);
+  if (error) {
+    return ["N/A", "PERIOD NOT STARTED"];
   } else {
-    return [amount, `DUE ${extra}`];
+    if (period > 0) {
+      const [amount, error] = await calculatePayment(web3, contract);
+      if (error) {
+        return ["N/A", "PERIOD NOT STARTED"];
+      } else {
+        return [amount, `Period (${period}) started`];
+      }
+    } else {
+      return ["N/A", "PERIOD NOT STARTED"];
+    }
   }
 };
 

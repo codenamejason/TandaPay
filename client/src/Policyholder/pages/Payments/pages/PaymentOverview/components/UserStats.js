@@ -24,15 +24,14 @@ const stats = [
 const UserStats = props => {
   const classes = useStyles(props);
   const { claims, group, ethereum } = props;
-
   return (
-    <Grid container className={classes.container} spacing={6}>
+    <Grid container className={classes.container} spacing={2}>
       {stats.map((stat, index) => {
         const data =
           stat.type === "wallet"
             ? ethereum
             : stat.type === "payment"
-            ? group
+            ? { group, ethereum }
             : claims;
         return <StatCard stat={stat} key={index} data={data} />;
       })}
@@ -44,7 +43,4 @@ function mapStateToProps({ claims, group, ethereum }) {
   return { claims, group, ethereum };
 }
 
-export default connect(
-  mapStateToProps,
-  null
-)(UserStats);
+export default connect(mapStateToProps, null)(UserStats);

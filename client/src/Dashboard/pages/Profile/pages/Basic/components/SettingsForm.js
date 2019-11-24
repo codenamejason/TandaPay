@@ -18,6 +18,7 @@ import Form from "./Form/Form";
 const SettingsForm = props => {
   const { classes, user, updateSettings } = props;
   const { enqueueSnackbar } = useSnackbar();
+  console.log(props);
 
   /**
    * @summary When the user updates their profile, it will first check if they've updated their profile.

@@ -16,7 +16,7 @@ class Wallet extends React.Component {
           <Route exact path="/admin/wallet" component={WalletOverview} />
           <Route
             exact
-            path="/holder/wallet/finalize/:address/:amount/:id"
+            path="/admin/wallet/finalize/:address/:amount/:id"
             component={FinalizeBuy}
           />
           <Route exact path="/admin/wallet/:id" component={TransferReview} />

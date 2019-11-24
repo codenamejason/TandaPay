@@ -1,8 +1,10 @@
 import axios from "axios";
 import { setAlert } from "./alert";
+import { setEthAlert } from "./ethAlert";
 
 import {
   AUTH_ERROR,
+  FETCH_TRANSFERS,
   FETCH_USER,
   FETCH_OTHER_USER,
   LOGOUT_SUCCESS
@@ -45,14 +47,17 @@ export const fetchUserByID = user_id => async dispatch => {
     dispatch({ type: FETCH_OTHER_USER, payload: rs.data });
 
     //dispatch({ type: FETCH_CLAIMS, payload: claims });
-  } catch (err) {
-    // console.log(err);
-    // const error = err.response.data.error;
-    // if (error) {
-    //   dispatch(setAlert(error, "danger"));
-    // }
-    // console.log(error.response);
-  }
+  } catch (err) {}
+};
+
+export const fetchUserByEmail = email => async dispatch => {
+  try {
+    const rs = await axios.get("/user/email/" + email, config());
+
+    dispatch({ type: FETCH_OTHER_USER, payload: rs.data });
+
+    //dispatch({ type: FETCH_CLAIMS, payload: claims });
+  } catch (err) {}
 };
 
 /**
@@ -89,8 +94,6 @@ export const signUp = body => async dispatch => {
 export const logIn = body => async dispatch => {
   try {
     const response = await axios.post("/auth/login", body);
-    // console.log(response.data);
-    console.log(response.data.user);
 
     dispatch({ type: FETCH_USER, payload: response.data.user });
   } catch (err) {
@@ -136,6 +139,19 @@ export const cancelAccount = () => async dispatch => {
 };
 
 /**
+ * @summary Redux action creator to fetch the user's group
+ */
+export const fetchTransfer = () => async dispatch => {
+  try {
+    const transfers = await axios.get("/user/transfers", config());
+
+    dispatch({ type: FETCH_TRANSFERS, payload: transfers.data });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+/**
  * @summary The action creator called during the 'setup' process(after the account has been created but before the role and initial wallet providers are chosen).
  * This will receive the body object provided by the setup submit function and passed to the API backend.
  * It will update the user object from the response in the event of a success.
@@ -156,6 +172,52 @@ export const completeAccount = body => async dispatch => {
     dispatch({ type: FETCH_USER, payload: response.data });
   } catch (e) {
     console.log(e.response);
+  }
+};
+
+export const updateUserSmartContractStatus = (
+  user_id,
+  status
+) => async dispatch => {
+  try {
+    let response = await axios.post(
+      "/user/user-added-to-smart-contract",
+      { user_id, status },
+      config()
+    );
+
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
+export const sendTransfer = (
+  senderID,
+  receiverID,
+  amount,
+  type,
+  receiverName,
+  senderName,
+  transactionHash
+) => async dispatch => {
+  try {
+    let response = await axios.post(
+      "/user/transfer",
+      {
+        senderID,
+        receiverID,
+        amount,
+        type,
+        receiverName,
+        senderName,
+        transactionHash
+      },
+      config()
+    );
+    return true;
+  } catch (err) {
+    return false;
   }
 };
 
@@ -180,6 +242,16 @@ export const updateWallet = body => async dispatch => {
   } catch (e) {
     console.log(e);
   }
+};
+export const dispatchCustomMessage = ({ msg, type }) => async dispatch => {
+  dispatch(setAlert(msg, type));
+};
+export const dispatchEthCustomMessage = ({
+  msg,
+  type,
+  hash
+}) => async dispatch => {
+  dispatch(setEthAlert(msg, type, 30000, hash));
 };
 
 /**

@@ -1,7 +1,8 @@
 import Web3 from "web3";
 import Fortmatic from "fortmatic";
-import DaiContract from "./contracts/DaiContract.json";
+import Dai from "./contracts/Dai.json";
 import Group from "./contracts/Group.json";
+import Service from "./contracts/Service.json";
 const fm = new Fortmatic(process.env.REACT_APP_FORTMATIC_ID);
 const contract = require("@truffle/contract");
 /**
@@ -37,7 +38,7 @@ const connectToMetamask = async () => {
 
       //try to set this before
       window.web3 = new Web3(window.ethereum);
-      console.log(accounts);
+
       return [accounts, null];
     } catch (error) {
       console.log(error);
@@ -108,7 +109,29 @@ const getDAIBalance = async (web3, DAI) => {
     return [null, e];
   }
 };
+const sendDaiToUser = async (web3, DAI, amount, address) => {
+  try {
+    const accounts = await web3.eth.getAccounts();
+    const result = await DAI.methods
+      .mint(address, web3.utils.toWei(amount))
+      .send({ from: accounts[0] });
+    return [result, null];
+  } catch (e) {
+    return [null, e];
+  }
+};
 
+const tranferDaiToUser = async (web3, DAI, amount, address) => {
+  try {
+    const accounts = await web3.eth.getAccounts();
+    const result = await DAI.methods
+      .transfer(address, web3.utils.toWei(amount))
+      .send({ from: accounts[0] });
+    return [result, null];
+  } catch (e) {
+    return [null, e];
+  }
+};
 /**
  * @summary - Queries the contract deployed by DAI to determine the allowed amount of DAI the current user currently has for premium payment
  * @global
@@ -127,10 +150,39 @@ const getDAIPremiumAllowance = async (web3, DAI) => {
   }
 };
 
-const calculatePayment = async (web3, TGP) => {
+const getPastEvent = async (web3, TGP) => {
+  TGP.getPastEvents(
+    "GroupCreated",
+    {
+      fromBlock: 0,
+      toBlock: "latest"
+    }
+    // ,
+    // function(error, events) {
+    //   console.log(events);
+    // }
+  ).then(function(events) {
+    console.log(events); // same results as the optional callback above
+  });
+};
+
+const finalizeGroupCreationWeb3 = async (web3, TGP, premium, allowedClaims) => {
   try {
     const accounts = await web3.eth.getAccounts();
-    const balance = await TGP.methods.calculatePayment(accounts[0]).call();
+    const result = await TGP.methods
+      .createGroup(accounts[0], allowedClaims, web3.utils.toWei(premium))
+      .send({ from: accounts[0] });
+    return [result, null];
+  } catch (e) {
+    return [null, e];
+  }
+};
+const calculatePayment = async (web3, contract) => {
+  try {
+    const instance = createGroupContract(web3, contract);
+
+    const accounts = await web3.eth.getAccounts();
+    const balance = await instance.methods.calculatePayment(accounts[0]).call();
 
     return [web3.utils.fromWei(balance), null];
   } catch (e) {
@@ -138,19 +190,48 @@ const calculatePayment = async (web3, TGP) => {
   }
 };
 
-const getActivePeriod = async (web3, TGP) => {
+const getActivePeriod = async (web3, contract) => {
   try {
-    const period = await TGP.methods.activePeriod().call();
+    const instance = createGroupContract(web3, contract);
+    const period = await instance.methods.activePeriod().call();
     return [period, null];
   } catch (e) {
     return [null, e];
   }
 };
 
-const addPolicyHolderToSmartContract = async (web3, TGP, address, subgroup) => {
+const isSecretary = async (web3, TGP, address) => {
+  console.log("Coma");
+
   try {
+    const result = await TGP.methods.isSecretary(address).call();
+
+    return [result, null];
+  } catch (e) {
+    return [null, e];
+  }
+};
+
+const getGroup = async (web3, TGP, index) => {
+  try {
+    const result = await TGP.methods.getGroup(index).call();
+    return [result, null];
+  } catch (e) {
+    return [null, e];
+  }
+};
+
+const addPolicyHolderToSmartContract = async (
+  web3,
+
+  address,
+  subgroup,
+  contract
+) => {
+  try {
+    const instance = createGroupContract(web3, contract);
     const accounts = await web3.eth.getAccounts();
-    const result = await TGP.methods
+    const result = await instance.methods
       .addPolicyholder(address, subgroup)
       .send({ from: accounts[0] });
 
@@ -160,11 +241,12 @@ const addPolicyHolderToSmartContract = async (web3, TGP, address, subgroup) => {
   }
 };
 
-const approvePremiumForSmartContractAddress = async (web3, DAI, amount) => {
+const defectClaim = async (web3, period, contract) => {
   try {
+    const instance = createGroupContract(web3, contract);
     const accounts = await web3.eth.getAccounts();
-    const result = await DAI.methods
-      .approve(process.env.REACT_APP_Group_ADDRESS, web3.utils.toWei(amount))
+    const result = await instance.methods
+      .defect(period)
       .send({ from: accounts[0] });
 
     return [result, null];
@@ -173,10 +255,58 @@ const approvePremiumForSmartContractAddress = async (web3, DAI, amount) => {
   }
 };
 
-const submitClaimToSmartContract = async (web3, TGP, period, claimant) => {
+const payYourPremium = async (web3, contract, period) => {
+  try {
+    const instance = createGroupContract(web3, contract);
+    const accounts = await web3.eth.getAccounts();
+    const result = await instance.methods
+      .makePayment(period)
+      .send({ from: accounts[0] });
+
+    return [result, null];
+  } catch (e) {
+    return [null, e];
+  }
+};
+
+const startYourGroup = async (web3, contract) => {
+  const instance = createGroupContract(web3, contract);
+
   try {
     const accounts = await web3.eth.getAccounts();
-    const result = await TGP.methods
+    const result = await instance.methods
+      .startGroup()
+      .send({ from: accounts[0] });
+
+    return [result, null];
+  } catch (e) {
+    return [null, e];
+  }
+};
+
+const approvePremiumForSmartContractAddress = async (
+  web3,
+  DAI,
+  amount,
+  contract
+) => {
+  try {
+    const accounts = await web3.eth.getAccounts();
+    const result = await DAI.methods
+      .approve(contract, web3.utils.toWei(amount))
+      .send({ from: accounts[0] });
+
+    return [result, null];
+  } catch (e) {
+    return [null, e];
+  }
+};
+
+const submitClaimToSmartContract = async (web3, contract, period, claimant) => {
+  const instance = createGroupContract(web3, contract);
+  try {
+    const accounts = await web3.eth.getAccounts();
+    const result = await instance.methods
       .submitClaim(period, claimant)
       .send({ from: accounts[0] });
 
@@ -186,10 +316,11 @@ const submitClaimToSmartContract = async (web3, TGP, period, claimant) => {
   }
 };
 
-const removePolicyHolderFromSmartContract = async (web3, TGP, address) => {
+const removePolicyHolderFromSmartContract = async (web3, address, contract) => {
   try {
+    const instance = createGroupContract(web3, contract);
     const accounts = await web3.eth.getAccounts();
-    const result = await TGP.methods
+    const result = await instance.methods
       .removePolicyholder(address)
       .send({ from: accounts[0] });
 
@@ -205,14 +336,20 @@ const removePolicyHolderFromSmartContract = async (web3, TGP, address) => {
  * @returns {Web3.Contract} returns a new instance of the DAI contract created with the provided web3 instance
  */
 const createDAIContract = web3 => {
-  return new web3.eth.Contract(
-    DaiContract.abi,
-    process.env.REACT_APP_DAI_ADDRESS
-  );
+  return new web3.eth.Contract(Dai.abi, process.env.REACT_APP_DAI_ADDRESS);
+};
+
+const createGroupContract = (web3, address) => {
+  return new web3.eth.Contract(Group.abi, address);
 };
 
 const groupContract = web3 => {
-  return new web3.eth.Contract(Group.abi, process.env.REACT_APP_Group_ADDRESS);
+  //
+
+  return new web3.eth.Contract(
+    Service.abi,
+    process.env.REACT_APP_Service_ADDRESS
+  );
 };
 
 export {
@@ -223,10 +360,20 @@ export {
   getDAIBalance,
   calculatePayment,
   createDAIContract,
+  createGroupContract,
   addPolicyHolderToSmartContract,
   removePolicyHolderFromSmartContract,
   groupContract,
+  getPastEvent,
   getActivePeriod,
+  startYourGroup,
+  sendDaiToUser,
+  isSecretary,
+  payYourPremium,
+  getGroup,
   submitClaimToSmartContract,
-  approvePremiumForSmartContractAddress
+  finalizeGroupCreationWeb3,
+  approvePremiumForSmartContractAddress,
+  tranferDaiToUser,
+  defectClaim
 };

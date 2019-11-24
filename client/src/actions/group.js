@@ -1,10 +1,12 @@
 import axios from "axios";
 import { setAlert } from "./alert";
+import { setEthAlert } from "./ethAlert";
 import {
   FETCH_GROUP,
   INVITE_MEMBER,
   CREATE_SUBGROUP_FAILED,
-  CREATE_SUBGROUP_SUCCESS
+  CREATE_SUBGROUP_SUCCESS,
+  FETCH_PREMIUM
 } from "./types";
 
 const API_BASE = process.env.REACT_APP_API_BASE;
@@ -28,9 +30,8 @@ function config() {
 export const fetchGroup = () => async (dispatch, store) => {
   try {
     let { groupID } = store().user;
-    console.log(groupID);
+
     if (!groupID) {
-      console.log(groupID, "Inside the block");
       return dispatch({ type: FETCH_GROUP, payload: { _id: null } });
     }
 
@@ -43,13 +44,117 @@ export const fetchGroup = () => async (dispatch, store) => {
 };
 
 /**
+ * @summary Redux action creator to fetch the user's group
+ */
+export const fetchPremiums = () => async dispatch => {
+  try {
+    const premiums = await axios.get("/groups/fetchpremiums", config());
+    console.log(premiums);
+
+    dispatch({ type: FETCH_PREMIUM, payload: premiums.data });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+/** */
+export const checkAccessCode = ({ accessCode }) => async dispatch => {
+  try {
+    let response = await axios.post("/groups/access", { accessCode }, config());
+    return response.data;
+  } catch (err) {
+    return false;
+  }
+};
+
+export const addGroupContractAddress = contract => async dispatch => {
+  try {
+    let response = await axios.post(
+      "/groups/contract",
+      { cAddress: contract },
+      config()
+    );
+    dispatch({ type: FETCH_GROUP, payload: response.data });
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
+export const recordpremiumpayment = (
+  groupID,
+  user,
+  period,
+  senderName,
+  transactionHash,
+  amount
+) => async dispatch => {
+  try {
+    let response = await axios.post(
+      "/groups/recordpremiumpayment",
+      {
+        groupID,
+        user,
+        period,
+        senderName,
+        transactionHash,
+        amount
+      },
+      config()
+    );
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+export const removeUserFromSubgroup = () => async dispatch => {
+  try {
+    let response = await axios.post("/groups/leavesubgroup", {}, config());
+    dispatch(setAlert("left successfully", "success"));
+    dispatch({ type: CREATE_SUBGROUP_SUCCESS, payload: response.data });
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
+export const lockSubgroup = () => async dispatch => {
+  try {
+    let response = await axios.post("/groups/lockSubgroup", {}, config());
+    dispatch(setAlert("Locked successfully", "success"));
+    dispatch({ type: CREATE_SUBGROUP_SUCCESS, payload: response.data });
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
+export const dispatchCustomMessage = ({ msg, type }) => async dispatch => {
+  dispatch(setAlert(msg, type));
+};
+
+export const dispatchEthCustomMessage = ({
+  msg,
+  type,
+  hash
+}) => async dispatch => {
+  console.log("hello World");
+  dispatch(setEthAlert(msg, type, 30000, hash));
+};
+/**
  * @summary Redux action creator to create a group
  */
-export const createGroup = ({ name, premium, fileID }) => async dispatch => {
+
+export const createGroup = ({
+  name,
+  premium,
+  fileID,
+  ecpm
+}) => async dispatch => {
   try {
     const response = await axios.post(
       "/groups/new",
-      { groupName: name, premium, charterID: fileID },
+      { groupName: name, premium, charterID: fileID, allowedClaims: ecpm },
       config()
     );
 
@@ -66,15 +171,12 @@ export const JoinSubgroup = ({ value, group_id }) => async dispatch => {
       { sub_id: value, group_id },
       config()
     );
-    dispatch(setAlert("Created successfully", "success"));
+    dispatch(setAlert("Joined successfully", "success"));
     dispatch({ type: CREATE_SUBGROUP_SUCCESS, payload: group.data });
   } catch (err) {
-    console.log(err.response.data.error);
-    const error = err.response.data.error;
-
-    if (error) {
-      dispatch(setAlert(error, "danger"));
-    }
+    //const err; //= err.response.data.error;
+    console.log();
+    dispatch(setAlert(err.response.data.error, "danger"));
 
     dispatch({ type: CREATE_SUBGROUP_FAILED, payload: err });
   }
@@ -93,7 +195,6 @@ export const creatSubgroup = ({ name, group_id }) => async dispatch => {
     dispatch(setAlert("Created successfully", "success"));
     dispatch({ type: CREATE_SUBGROUP_SUCCESS, payload: group.data });
   } catch (err) {
-    console.log(err, "Subgroup");
     const error = err.response.data.error;
 
     if (error) {
@@ -116,6 +217,5 @@ export const inviteMember = email => async (dispatch, store) => {
     dispatch({ type: INVITE_MEMBER, payload: null });
   } catch (err) {
     dispatch(setAlert("Invitation failed", "danger"));
-    console.error(err);
   }
 };

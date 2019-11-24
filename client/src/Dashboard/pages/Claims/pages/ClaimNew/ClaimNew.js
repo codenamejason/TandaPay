@@ -86,8 +86,5 @@ class ClaimNew extends React.Component {
 }
 
 export default withRouter(
-  connect(
-    null,
-    actions
-  )(withStyles(styles, { withTheme: true })(ClaimNew))
+  connect(null, actions)(withStyles(styles, { withTheme: true })(ClaimNew))
 );

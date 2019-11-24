@@ -5,6 +5,10 @@ const styles = theme => ({
   },
   media: {
     height: 150
+  },
+  theImage: {
+    textAlign: "center",
+    padding: "10px"
   }
 });
 

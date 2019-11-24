@@ -8,91 +8,38 @@ class BuyFormDAI extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      address: this.props.user.ethereumAddress,
-      amount: 0,
-      id: this.props.user._id
+      email: this.props.group.secretary.email
     };
 
-    this.handleAddressChange = this.handleAddressChange.bind(this);
-    this.handleAmountChange = this.handleAmountChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
   }
 
-  handleAddressChange(event) {
-    this.setState({ address: event.target.value });
+  handleCancel(event) {
+    this.props.history.push("/holder/payments");
   }
-
-  handleAmountChange(event) {
-    this.setState({ amount: event.target.value });
-  }
-
   handleSubmit(event) {
     event.preventDefault();
-    if (
-      this.state.amount == "" ||
-      isNaN(this.state.amount) ||
-      !this.state.amount > 0
-    ) {
-      alert("Please enter a valid amount");
-    } else if (
-      this.state.address == "" ||
-      this.state.address.length < 42 ||
-      this.state.address.length > 42
-    ) {
-      alert("Please enter a valid wallet address");
-    } else {
-      this.props.history.push(
-        "/holder/wallet/finalize/" +
-          this.state.address +
-          "/" +
-          this.state.amount +
-          "/" +
-          this.state.id
-      );
-    }
+    this.props.history.push("/holder/wallet/sell/" + this.state.email);
   }
 
   render() {
     return (
       <Fragment>
         <form className="form" onSubmit={this.handleSubmit}>
-          <div className="form-group">
-            <TextField
-              name="amount"
-              fullWidth
-              value={this.state.amount}
-              required
-              label="Amount To Send"
-              type="text"
-              id="amount-field"
-              onChange={this.handleAmountChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">DAI</InputAdornment>
-                )
-              }}
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              name="address"
-              // value={address}
-              label="Wallet Address"
-              type="text"
-              defaultValue={this.state.address}
-              fullWidth
-              onChange={this.handleAddressChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">0x</InputAdornment>
-                )
-              }}
-            />
+          <div className="form-group" style={{ marginBottom: "20px" }}>
+            Are you sure you want to sell DAI to secretary ?
           </div>
 
           <div className="form-group">
-            <input type="submit" className="btn btn-primary" value="Next" />
+            <input type="submit" className="btn btn-primary" value="Procced" />
+            <button
+              type="button"
+              onClick={this.handleCancel}
+              className="btn btn-danger"
+            >
+              Cancel
+            </button>
           </div>
         </form>
       </Fragment>
@@ -100,8 +47,8 @@ class BuyFormDAI extends React.Component {
   }
 }
 
-function mapStateToProps({ user }) {
-  return { user };
+function mapStateToProps({ group }) {
+  return { group };
 }
 
 export default withRouter(connect(mapStateToProps)(BuyFormDAI));

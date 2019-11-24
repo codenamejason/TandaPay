@@ -2,6 +2,7 @@ import React from "react";
 import { Grid, Typography, Card, withStyles } from "@material-ui/core";
 import moment from "moment";
 import styles from "../review.style";
+import Avatar from "react-avatar";
 const ProfileCard = props => {
   const { classes, claim } = props;
   return (
@@ -9,11 +10,12 @@ const ProfileCard = props => {
       <Card className={classes.card}>
         <Grid container>
           <Grid item xs={12} sm={5} className={classes.container}>
-            <img
+            <Avatar name={claim.claimantName} size={150} />
+            {/* <img
               src={claim.imageURL}
               className={classes.img}
               alt="User Profile"
-            />
+            /> */}
           </Grid>
           <Grid item xs={12} sm={7} className={classes.container}>
             <div className={classes.userInfo}>

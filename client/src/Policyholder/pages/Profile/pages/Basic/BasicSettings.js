@@ -9,7 +9,7 @@ const headerButtons = [
   {
     text: "ADVANCED SETTINGS",
     type: "blue",
-    url: "/admin/profile/advanced"
+    url: "/holder/profile/advanced"
   }
 ];
 const BasicSettings = props => {

@@ -24,6 +24,7 @@ class GroupCreator extends React.Component {
     this.state = {
       name: "",
       premium: "",
+      ecpm: "",
       fileID: null,
       hasReadInstructions: false,
       uploading: false,
@@ -69,6 +70,7 @@ class GroupCreator extends React.Component {
     this.state.fileID &&
     !isNaN(this.state.premium) &&
     this.state.premium > 0 &&
+    this.state.ecpm > 0 &&
     !this.state.uploading &&
     this.hasConfirmedAll();
 
@@ -97,7 +99,7 @@ class GroupCreator extends React.Component {
   }
 
   renderForm() {
-    let { groupName, premium } = this.state;
+    let { groupName, premium, ecpm } = this.state;
 
     return (
       <div className={this.props.classes.spaceAround}>
@@ -113,14 +115,25 @@ class GroupCreator extends React.Component {
             className={this.props.classes.formItem}
           />
           <TextField
-            type="text"
+            type="number"
             id="premium"
-            label="Monthly Premium"
+            label="Monthly coverage amount"
             value={premium}
             onChange={this.handleFieldChange}
             variant="outlined"
             className={this.props.classes.formItem}
           />
+
+          <TextField
+            type="number"
+            id="ecpm"
+            label="Expected claims per month"
+            value={ecpm}
+            onChange={this.handleFieldChange}
+            variant="outlined"
+            className={this.props.classes.formItem}
+          />
+
           <div>
             <Typography style={{ marginTop: 20 }} variant="h4">
               Group Charter

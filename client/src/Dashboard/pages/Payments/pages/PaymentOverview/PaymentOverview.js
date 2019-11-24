@@ -1,38 +1,52 @@
 import React from "react";
-import { connect } from "react-redux";
-import { PageHeader, Table as PaymentTable } from "../../../../components";
-import { headRows } from "./data";
-import paymentData from "../../../../../data/payments.json";
+import {
+  PageHeader,
+  TablePremium as PaymentTable
+} from "../../../../components";
+import { headRows } from "./premiumdata";
 import UserStats from "./components/UserStats";
+import * as actions from "../../../../../actions/group";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
+class PaymentOverview extends React.Component {
+  constructor(props) {
+    super(props);
+    console.log(props);
 
-const PaymentOverview = props => {
-  const { user } = props;
+    if (!props.premiums) {
+      props.fetchPremiums();
+    }
 
-  const title = user ? user.name : "";
-  const payments = getPaymentHistory();
-  return (
-    <React.Fragment>
-      <PageHeader title={`Welcome, ${title}`} />
-      <UserStats />
-      <PaymentTable
-        data={payments}
-        headRows={headRows}
-        title="Payment History"
-        type="payments"
-      />
-    </React.Fragment>
-  );
-};
+    this.state = {};
+  }
+  render() {
+    const { user, premiums } = this.props;
 
-const getPaymentHistory = () => {
-  //axios call
-  const payments = paymentData.payments;
-  return payments;
-};
-function mapStateToProps({ user }) {
-  return { user };
+    const title = user ? user.name : "";
+    const { classes } = this.props;
+    return (
+      <React.Fragment>
+        <PageHeader title={`Welcome, ${title}`} />
+        <UserStats />
+        {premiums == null ? null : (
+          <PaymentTable
+            data={premiums}
+            headRows={headRows}
+            title="Payment History"
+            type="payments"
+          />
+        )}
+      </React.Fragment>
+    );
+  }
 }
-export default connect(
-  mapStateToProps,
-  null
-)(PaymentOverview);
+
+const RegLink = React.forwardRef((props, ref) => (
+  <Link innerRef={ref} {...props} />
+));
+
+function mapStateToProps({ premiums, user }) {
+  return { premiums, user };
+}
+export default withRouter(connect(mapStateToProps, actions)(PaymentOverview));

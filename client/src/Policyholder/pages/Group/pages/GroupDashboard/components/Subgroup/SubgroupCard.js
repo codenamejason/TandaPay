@@ -9,6 +9,7 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import styles from "./SubgroupCard.style";
 import { Link } from "react-router-dom";
+import Avatar from "react-avatar";
 class SubgroupCard extends React.Component {
   constructor(props) {
     super(props);
@@ -56,11 +57,15 @@ class SubgroupCard extends React.Component {
 const SubCard = ({ classes, subgroup }) => (
   <Card className={classes.card}>
     <CardActionArea>
-      <CardMedia
+      {/* <CardMedia
         className={classes.media}
         image="https://material-ui.com/static/images/cards/paella.jpg"
         title="Contemplative Reptile"
-      />
+      /> */}
+      <Typography className={classes.theImage}>
+        <Avatar name={subgroup.name} round={true} />
+      </Typography>
+
       <CardContent>
         <Typography gutterBottom variant="h5" component="h2">
           {subgroup.name}
