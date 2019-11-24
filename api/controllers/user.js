@@ -1,6 +1,7 @@
+let mongoose = require("mongoose");
 let Group = require("../models/Group");
 let User = require("../models/User");
-
+let Transfer = mongoose.model("transfer");
 let checkSetupSettings = async (req, res, next) => {
     const { role, accessCode, walletProvider, ethAddress } = req.body;
 
@@ -93,7 +94,38 @@ const updateWallet = async (req, res, next) => {
         res.status(500).send(e);
     }
 };
+async function transferController(req, res) {
+    let transfer = new Transfer(req.body);
+    await transfer.save();
+    res.status(200).send(transfer);
+}
 
+async function transfersController(req, res) {
+    const { _id } = req.user;
+
+    let transfers = await Transfer.find({
+        $or: [{ senderID: _id }, { receiverID: _id }],
+    });
+
+    res.status(200).send(transfers);
+}
+async function updateUserSmartContractStatusController(req, res) {
+    const { user_id, status } = req.body;
+
+    User.updateOne(
+        { _id: user_id },
+        {
+            $set: {
+                addedToSmartContract: status,
+            },
+        },
+        function(err) {
+            console.log(err);
+        }
+    ).then(s => {
+        res.status(200).send();
+    });
+}
 async function userById(req, res) {
     try {
         const result = await User.findOne({ _id: req.params.userID })
@@ -101,14 +133,24 @@ async function userById(req, res) {
             .select("-password")
             .select("-tokens");
 
-        console.log(result, "loging user");
-
         return res.send({ OtherUser: result });
     } catch (e) {
         res.status(500).send(e);
     }
 }
 
+async function userByEmail(req, res) {
+    try {
+        const result = await User.findOne({ email: req.params.email })
+            .select("-settings")
+            .select("-password")
+            .select("-tokens");
+
+        return res.send({ OtherUser: result });
+    } catch (e) {
+        res.status(500).send(e);
+    }
+}
 const sendProfile = (req, res) => {
     const token = req.token;
     const user = req.user;
@@ -145,4 +187,8 @@ module.exports = {
     updateWallet,
     sendProfile,
     userById,
+    updateUserSmartContractStatusController,
+    transferController,
+    transfersController,
+    userByEmail,
 };

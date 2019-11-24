@@ -3,7 +3,7 @@ let crypto = require("crypto");
 let Group = mongoose.model("groups");
 const ObjectId = require("mongodb").ObjectID;
 const Subgroup = require("../models/Subgroup");
-
+let Premium = mongoose.model("premiums");
 let { sendEmail } = require("../lib/twilio");
 let invitationTemplate = require("../templates/invite.html.js");
 
@@ -51,7 +51,6 @@ async function newSubGroupController(req, res) {
     });
 
     if (group == null) {
-        console.log("null here");
         return res
             .status(400)
             .send({ error: "You're not eligible to create a subgroup" });
@@ -80,13 +79,46 @@ async function newSubGroupController(req, res) {
     await group.save();
     return res.status(200).send(group);
 }
+async function accessGroupController(req, res) {
+    let { accessCode } = req.body;
+    let group = await Group.findOne({
+        accessCode,
+    });
 
+    if (group == null || group == "") {
+        return res.status(400).send({ isLegit: false });
+    }
+
+    return res.status(200).send({
+        isLegit: true,
+        charterID: group.charterID,
+        groupName: group.groupName,
+    });
+}
+
+async function fetchPremiumsController(req, res) {
+    const { groupID } = req.user;
+
+    let premium = await Premium.find({ groupID });
+
+    if (premium == null || premium == "") {
+        return res.status(200).send(null);
+    } else {
+        return res.status(200).send(premium);
+    }
+}
 /**
  * @summary: join sub-group
  * @param req: The Express request object
  * @param res: The Express response object
  * @returns: group
  */
+
+async function premiumPaymentController(req, res) {
+    let premium = new Premium(req.body);
+    await premium.save();
+    res.status(200).send({ done: true });
+}
 async function joinSubGroupController(req, res) {
     let { sub_id, group_id } = req.body;
     let { name, _id } = req.user;
@@ -112,7 +144,10 @@ async function joinSubGroupController(req, res) {
         name: name,
     };
 
-    group.subgroups[index].members.unshift(joinsubgroup);
+    if (group.subgroups[index].isLock) {
+        return res.status(400).send({ error: "This subgroup is lock." });
+    }
+    group.subgroups[index].members.push(joinsubgroup);
     let membersCount = group.subgroups[index].members.length;
     if (membersCount > 7) {
         return res
@@ -121,6 +156,88 @@ async function joinSubGroupController(req, res) {
     }
     await group.save();
     return res.status(200).send(group);
+}
+async function contractGroupController(req, res) {
+    let { cAddress } = req.body;
+
+    let { groupID } = req.user;
+
+    Group.updateOne(
+        { _id: groupID },
+        {
+            $set: {
+                contract: cAddress,
+            },
+        },
+        function(err) {
+            console.log(err);
+        }
+    ).then(s => {
+        Group.findOne(groupID).then(doc => {
+            return res.status(200).send(doc);
+        });
+    });
+}
+async function lockSubGroupController(req, res) {
+    let { groupID, _id } = req.user;
+
+    Group.findOne({ _id: groupID })
+        .then(doc => {
+            for (var i = 0; i < doc.subgroups.length; i++) {
+                if (doc.subgroups[i].leader.toString() == _id.toString()) {
+                    Group.updateOne(
+                        { "subgroups._id": doc.subgroups[i]._id },
+                        {
+                            $set: {
+                                "subgroups.$.isLock": true,
+                            },
+                        },
+                        function(err) {}
+                    ).then(s => {
+                        Group.findOne({ _id: groupID }).then(doc => {
+                            return res.status(200).send(doc);
+                        });
+                    });
+                }
+            }
+
+            // item["name"] = "new name";
+            // item["value"] = "new value";
+
+            // doc.save();
+
+            //sent respnse to client
+        })
+        .catch(err => {
+            //console.log("Oh! Dark", err);
+        });
+}
+async function leaveSubGroupController(req, res) {
+    let { groupID, _id } = req.user;
+    Group.findOne({ _id: groupID }, function(err, org) {
+        let found = false;
+        for (var i = 0; i < org.subgroups.length; i++) {
+            if (found) break;
+
+            for (var y = 0; y < org.subgroups[i].members.length; y++) {
+                let user = org.subgroups[i].members[y].id;
+                if (user.toString() == _id.toString()) {
+                    found = true;
+
+                    org.subgroups[i].members.pull({
+                        _id: org.subgroups[i].members[y]._id,
+                    });
+                    let rs = org.save();
+
+                    rs.then(s => {
+                        return res.status(200).send(s);
+                    });
+
+                    break;
+                }
+            }
+        }
+    });
 }
 
 /**
@@ -132,7 +249,7 @@ async function joinSubGroupController(req, res) {
  */
 async function newGroupController(req, res, next) {
     let secretary = req.user;
-    let { groupName, premium, charterID } = req.body;
+    let { groupName, premium, charterID, allowedClaims } = req.body;
 
     if (!groupName) {
         return res.status(400).send({ error: "groupName required" });
@@ -151,6 +268,11 @@ async function newGroupController(req, res, next) {
         return res.status(400).send({ error: "invalid premium" });
     }
 
+    if (isNaN(allowedClaims) || allowedClaims < 1) {
+        return res
+            .status(400)
+            .send({ error: "invalid expected number of claims" });
+    }
     try {
         let group = new Group({
             secretary: {
@@ -168,6 +290,7 @@ async function newGroupController(req, res, next) {
             groupName,
             premium,
             charterID,
+            allowedClaims,
             groupStanding: "okay",
             subgroups: [],
             accessCode: generateAccessCode(),
@@ -250,4 +373,10 @@ module.exports = {
     inviteToGroupController,
     newSubGroupController,
     joinSubGroupController,
+    accessGroupController,
+    leaveSubGroupController,
+    lockSubGroupController,
+    contractGroupController,
+    premiumPaymentController,
+    fetchPremiumsController,
 };

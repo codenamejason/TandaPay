@@ -7,6 +7,10 @@ const {
     sendProfile,
     updateWallet,
     userById,
+    updateUserSmartContractStatusController,
+    transferController,
+    transfersController,
+    userByEmail,
 } = require("../controllers/user");
 const {
     authenticated,
@@ -17,8 +21,20 @@ let router = express.Router();
 /**
  * MOVE ENTIRE ROUTE TO API FOLDER
  */
+router.get("/settings", authenticated, (req, res) => {
+    res.status(200).send(req.user.settings);
+});
 
+router.post(
+    "/user-added-to-smart-contract",
+    authenticated,
+    updateUserSmartContractStatusController
+);
+
+router.post("/transfer", authenticated, transferController);
+router.get("/transfers", authenticated, transfersController);
 router.get("/:userID", userById);
+router.get("/email/:email", userByEmail);
 /**
  * @summary retrieves the full information about the user and sends it back as a response
  * @param token identifier to determine which user to retrieve
@@ -86,11 +102,7 @@ router.patch(
 );
 
 router.patch("/profile", (req, res) => {
-    console.log(req.body);
     res.status(400).send({ error: "Route incomplete" });
-});
-router.get("/settings", authenticated, (req, res) => {
-    res.status(200).send(req.user.settings);
 });
 
 router.put("/settings", authenticated, async (req, res) => {

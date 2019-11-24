@@ -109,6 +109,7 @@ const userSchema = new Schema({
             },
         ],
     },
+    addedToSmartContract: Boolean,
     googleID: String,
     facebookID: String,
     ethereumAddress: String,

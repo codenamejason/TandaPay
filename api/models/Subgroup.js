@@ -9,6 +9,7 @@ const { ObjectId } = Schema.Types;
 const subgroupSchema = new Schema({
     name: String,
     leader: ObjectId,
+    isLock: Boolean,
     members: [
         {
             id: ObjectId,
