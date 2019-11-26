@@ -4,8 +4,11 @@ let Group = mongoose.model("groups");
 const ObjectId = require("mongodb").ObjectID;
 const Subgroup = require("../models/Subgroup");
 let Premium = mongoose.model("premiums");
+let User = mongoose.model("users");
+
 let { sendEmail } = require("../lib/twilio");
 let invitationTemplate = require("../templates/invite.html.js");
+let notificationTemplate = require("../templates/notification.html.js");
 
 /**
  * @summary: Retrieves the group doc via the request's params
@@ -308,6 +311,55 @@ async function newGroupController(req, res, next) {
     next();
 }
 
+async function groupNotificationController(req, res) {
+    const { groupID } = req.user;
+    let users = await User.find(
+        {
+            groupID,
+            role: "policyholder",
+        },
+        { _id: 0 }
+    ).select("email");
+
+    if (users == null || users == "") {
+        res.status(400).send({ success: false });
+    } else {
+        let emailList = Array();
+        for (var key in users) {
+            emailList.push(users[key]["email"]);
+        }
+
+        let heading = "";
+        let text = "";
+        let subject = "";
+        const { period, type, groupName } = req.body;
+
+        if (type == "payment") {
+            subject = "Payment Reminder on TandaPay";
+            heading = "Payment Reminder";
+            text =
+                "Please pay your premiums for period (" +
+                period +
+                ") On " +
+                groupName +
+                " Group. If you have already made payment ignore the mail";
+        } else if (type == "claim") {
+            subject = "New Claim White Listed";
+            text =
+                "New claim has been whitelisted  for period (" +
+                period +
+                ") On " +
+                groupName +
+                " Group. log onto your dashboard to view it";
+        }
+
+        let html = notificationTemplate({ heading: heading, text: text });
+
+        await sendEmail(emailList, subject, html);
+
+        res.status(200).send({ success: true });
+    }
+}
 /**
  * @summary: Creates an invitation to a group
  * @param req: The Express request object
@@ -379,4 +431,5 @@ module.exports = {
     contractGroupController,
     premiumPaymentController,
     fetchPremiumsController,
+    groupNotificationController,
 };

@@ -17,12 +17,14 @@ let {
     contractGroupController,
     premiumPaymentController,
     fetchPremiumsController,
+    groupNotificationController,
 } = require("../controllers/group");
 
 router.post("/subgroup", authenticated, newSubGroupController);
 router.post("/joinsubgroup", authenticated, joinSubGroupController);
 router.post("/new", authenticated, secretaryOnly, newGroupController);
 router.post("/access", authenticated, accessGroupController);
+router.post("/notify", authenticated, groupNotificationController);
 router.post("/contract", authenticated, secretaryOnly, contractGroupController);
 router.post(
     "/recordpremiumpayment",

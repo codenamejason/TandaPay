@@ -63,4 +63,21 @@ function sendEmail(email, subject, html) {
     }
 }
 
-module.exports = { sendEmail, sendSMS };
+function sendEmailMulti(email, subject, html) {
+    console.log("Here");
+
+    if (sendgrid == null) setup();
+    try {
+        return sendgrid.sendMultiple({
+            to: email,
+            from: "noreply@tandapay.com",
+            subject,
+            html,
+        });
+    } catch (e) {
+        html = text.toString().substr(0, 16) + "...";
+        console.error(`failed to sendEmail(${user.phone}, ${html})`, e);
+    }
+}
+
+module.exports = { sendEmail, sendSMS, sendEmailMulti };
