@@ -3,6 +3,6 @@ import Profile from "./Profile/Profile";
 import Group from "./Group/Group";
 import Wallet from "./Wallet/Wallet";
 import Payments from "./Payments/Payments";
-import Help from "./Help";
+import Help from "./Help/Help";
 
 export { Claims, Group, Profile, Wallet, Payments, Help };

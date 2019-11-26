@@ -107,6 +107,24 @@ export const recordpremiumpayment = (
     return false;
   }
 };
+
+export const notify = (period, type, groupName) => async dispatch => {
+  try {
+    let response = await axios.post(
+      "/groups/notify",
+      {
+        period,
+        type,
+        groupName
+      },
+      config()
+    );
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
 export const removeUserFromSubgroup = () => async dispatch => {
   try {
     let response = await axios.post("/groups/leavesubgroup", {}, config());
@@ -129,7 +147,7 @@ export const lockSubgroup = () => async dispatch => {
   }
 };
 
-export const dispatchCustomMessage = ({ msg, type }) => async dispatch => {
+export const dispatchCustomMessage = (msg, type) => async dispatch => {
   dispatch(setAlert(msg, type));
 };
 
@@ -138,7 +156,6 @@ export const dispatchEthCustomMessage = ({
   type,
   hash
 }) => async dispatch => {
-  console.log("hello World");
   dispatch(setEthAlert(msg, type, 30000, hash));
 };
 /**

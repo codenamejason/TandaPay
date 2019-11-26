@@ -78,8 +78,12 @@ const getGroupStat = async data => {
     return ["N/A", "PERIOD NOT STARTED"];
   } else {
     if (period > 0) {
+      console.log(web3, contract, "from me");
+
       const [amount, error] = await calculatePayment(web3, contract);
       if (error) {
+        console.log(error, "We log it here");
+
         return ["N/A", "PERIOD NOT STARTED"];
       } else {
         return [amount, `Period (${period}) started`];

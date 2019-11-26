@@ -119,14 +119,14 @@ const MemberCard = ({ classes, member }) => (
           <StandingLabel classes={classes} standing="good" />
         </div>
       </div>
-      {/* <Button
+      <Button
         variant="contained"
         color="secondary"
         to={`/holder/groups/subgroup/user/${member.id}`}
         component={RegLink}
       >
         Details
-      </Button> */}
+      </Button>
     </div>
   </Card>
 );

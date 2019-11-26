@@ -8,23 +8,15 @@ import styles from "./Myself.style.js";
 
 const Myself = ({ classes, group }) => (
   <div>
-    <Typography variant="h4">Me</Typography>
     <div className={classes.main}>
       <div>
-        <Typography variant="body1">
-          <Bold>Ms. Some User</Bold>
-        </Typography>
-        <Typography variant="body1">
-          <Bold>Subgroup:</Bold> Good Standing
-        </Typography>
         <Button
+          target="_blank"
+          href={"https://storage.cloud.google.com/tandafile/" + group.charterID}
           className={classes.spaced}
-          variant="contained"
+          variant="outlined"
           color="secondary"
         >
-          Details
-        </Button>
-        <Button className={classes.spaced} variant="outlined" color="secondary">
           Group Files
         </Button>
       </div>

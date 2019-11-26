@@ -17,6 +17,11 @@ class ManageGroup extends React.Component {
           title="Manage Group"
           buttons={[
             {
+              text: "Secretary Responsibilities",
+              type: "green",
+              url: "/admin/groups/secretary-responsibilities"
+            },
+            {
               text: "Back",
               type: "red",
               url: "/admin/groups"

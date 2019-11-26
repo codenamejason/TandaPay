@@ -3,6 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { Route, Switch } from "react-router-dom";
 
 import { GroupDashboard } from "./pages";
+import ManageUser from "./pages/ManageUser/ManageUser";
 import { withGroup, withoutGroup } from "./components/HOCs.js";
 import SubgroupMembers from "./pages/SubgroupMembers/SubgroupMembers";
 import styles from "./group.style.js";
@@ -25,6 +26,11 @@ const Group = () => (
         exact
         path="/holder/groups"
         component={withGroup(GroupDashboard)}
+      />
+      <Route
+        exact
+        path="/holder/groups/subgroup/user/:id"
+        component={withGroup(ManageUser)}
       />
       <Route
         exact

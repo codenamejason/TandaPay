@@ -90,9 +90,17 @@ class GroupCreator extends React.Component {
 
   render() {
     let { hasReadInstructions } = this.state;
+
+    const headerButtons = [
+      {
+        text: "Secretary Responsibilities",
+        type: "red",
+        url: "/admin/groups/secretary-responsibilities"
+      }
+    ];
     return (
       <div>
-        <PageHeader title="Create a Group" />
+        <PageHeader title="Create a Group" buttons={headerButtons} />
         {hasReadInstructions ? this.renderForm() : this.renderInstructions()}
       </div>
     );
@@ -245,16 +253,18 @@ class GroupCreator extends React.Component {
 }
 
 async function uploadFile(file) {
-  let { url, id } = (await axios.post(
-    "/upload",
-    {},
-    {
-      baseURL: API_BASE,
-      headers: {
-        Authorization: "Bearer " + document.cookie.match(/x-auth=(\S+)/)[1]
+  let { url, id } = (
+    await axios.post(
+      "/upload",
+      {},
+      {
+        baseURL: API_BASE,
+        headers: {
+          Authorization: "Bearer " + document.cookie.match(/x-auth=(\S+)/)[1]
+        }
       }
-    }
-  )).data;
+    )
+  ).data;
 
   await new Promise(r => setTimeout(r, 1000));
 

@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Myself, Subgroup, Members } from "./components";
 
 import * as actions from "../../../../../actions";
+import LoadStats from "./components/LoadStats/LoadStats";
 
 const GroupDashboard = connect(
   mapStateToProps,
@@ -19,6 +20,7 @@ const GroupDashboard = connect(
   return (
     <React.Fragment>
       <Myself />
+      <LoadStats />
       <Subgroup />
 
       <Members />

@@ -5,7 +5,7 @@ import Loader from "../../../../../components/Loader";
 import { Myself, Subgroup, Members, FinalizeGroupCreation } from "./components";
 import { PageHeader } from "../../../../components/";
 import * as actions from "../../../../../actions";
-
+import LoadStats from "./components/LoadStats/LoadStats";
 const GroupDashboard = connect(
   mapStateToProps,
   actions
@@ -39,10 +39,18 @@ const GroupDashboard = connect(
               role: "secretary",
               type: "red",
               url: "/admin/groups/manage"
+            },
+
+            {
+              text: "Subgroup Guide",
+              role: "secretary",
+              type: "blue",
+              url: "/admin/groups/how-subgroup-works"
             }
           ]}
         />
         <Myself />
+        <LoadStats />
         <Subgroup />
         <Members />
       </React.Fragment>

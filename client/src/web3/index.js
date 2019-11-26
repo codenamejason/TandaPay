@@ -200,6 +200,50 @@ const getActivePeriod = async (web3, contract) => {
   }
 };
 
+const getPaidParticipantAmount = async (web3, contract, period, subgroup) => {
+  try {
+    const instance = createGroupContract(web3, contract);
+    const amount = await instance.methods
+      .getPaidParticipantAmount(period, subgroup)
+      .call();
+    return [amount, null];
+  } catch (e) {
+    return [null, e];
+  }
+};
+
+const getDefectionCount = async (web3, contract, period, subgroup) => {
+  try {
+    const instance = createGroupContract(web3, contract);
+    const amount = await instance.methods
+      .getDefectionCount(period, subgroup)
+      .call();
+    return [amount, null];
+  } catch (e) {
+    return [null, e];
+  }
+};
+
+const getGroupDefectionCount = async (web3, contract, period) => {
+  try {
+    const instance = createGroupContract(web3, contract);
+    const amount = await instance.methods.getGroupDefectionCount(period).call();
+    return [amount, null];
+  } catch (e) {
+    return [null, e];
+  }
+};
+
+const isParticipant = async (web3, contract, period, address) => {
+  try {
+    const instance = createGroupContract(web3, contract);
+    const status = await instance.methods.isParticipant(period, address).call();
+    return [status, null];
+  } catch (e) {
+    return [null, e];
+  }
+};
+
 const isSecretary = async (web3, TGP, address) => {
   console.log("Coma");
 
@@ -276,6 +320,21 @@ const startYourGroup = async (web3, contract) => {
     const accounts = await web3.eth.getAccounts();
     const result = await instance.methods
       .startGroup()
+      .send({ from: accounts[0] });
+
+    return [result, null];
+  } catch (e) {
+    return [null, e];
+  }
+};
+
+const endYourGroup = async (web3, contract, period) => {
+  const instance = createGroupContract(web3, contract);
+
+  try {
+    const accounts = await web3.eth.getAccounts();
+    const result = await instance.methods
+      .endPeriod(period)
       .send({ from: accounts[0] });
 
     return [result, null];
@@ -375,5 +434,10 @@ export {
   finalizeGroupCreationWeb3,
   approvePremiumForSmartContractAddress,
   tranferDaiToUser,
-  defectClaim
+  defectClaim,
+  endYourGroup,
+  isParticipant,
+  getPaidParticipantAmount,
+  getDefectionCount,
+  getGroupDefectionCount
 };

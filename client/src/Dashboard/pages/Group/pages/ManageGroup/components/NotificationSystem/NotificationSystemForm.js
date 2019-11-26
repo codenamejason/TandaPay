@@ -7,13 +7,13 @@ import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import styles from "../../../../../../../Policyholder/pages/Payments/pages/PaymentNew/payment.style";
-import { endYourGroup, getActivePeriod } from "../../../../../../../web3";
-import * as actions from "../../../../../../../actions/user";
+import { getActivePeriod } from "../../../../../../../web3";
+import * as actions from "../../../../../../../actions/group";
 import EthAlert from "../../../../../../../components/EthAlert";
 import Alert from "../../../../../../../components/Alert";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-class PayClaimsForm extends Component {
+class NotificationSystemForm extends Component {
   constructor(props) {
     super(props);
     console.log(props);
@@ -47,33 +47,66 @@ class PayClaimsForm extends Component {
       console.log(e);
     }
   }
-  handleSubmit = async event => {
+
+  handleClaimtNotfication = async event => {
+    event.preventDefault();
+    this.setState({
+      claimWorking: true
+    });
+
+    let res = await this.props.notify(
+      this.state.period,
+      "claim",
+      this.state.groupName
+    );
+
+    if (res == true) {
+      this.setState({
+        claimWorking: false
+      });
+      let type = "success";
+      let msg = "Notification sent successfully";
+
+      this.props.dispatchCustomMessage(msg, type);
+    } else {
+      this.setState({
+        claimWorking: false
+      });
+      let type = "danger";
+      let msg = "Notification not sent, try again later";
+
+      this.props.dispatchCustomMessage(msg, type);
+    }
+  };
+
+  handlePaymentNotfication = async event => {
     event.preventDefault();
     this.setState({
       working: true
     });
-    console.log(this.state.period);
 
-    const [result, error] = await endYourGroup(
-      this.props.ethereum.web3,
-      this.props.group.contract,
-      this.state.period
+    let res = await this.props.notify(
+      this.state.period,
+      "payment",
+      this.state.groupName
     );
-    if (result) {
-      let msg = "Period ended successfully.";
+
+    if (res == true) {
+      this.setState({
+        working: false
+      });
       let type = "success";
-      let hash = result.transactionHash;
-      this.props.dispatchEthCustomMessage({ msg, type, hash });
-      this.setState({
-        working: false
-      });
+      let msg = "Notification sent successfully";
+
+      this.props.dispatchCustomMessage(msg, type);
     } else {
-      let msg = "ending group failed.";
-      let type = "danger";
-      this.props.dispatchCustomMessage({ msg, type });
       this.setState({
         working: false
       });
+      let type = "danger";
+      let msg = "Notification not sent, try again later";
+
+      this.props.dispatchCustomMessage(msg, type);
     }
   };
 
@@ -93,13 +126,16 @@ class PayClaimsForm extends Component {
               </Grid>
             </Grid>
             <Typography color="textSecondary" variant="body2">
-              End period <b>{period}</b>. and payout claims
+              Notification System{" "}
             </Typography>
           </div>
           <Divider variant="middle" />
 
           <div className={classes.section3}>
-            <form onSubmit={this.handleSubmit.bind(this)}>
+            <form onSubmit={this.handlePaymentNotfication.bind(this)}>
+              <Typography variant="subtitle1">
+                Send users notification to finalize their payments
+              </Typography>
               <Button
                 variant="contained"
                 color="secondary"
@@ -109,11 +145,38 @@ class PayClaimsForm extends Component {
                 {this.state.working && (
                   <span>
                     {" "}
-                    <CircularProgress size={24} /> Ending...
+                    <CircularProgress size={24} /> Notifying...
                   </span>
                 )}
-                {!this.state.working && <small> End Period</small>}
+                {!this.state.working && <small> Payment Reminder</small>}
               </Button>
+              <br></br>
+            </form>
+          </div>
+
+          <Divider />
+          <div className={classes.section3}>
+            <form onSubmit={this.handleClaimtNotfication.bind(this)}>
+              <Typography variant="subtitle1">
+                Send users notification about white listed claims
+              </Typography>
+              <Button
+                variant="contained"
+                color="secondary"
+                type="submit"
+                disabled={
+                  this.state.claimWorking == true || !this.state.period > 0
+                }
+              >
+                {this.state.claimWorking && (
+                  <span>
+                    {" "}
+                    <CircularProgress size={24} /> Notifying...
+                  </span>
+                )}
+                {!this.state.claimWorking && <small> Claim Reminder</small>}
+              </Button>
+              <br></br>
             </form>
           </div>
         </div>
@@ -131,4 +194,4 @@ function mapStateToProps({ ethereum, group, user }) {
 export default connect(
   mapStateToProps,
   actions
-)(withStyles(styles, { withTheme: true })(PayClaimsForm));
+)(withStyles(styles, { withTheme: true })(NotificationSystemForm));

@@ -15,41 +15,19 @@ const Myself = ({ classes, group, user }) => {
   return (
     <Fragment>
       <div>
-        <Typography variant="h4">Me</Typography>
         <div className={classes.main}>
           <div>
-            <Grid container spacing={4}>
-              <Grid item md={4}>
-                <Avatar name={name} size="150px" />
-                {/* <img
-                  src="https://via.placeholder.com/150"
-                  className={classes.img}
-                  alt="User Profile"
-                /> */}
-              </Grid>
-              <Grid item md={8}>
-                <Typography variant="body1">
-                  <Bold>{name}</Bold>
-                </Typography>
-                <Typography variant="body1">
-                  <Bold>Subgroup:</Bold> Good Standing
-                </Typography>
-                <Button
-                  className={classes.spaced}
-                  variant="contained"
-                  color="secondary"
-                >
-                  Details
-                </Button>
-                <Button
-                  className={classes.spaced}
-                  variant="outlined"
-                  color="secondary"
-                >
-                  Group Files
-                </Button>
-              </Grid>
-            </Grid>
+            <Button
+              target="_blank"
+              href={
+                "https://storage.cloud.google.com/tandafile/" + group.charterID
+              }
+              className={classes.spaced}
+              variant="outlined"
+              color="secondary"
+            >
+              Group Files
+            </Button>
           </div>
           <div className={classes.right}>
             {/* <Typography variant="body1">Next Payment 04/29/2019</Typography> */}

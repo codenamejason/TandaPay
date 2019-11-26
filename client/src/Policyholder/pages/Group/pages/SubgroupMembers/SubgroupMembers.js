@@ -10,16 +10,64 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import styles from "./subgroupMembers.style";
 import Avatar from "react-avatar";
+import GroupStats from "../../../../../components/GroupStats/GroupStats";
+import {
+  getActivePeriod,
+  getPaidParticipantAmount,
+  getDefectionCount
+} from "../../../../../web3";
 class SubgroupMembers extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { filter: "" };
+    this.state = { filter: "", paymentCount: 0, defCount: 0 };
   }
 
   handleFilterChange = evt => {
     this.setState({ filter: evt.target.value });
   };
+  async componentDidMount() {
+    try {
+      const { groupName, members, subgroups } = this.props.group;
+      const [period, error] = await getActivePeriod(
+        this.props.ethereum.web3,
+        this.props.group.contract
+      );
 
+      if (!error) {
+        try {
+          const [rs_status, error] = await getPaidParticipantAmount(
+            this.props.ethereum.web3,
+            this.props.group.contract,
+            period,
+            this.state.subIdex + 1
+          );
+
+          if (rs_status) {
+            this.setState({
+              paymentCount: rs_status._subgroupParticipantAmount
+            });
+          }
+        } catch (e) {}
+
+        try {
+          const [def, error] = await getDefectionCount(
+            this.props.ethereum.web3,
+            this.props.group.contract,
+            period,
+            this.state.subIdex + 1
+          );
+
+          if (def) {
+            this.setState({
+              defCount: def
+            });
+          }
+        } catch (e) {}
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
   componentWillMount() {
     const { match, group } = this.props;
 
@@ -27,13 +75,16 @@ class SubgroupMembers extends React.Component {
 
     let subMembers;
     let subName;
+    let subIdex;
     for (var x in group.subgroups) {
       if (group.subgroups[x]._id === subgroupId) {
         subMembers = group.subgroups[x].members;
         subName = group.subgroups[x].name;
+        subIdex = x;
+        break;
       }
     }
-    this.setState({ subMembers, subName });
+    this.setState({ subMembers, subName, subIdex });
   }
   render() {
     const { subMembers, subName } = this.state;
@@ -46,6 +97,11 @@ class SubgroupMembers extends React.Component {
           <Typography style={{ alignSelf: "flex-end" }} variant="h4">
             {subName} Member(s)
           </Typography>
+          <GroupStats
+            defected={this.state.defCount}
+            name={subName}
+            paid={this.state.paymentCount}
+          />
           <TextField
             label="Filter"
             type="search"
@@ -87,6 +143,16 @@ const SubCard = ({ classes, userData }) => (
         <Typography></Typography>
       </CardContent>
     </CardActionArea>
+    <CardActions>
+      <Button
+        variant="contained"
+        color="secondary"
+        to={`/holder/groups/subgroup/user/${userData.id}`}
+        component={RegLink}
+      >
+        Details
+      </Button>
+    </CardActions>
   </Card>
 );
 const RegLink = React.forwardRef((props, ref) => (
